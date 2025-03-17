@@ -1,0 +1,54 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Like Button Animations */
+@keyframes thumbRotate {
+  0% { transform: rotate(0deg); }
+  40% { transform: rotate(90deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes burstEffect {
+  0% { 
+    transform: scale(0.5); 
+    opacity: 0.8; 
+  }
+  100% { 
+    transform: scale(2); 
+    opacity: 0; 
+  }
+}
+
+.thumb-animation {
+  display: inline-block;
+  animation: thumbRotate 0.8s ease-in-out;
+}
+
+.burst-animation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.burst-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(18, 183, 106, 0.3); /* Semi-transparent green */
+  animation: burstEffect 0.8s ease-out forwards;
+}
