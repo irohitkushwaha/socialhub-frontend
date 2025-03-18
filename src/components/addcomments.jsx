@@ -21,8 +21,15 @@ const AddComment = ({
     }
   }, [commentText]);
 
+  // Add this useEffect to sync the div content with state
+  useEffect(() => {
+    if (textareaRef.current && textareaRef.current.textContent !== commentText) {
+      textareaRef.current.textContent = commentText;
+    }
+  }, [commentText]);
+
   const handleChange = (e) => {
-    setCommentText(e.target.value);
+    // This is now handled by the onInput prop
   };
 
   const handleFocus = () => {
@@ -31,6 +38,9 @@ const AddComment = ({
 
   const handleCancel = () => {
     setCommentText("");
+    if (textareaRef.current) {
+      textareaRef.current.textContent = "";
+    }
     setIsFocused(false);
     if (onCancel) onCancel();
   };
@@ -39,6 +49,9 @@ const AddComment = ({
     if (commentText.trim() && onSubmit) {
       onSubmit(commentText);
       setCommentText("");
+      if (textareaRef.current) {
+        textareaRef.current.textContent = "";
+      }
     }
   };
 
@@ -46,7 +59,7 @@ const AddComment = ({
     <div>
       <div className="flex items-center gap-[30px] w-full">
         {/* Profile Picture */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 self-start mt-[10px]">
           <img
             src={profilePic}
             alt="Profile"
@@ -55,23 +68,22 @@ const AddComment = ({
         </div>
 
         {/* Comment Input Area */}
-        <div className="flex-grow">
-          <div className="relative">
-            <textarea
+        <div className="flex w-full">
+          <div className="w-full">
+            <div
               ref={textareaRef}
-              value={commentText}
-              onChange={handleChange}
+              contentEditable
+              onInput={(e) => setCommentText(e.currentTarget.textContent || "")}
               onFocus={handleFocus}
-              placeholder="Add a comment..."
-              className="w-full resize-none overflow-hidden border-b-[3px] border-[#E6E6E6] focus:outline-none text-[18px] md:text-[20px] font-semibold text-[#686C73] bg-transparent "
+              className="py-[15px] w-full text-start border-b-[3px] border-[#E6E6E6] focus:outline-none text-[18px] md:text-[20px] font-semibold text-[#686C73] bg-transparent min-h-[30px] overflow-hidden empty:before:content-[attr(data-placeholder)] empty:before:text-[#686C73] empty:before:opacity-70"
+              data-placeholder="Add a comment..."
               style={{
                 lineHeight: 1.5,
-                height: "2px",
+                wordWrap: "break-word",
+                whiteSpace: "pre-wrap"
               }}
             />
           </div>
-
-          {/* Action Buttons - Only show when input is focused */}
         </div>
       </div>
       {/* Action Buttons - Only show when input is focused */}
