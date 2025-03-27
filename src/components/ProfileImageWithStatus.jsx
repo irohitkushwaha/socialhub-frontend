@@ -6,7 +6,7 @@ const ProfileImageWithStatus = ({
   size = 50,
   name,
   email,
-  editMode = true,
+  editMode = false,
   onEditClick,
   isOnline = true,
 }) => {

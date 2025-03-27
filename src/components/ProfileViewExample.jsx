@@ -13,6 +13,7 @@ const ProfileViewExample = () => {
           email="shradha@apnacollege.com"
           subscribers="4.9M"
           videos="550"
+          edit={true}
         />
       </div>
 

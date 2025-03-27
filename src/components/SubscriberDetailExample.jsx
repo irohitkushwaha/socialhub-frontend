@@ -4,7 +4,7 @@ import SubscriberDetail from "./SubscriberDetail";
 const SubscriberDetailExample = () => {
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-8">Subscriber Detail Example</h2>
+      <h2 className="text-4xl font-bold mb-8">Subscriber Detail Example</h2>
 
       <div className="max-w-xl">
         <SubscriberDetail

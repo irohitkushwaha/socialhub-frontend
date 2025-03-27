@@ -18,7 +18,7 @@ const LikeDislike = ({ initialLikes = "200K" }) => {
     if (liked) {
       setLiked(false);
     }
-  };
+  }; 
 
   return (
     <div className="flex w-fit mx-auto my-5 items-center px-[10px] md:px-[16px] py-[10px] gap-[8px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]">
