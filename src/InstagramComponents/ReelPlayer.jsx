@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
+import { selectIsAutoScrollEnabled } from "../redux/slices/autoScrollSlice";
+import { useSelector } from "react-redux";
 
 const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   const [playing, setPlaying] = useState(false); // Start paused
@@ -14,6 +16,8 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   const playerRef = useRef(null);
   const containerRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
+
+  const isAutoScrollEnabled = useSelector(selectIsAutoScrollEnabled);
 
   // Handle video click to toggle play/pause
   const handlePlayPause = (e) => {
@@ -243,6 +247,10 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
     };
   }, [isScrolling, onNextVideo, onPrevVideo]);
 
+  const handleNextVideo = () => {
+    if (onNextVideo) onNextVideo();
+  }
+
   return (
     <div
       ref={containerRef}
@@ -261,11 +269,12 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
         volume={0.8}
         muted={false}
         controls={false}
-        loop={true}
+        loop={!isAutoScrollEnabled}
         onError={handleError}
         onReady={handleReady}
         onStart={handleStart}
         playsinline={true}
+        onEnded={isAutoScrollEnabled ? handleNextVideo : undefined}
         config={{
           file: {
             attributes: {
