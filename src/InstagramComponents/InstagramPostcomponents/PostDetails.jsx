@@ -78,14 +78,14 @@ const PostDetails = ({ likeCount, title }) => {
 
   return (
     <div
-      className="flex flex-col justify-start gap-[15px]"
+      className="flex flex-col justify-start gap-[15px] w-full"
       style={{
-        width: isMobile ? "100%" : "400px",
+        width: isMobile ? "100%" : "100%",
       }}
     >
       {/* Like count */}
       <p
-        className="text-[#414651] font-medium"
+        className="text-[#414651] font-medium md:font-semibold"
         style={{
           fontSize: isMobile ? "16px" : "18px",
         }}
@@ -97,7 +97,7 @@ const PostDetails = ({ likeCount, title }) => {
       <div className="relative">
         <div
           ref={titleRef}
-          className="text-[#414651] font-medium leading-7 md:leading-8"
+          className="text-[#414651] font-medium md:font-semibold leading-7 md:leading-8"
           style={{
             fontSize: isMobile ? "16px" : "18px",
             display: showFullText ? "block" : "-webkit-box",
@@ -113,7 +113,7 @@ const PostDetails = ({ likeCount, title }) => {
           {isTruncated && !showFullText && (
             <button
               onClick={handleToggleText}
-              className="text-[#737374] cursor-pointer font-medium outline-none inline-block ml-1"
+              className="text-[#737374] md:font-semibold cursor-pointer font-medium outline-none inline-block ml-1"
               style={{
                 fontSize: isMobile ? "16px" : "18px",
                 position: "absolute",
@@ -131,7 +131,7 @@ const PostDetails = ({ likeCount, title }) => {
         {showFullText && (
           <button
             onClick={handleToggleText}
-            className="text-[#737374] cursor-pointer font-medium outline-none ml-1"
+            className="text-[#737374] md:font-semibold cursor-pointer font-medium outline-none ml-1"
             style={{
               fontSize: isMobile ? "16px" : "18px",
             }}

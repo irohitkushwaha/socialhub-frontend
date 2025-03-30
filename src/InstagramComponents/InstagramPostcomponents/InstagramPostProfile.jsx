@@ -96,7 +96,7 @@ const InstagramPostProfile = ({
         </div>
       ) : (
         // Desktop Layout
-        <div className="flex items-center gap-[10px]">
+        <div className="flex items-center gap-[8px]">
           <span className="text-[20px] font-semibold text-[#414651]">
             {username}
           </span>

@@ -20,13 +20,13 @@ const InstagramPostImage = ({ imageUrl, altText = "Instagram post" }) => {
 
   return (
     <div
-      className="overflow-hidden w-full"
+      className="overflow-hidden w-full aspect-[4/4] md:aspect-[4/3]"
       style={{
         // width: isMobile ? "100%" : "300px",
         // height: isMobile ? "427px" : "572px",
         borderRadius: "5px",
         // Using a 4:5 aspect ratio container
-        aspectRatio: "4/4       ",
+        // aspectRatio: "4/4 ",
         backgroundColor: "#f0f0f0", // Light background for loading state
       }}
     >
