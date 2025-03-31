@@ -15,11 +15,13 @@ import store from "./redux/store";
 // import postimage from "./assets/watch/watch1.jpg";
 import InstagramPostProfile from "./InstagramComponents/InstagramPostcomponents/InstagramPostProfile.jsx";
 import InstagramPost from "./InstagramComponents/InstagramPost.jsx";
+import SearchBar from "./whatsappcomponents/SearchBar.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <>
       <Provider store={store}>
-        <InstagramPost />
+        <SearchBar />
+        {/* <InstagramPost /> */}
         {/* <InstagramPostProfile /> */}
         {/* <div className="flex items-center justify-center h-screen w-full">
           <InstagramPostImage imageUrl={postimage} />
@@ -30,8 +32,8 @@ createRoot(document.getElementById("root")).render(
         {/* <ShareModalExample /> */}
         {/* <VideoUserHeaderExample /> */}
         {/* <ReelPlayerExample /> */}
-        {/* <Youtubecomponent />
-      <App /> */}
+        {/* <Youtubecomponent /> */}
+      <App />
         {/* <ReelActionExample /> */}
       </Provider>
     </>
