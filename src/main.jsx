@@ -15,27 +15,33 @@ import store from "./redux/store";
 // import postimage from "./assets/watch/watch1.jpg";
 import InstagramPostProfile from "./InstagramComponents/InstagramPostcomponents/InstagramPostProfile.jsx";
 import InstagramPost from "./InstagramComponents/InstagramPost.jsx";
-import SearchBar from "./whatsappcomponents/SearchBar.jsx";
+import SearchBar from "./WhatsappComponents/SearchBar.jsx";
+import SidebarChat from "./WhatsappComponents/SidebarProfile.jsx";
+import ChatHeader from "./WhatsappComponents/ChatHeader.jsx";
+import ChatDemo from "./WhatsappComponents/ChatDemo.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <>
-      <Provider store={store}>
-        <SearchBar />
-        {/* <InstagramPost /> */}
-        {/* <InstagramPostProfile /> */}
-        {/* <div className="flex items-center justify-center h-screen w-full">
+    <Provider store={store}>
+      {/* <ChatDemo /> */}
+      {/* <div className="w-full mx-auto flex justify-center items-center h-screen"> */}
+        {/* <ChatHeader /> */}
+          {/* <SidebarChat /> */}
+      {/* </div> */}
+      {/* <SearchBar /> */}
+      {/* <InstagramPost /> */}
+      {/* <InstagramPostProfile /> */}
+      {/* <div className="flex items-center justify-center h-screen w-full">
           <InstagramPostImage imageUrl={postimage} />
         </div> */}
-        {/* <PostDetailsExample /> */}
-        {/* <PostAction /> */}
-        {/* <WatchedReels /> */}
-        {/* <ShareModalExample /> */}
-        {/* <VideoUserHeaderExample /> */}
-        {/* <ReelPlayerExample /> */}
-        {/* <Youtubecomponent /> */}
-      <App />
-        {/* <ReelActionExample /> */}
-      </Provider>
-    </>
+      {/* <PostDetailsExample /> */}
+      {/* <PostAction /> */}
+      {/* <WatchedReels /> */}
+      {/* <ShareModalExample /> */}
+      {/* <VideoUserHeaderExample /> */}
+      {/* <ReelPlayerExample /> */}
+      <Youtubecomponent />
+      {/* <App /> */}
+      {/* <ReelActionExample /> */}
+    </Provider>
   </StrictMode>
 );
