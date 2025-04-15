@@ -10,10 +10,10 @@ const ThumbnailCard = ({
   duration = "9:20"
 }) => {
   return (
-    <div class="w-[364px] mx-1.5 lg:mx-0 lg:w-[325px] border border-[#E9EAEB] rounded-xl shadow-[0_7px_16px_-4px_rgba(10,13,18,0.08),0_4px_6px_-2px_rgba(10,13,18,0.03)]">
+    <div class="w-[364px] mx-1.5 lg:mx-0 lg:w-[375px] border border-[#E9EAEB] rounded-xl shadow-[0_7px_16px_-4px_rgba(10,13,18,0.08),0_4px_6px_-2px_rgba(10,13,18,0.03)]">
       {/* Thumbnail Container */}
       <div class="relative w-full aspect-video rounded-xl overflow-hidden">
-        <div class="p-[2px]">
+        <div class="p-[2px] ">
           <img 
             src={thumbnailSrc} 
             alt={title}
@@ -40,7 +40,7 @@ const ThumbnailCard = ({
         </div>
 
         {/* Text Content */}
-        <div class="flex flex-col gap-1.5">
+        <div class="flex flex-col gap-[8px]">
           {/* Title */}
           <h3 class="text-[18px] font-bold text-[#181D27] line-clamp-2">
             {title}
@@ -50,7 +50,7 @@ const ThumbnailCard = ({
           <span class="text-[16px] font-semibold text-[#414651]">{channelName}</span>
 
           {/* Views and Upload Time */}
-          <div class="flex items-center gap-1">
+          <div class="flex items-center gap-[6px]">
             <span class="text-[16px] font-semibold text-[#414651]">{views} views</span>
             <span class="text-[16px] font-semibold text-[#414651]">•</span>
             <span class="text-[16px] font-semibold text-[#414651]">{uploadTime}</span>

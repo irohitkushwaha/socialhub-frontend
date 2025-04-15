@@ -1,5 +1,5 @@
 import Header from "./Header";
-
-export {Header}
+import MobileHeader from "./MobileHeader";
+export {Header, MobileHeader}
 
 export default Header

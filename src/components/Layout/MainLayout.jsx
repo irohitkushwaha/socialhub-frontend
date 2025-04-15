@@ -1,0 +1,115 @@
+import React, { useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import Header from "./Header/Header";
+import SideNav from "./SideNav/SideNav";
+import MobileHeader from "./Header/MobileHeader";
+// import MobileHeader from "./Header/MobileHeader";
+// import MobileSideNav from "./SideNav/MobileSideNav";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+
+// Layout configuration for different routes
+const routeConfig = {
+  // YouTube routes
+  "/": { header: true, sideNav: true, searchBar: true, upload: true },
+  "/youtube/search": {
+    header: true,
+    sideNav: true,
+    searchBar: true,
+    upload: true,
+  },
+  "/youtube/watch": {
+    header: true,
+    sideNav: false,
+    searchBar: true,
+    upload: true,
+  },
+  "/youtube/shorts": {
+    header: true,
+    sideNav: false,
+    searchBar: false,
+    upload: true,
+  },
+
+  // Instagram routes
+  "/instagram": { header: true, sideNav: true, searchBar: true, upload: true },
+  "/instagram/reels": {
+    header: true,
+    sideNav: false,
+    searchBar: false,
+    upload: true,
+  },
+
+  // WhatsApp routes
+  "/whatsapp": { header: true, sideNav: true, searchBar: true, upload: false },
+  "/whatsapp/chat": {
+    header: true,
+    sideNav: true,
+    searchBar: false,
+    upload: false,
+  },
+
+  // Auth routes
+  "/login": { header: false, sideNav: false, searchBar: false, upload: false },
+  "/signup": { header: false, sideNav: false, searchBar: false, upload: false },
+};
+
+const MainLayout = () => {
+  const location = useLocation();
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const [isSideNavOpen, setIsSideNavOpen] = useState(false);
+
+  const toggleSideNav = () => {
+    setIsSideNavOpen(!isSideNavOpen);
+  };
+
+  // Get config for current route, fallback to default config
+  const currentPath = location.pathname;
+  const config = routeConfig[currentPath] || {
+    header: true,
+    sideNav: true,
+    searchBar: true,
+    upload: false,
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen relative">
+      <div className="fixed top-[88px] left-[29px] z-50 md:hidden">
+        {config.sideNav && isSideNavOpen && <SideNav />}
+      </div>
+      {/* Header is now fixed positioned, so we don't include it in the flex flow */}
+      {config.header &&
+        (isMobile ? (
+          <MobileHeader
+            showSearchBar={config.searchBar}
+            upload={config.upload}
+            isSideNavOpen={isSideNavOpen}
+            onToggleSideNav={toggleSideNav}
+          />
+        ) : (
+          <Header showSearchBar={config.searchBar} upload={config.upload} />
+        ))}
+
+      {/* Add padding to account for the fixed header height */}
+      <div
+        className={`md:grid md:pt-16 pt-18   ${
+          config.sideNav ? "md:grid-cols-[auto_1fr]" : "grid-cols-1"
+        }`}
+      >
+        <div className="hidden md:block md:sticky md:top-22 md:self-start md:h-screen">
+          {config.sideNav && !isMobile && <SideNav />}
+        </div>
+
+        <main
+          className={` overflow-auto pt-[15px] md:pt-[30px] ${
+            !config.sideNav ? "w-full" : ""
+          }`}
+        >
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default MainLayout;

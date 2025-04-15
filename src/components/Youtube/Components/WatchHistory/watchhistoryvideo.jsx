@@ -10,7 +10,7 @@ const WatchHistoryVideo = ({
   duration = "9:20",
 }) => {
   return (
-    <div class="w-fit mx-auto border border-[#E9EAEB] rounded-xl shadow-[0_7px_16px_-4px_rgba(10,13,18,0.08),0_4px_6px_-2px_rgba(10,13,18,0.03)] flex justify-between">
+    <div class="md:w-full mx-auto border border-[#E9EAEB] rounded-xl shadow-[0_7px_16px_-4px_rgba(10,13,18,0.08),0_4px_6px_-2px_rgba(10,13,18,0.03)] flex gap-[50px">
       {/* Thumbnail Container */}
       <div class="relative w-[432px] aspect-video rounded-xl overflow-hidden">
         <div class="p-[2px]">
@@ -27,7 +27,7 @@ const WatchHistoryVideo = ({
       </div>
 
       {/* Content Container */}
-      <div class="flex flex-col w-[478px] gap-[21px] px-[19px] py-[30px] items-start justify-start">
+      <div class="flex flex-col gap-[21px] px-[19px] py-[30px] items-start justify-start">
         <h3 class="text-[18px] leading-[31px] font-bold text-[#181D27] line-clamp-2">
           {title}
         </h3>

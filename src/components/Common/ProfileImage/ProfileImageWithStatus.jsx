@@ -1,22 +1,38 @@
 import React from "react";
-import EditIcon from "./EditIcon";
+import EditIcon from "../../ui/EditIcon";
 
 const ProfileImageWithStatus = ({
   profileImage,
   size = 50,
   name,
   email,
+  username,
   editMode = false,
   onEditClick,
   isOnline = true,
+  nameTextSize = "text-[14px]",
+  usernameTextSize = "text-[14px]",
+  emailTextSize = "text-[14px]",
+  // nameTextColor = "text-[#414651]",
+  nameTextColor = "text-black",
+
+  gapbtweenImageAndText,
+  mainDivClassName,
+  imgDesktopSize = "md:w-[150px] md:h-[150px]",
+  imgMobileSize = "w-[90px] h-[90px]",
 }) => {
   return (
-    <div className="flex items-center gap-3">
+    <div
+      className={`flex items-center justify-between w-full ${mainDivClassName} ${gapbtweenImageAndText}`}
+    >
       <div className="relative overflow-visible">
         <img
           src={profileImage}
-          className="rounded-full object-cover"
-          style={{ width: `${size}px`, height: `${size}px` }}
+          className={`rounded-full object-cover ${imgDesktopSize} ${imgMobileSize}`}
+          // style={{
+          //   width: `${size}px`,
+          //   height: `${size}px`
+          // }}
         />
         {/* Green Online Indicator Dot */}
         {isOnline && (
@@ -31,9 +47,13 @@ const ProfileImageWithStatus = ({
         )}
       </div>
 
-      <div className="flex flex-col">
-        <span className="text-[14px] font-semibold text-[#414651]">{name}</span>
-        <span className="text-[14px] text-[#535862]">{email}</span>
+      <div className="flex flex-col gap-[4px]">
+        <span className={`${nameTextSize} font-semibold ${nameTextColor}`}>
+          {name}
+        </span>
+        <span className={`${usernameTextSize} text-[#535862]`}>{username}</span>
+
+        <span className={`${emailTextSize} text-[#535862]`}>{email}</span>
       </div>
     </div>
   );

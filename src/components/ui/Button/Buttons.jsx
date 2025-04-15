@@ -10,7 +10,7 @@ const Button = ({ icon = faArrowUpFromBracket, text = "Upload", ...props }) => {
     >
       <FontAwesomeIcon 
         icon={icon} 
-        className="w-4 lg:w-5 h-4 lg:h-5 text-green-600"
+        className="text-[18px] text-green-600"
       />
       <span class="text-[15px] py-2 lg:py-2.5 font-Inter font-semibold text-[#414651]">
         {text}
