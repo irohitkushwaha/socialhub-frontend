@@ -1,5 +1,5 @@
 import React from "react";
-import googleIcon from "../assets/google.webp";
+import googleIcon from "../../../assets/google.webp";
 
 const GoogleButton = () => {
   return (

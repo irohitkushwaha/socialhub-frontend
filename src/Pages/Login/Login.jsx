@@ -2,7 +2,7 @@ import LoginComponent from "../../components/Common/Login";
 
 function Login() {
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className="w-full flex justify-center">
       <LoginComponent />
     </div>
   );

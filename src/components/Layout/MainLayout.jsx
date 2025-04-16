@@ -17,6 +17,7 @@ const routeConfig = {
     searchBar: true,
     upload: true,
   },
+
   "/youtube/watch": {
     header: true,
     sideNav: false,
@@ -49,7 +50,7 @@ const routeConfig = {
   },
 
   // Auth routes
-  "/login": { header: false, sideNav: false, searchBar: false, upload: false },
+  "/login": { header: true, sideNav: true, searchBar: true, upload: true },
   "/signup": { header: false, sideNav: false, searchBar: false, upload: false },
 };
 
@@ -73,7 +74,9 @@ const MainLayout = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen relative">
+
+
+    <div className="flex flex-col relative">
       <div className="fixed top-[88px] left-[29px] z-50 md:hidden">
         {config.sideNav && isSideNavOpen && <SideNav />}
       </div>
@@ -92,7 +95,7 @@ const MainLayout = () => {
 
       {/* Add padding to account for the fixed header height */}
       <div
-        className={`md:grid md:pt-16 pt-18   ${
+        className={`md:grid md:pt-22 pt-18   ${
           config.sideNav ? "md:grid-cols-[auto_1fr]" : "grid-cols-1"
         }`}
       >
@@ -101,12 +104,13 @@ const MainLayout = () => {
         </div>
 
         <main
-          className={` overflow-auto pt-[15px] md:pt-[30px] ${
+          className={` overflow-auto pt-[15px] md:pt-[20px] pb-[50px] ${
             !config.sideNav ? "w-full" : ""
           }`}
         >
           <Outlet />
         </main>
+    
       </div>
     </div>
   );
