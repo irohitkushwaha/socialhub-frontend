@@ -5,6 +5,7 @@ import Button from "../../ui/Button";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Header = ({ showSearchBar, upload }) => {
   const [scrolled, setScrolled] = useState(false);
@@ -34,8 +35,12 @@ const Header = ({ showSearchBar, upload }) => {
       <Logo />
       {showSearchBar && <SearchBar />}
       <div className="flex items-center gap-[50px]">
-        {upload && <Button text="Upload" icon={faArrowUpFromBracket} />}
-        <Button text="Login" icon={faArrowRightToBracket} />
+        {upload && <Link to="/youtube/upload-videos">
+          <Button text="Upload" icon={faArrowUpFromBracket} />
+        </Link>}
+        <Link to="/login">
+          <Button text="Login" icon={faArrowRightToBracket} />
+        </Link>
       </div>
     </header>
   );

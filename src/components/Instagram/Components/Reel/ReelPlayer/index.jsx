@@ -1,6 +1,5 @@
-import ReelPlayer from ".";
-import ReelPlayerExample from "./ReelPlayerExample";
+import ReelPlayer from "./ReelPlayer";
 
-export { ReelPlayer, ReelPlayerExample };
+export { ReelPlayer };
 
 export default ReelPlayer;

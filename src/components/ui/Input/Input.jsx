@@ -2,7 +2,8 @@ import React from "react";
 
 const Input = ({ label, placeholder, helpText, isMandatory = false }) => {
   return (
-    <div className="w-full px-[10px] md:w-[360px] flex flex-col gap-[15px] md:gap-[11px]">
+    //md:w-[360px]
+    <div className="w-full px-[10px]  flex flex-col gap-[15px] md:gap-[11px]">
       <div className="flex items-center gap-1">
         <label className="text-[16px] font-medium text-[#414651]">
           {label}

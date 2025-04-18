@@ -18,10 +18,34 @@ const routeConfig = {
     upload: true,
   },
 
-  "/youtube/watch": {
+  "/youtube/upload-videos": {
     header: true,
-    sideNav: false,
-    searchBar: true,
+    sideNav: true,
+    searchBar: false,
+    upload: false,
+  },
+  "/youtube/watch-history": {
+    header: true,
+    sideNav: true,
+    searchBar: false,
+    upload: true,
+  },
+  "/youtube/liked-videos": {
+    header: true,
+    sideNav: true,
+    searchBar: false,
+    upload: true,
+  },
+  "/youtube/subscribers-list": {
+    header: true,
+    sideNav: true,
+    searchBar: false,
+    upload: true,
+  },
+  "/youtube/subscribed-to": {
+    header: true,
+    sideNav: true,
+    searchBar: false,
     upload: true,
   },
   "/youtube/shorts": {
@@ -30,9 +54,8 @@ const routeConfig = {
     searchBar: false,
     upload: true,
   },
-
   // Instagram routes
-  "/instagram": { header: true, sideNav: true, searchBar: true, upload: true },
+  "/instagram": { header: true, sideNav: true, searchBar: false, upload: true },
   "/instagram/reels": {
     header: true,
     sideNav: false,
@@ -51,7 +74,7 @@ const routeConfig = {
 
   // Auth routes
   "/login": { header: true, sideNav: true, searchBar: true, upload: true },
-  "/signup": { header: false, sideNav: false, searchBar: false, upload: false },
+  "/signup": { header: true, sideNav: true, searchBar: true, upload: true },
 };
 
 const MainLayout = () => {

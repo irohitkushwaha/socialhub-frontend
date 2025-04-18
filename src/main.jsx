@@ -11,6 +11,13 @@ import MainLayout from "./components/Layout/MainLayout";
 import YtHomepage from "./Pages/YtHomepage";
 import YtSearch from "./Pages/YtSearch";
 import Login from "./Pages/Login";
+import Signup from "./Pages/Signup";
+import YtUpload from "./Pages/YtUpload";
+import YtWatchHistory from "./Pages/YtWatchHistory";
+import LikedVideos from "./Pages/LikedVideos";
+import Subscribers from "./Pages/Subscribers";
+import SubscribedTo from "./Pages/SubscribedTo";
+import Instagram from "./Pages/Instagram";
 
 // import YtWatchPage from "./Pages/YtWatchPage/YtWatchPage";
 // import YtShortsPage from "./Pages/YtShortsPage/YtShortsPage";
@@ -53,10 +60,34 @@ const router = createBrowserRouter([
             path: "login",
             element: <Login />,
           },
-          // {
-          //   path: "signup",
-          //   element: <SignupPage />,
-          // },
+          {
+            path: "signup",
+            element: <Signup/>,
+          },
+          {
+            path: "youtube/upload-videos",
+            element: <YtUpload/>,
+          },
+          {
+            path: "youtube/watch-history",
+            element: <YtWatchHistory/>,
+          },
+          {
+            path: "youtube/liked-videos",
+            element: <LikedVideos/>,
+          },
+          {
+            path: "youtube/subscribers-list",
+            element: <Subscribers/>,
+          },
+          {
+            path: "youtube/subscribed-to",
+            element: <SubscribedTo/>,
+          },
+          {
+            path: "instagram",
+            element: <Instagram/>,
+          },
           // {
           //   path: "youtube/watch/:videoId",
           //   element: <YtWatchPage />,

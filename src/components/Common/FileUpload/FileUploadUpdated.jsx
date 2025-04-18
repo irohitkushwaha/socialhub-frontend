@@ -4,13 +4,13 @@ const FileUploadUpdated = ({
   label = "Profile",
   isMandatory = false,
   icon = "upload", // Default icon name for Material/FontAwesome
-  iconType = "material", // 'material' or 'fontawesome'
+  iconType, // 'material' or 'fontawesome'
   iconSize = "w-[60px] h-[60px]",
   iconColor = "text-[#535862]",
   placeholder = "or drag profile image",
   placeholderColor = "text-[#535862]",
-  width = "w-full md:w-[360px]",
-  padding = "px-[10px]",
+  width = "w-full",
+  padding = "py-[20px]",
   accept = "image/*,video/*",
   onChange,
 }) => {
@@ -59,8 +59,14 @@ const FileUploadUpdated = ({
   // Render the appropriate icon
   const renderIcon = () => {
     let iconElement;
-
-    if (iconType === "material") {
+    if (React.isValidElement(icon)) {
+      // Handle SVG or other React elements passed as icon
+      iconElement = React.cloneElement(icon, {
+        className: `${iconColor}`,
+        width: "28px",
+        height: "28px",
+      });
+    } else if (iconType === "material") {
       iconElement = (
         <span
           className={`material-icons ${iconColor}`}
@@ -79,8 +85,8 @@ const FileUploadUpdated = ({
     }
 
     return (
-      <div className="w-[95px] h-[95px] flex items-center justify-center">
-        <div className="w-[55px] h-[55px] rounded-[30px] bg-[#F5F5F5] border-[6px] border-[#FAFAFA] flex items-center justify-center">
+      <div className=" flex items-center justify-center">
+        <div className=" rounded-[30px] bg-[#F5F5F5] border-[6px] border-[#FAFAFA] flex items-center justify-center">
           {iconElement}
         </div>
       </div>
@@ -88,7 +94,7 @@ const FileUploadUpdated = ({
   };
 
   return (
-    <div className={`${width} ${padding} flex flex-col gap-[11px]`}>
+    <div className={`${width} px-[10px] flex flex-col gap-[11px]`}>
       {/* Label and mandatory indicator */}
       <div className="flex items-center gap-1">
         <label className="text-[16px] font-medium text-[#414651]">
@@ -101,7 +107,7 @@ const FileUploadUpdated = ({
 
       {/* Upload area */}
       <div
-        className={`w-full px-[16px] py-[15px] flex flex-col items-center justify-center gap-[12px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] cursor-pointer transition-colors ${
+        className={`w-full px-[16px] ${padding} flex flex-col items-center justify-center gap-[12px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] cursor-pointer transition-colors ${
           dragActive ? "border-[#6941C6] bg-[#F9F5FF]" : ""
         }`}
         onClick={handleClick}

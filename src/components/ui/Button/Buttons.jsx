@@ -6,7 +6,7 @@ const Button = ({ icon = faArrowUpFromBracket, text = "Upload", ...props }) => {
   return (
     <button 
       {...props}
-      class="relative flex items-center gap-2 px-4 rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+      class="relative flex items-center gap-2 px-4 rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] cursor-pointer"
     >
       <FontAwesomeIcon 
         icon={icon} 
