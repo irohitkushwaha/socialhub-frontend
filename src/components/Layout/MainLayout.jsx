@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header/Header";
 import SideNav from "./SideNav/SideNav";
@@ -6,6 +6,7 @@ import MobileHeader from "./Header/MobileHeader";
 // import MobileHeader from "./Header/MobileHeader";
 // import MobileSideNav from "./SideNav/MobileSideNav";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
+import ScrollToTop from "../utils/ScrollToTop";
 
 // Layout configuration for different routes
 const routeConfig = {
@@ -48,6 +49,12 @@ const routeConfig = {
     searchBar: false,
     upload: true,
   },
+  "/youtube/playing": {
+    header: true,
+    sideNav: true,
+    searchBar: true,
+    upload: true,
+  },
   "/youtube/shorts": {
     header: true,
     sideNav: false,
@@ -87,6 +94,11 @@ const MainLayout = () => {
     setIsSideNavOpen(!isSideNavOpen);
   };
 
+  // Scroll to top when the route changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   // Get config for current route, fallback to default config
   const currentPath = location.pathname;
   const config = routeConfig[currentPath] || {
@@ -97,11 +109,14 @@ const MainLayout = () => {
   };
 
   return (
-
-
     <div className="flex flex-col relative">
+      {/* Add ScrollToTop component to handle scroll reset on navigation */}
+      <ScrollToTop />
+
       <div className="fixed top-[88px] left-[29px] z-50 md:hidden">
-        {config.sideNav && isSideNavOpen && <SideNav />}
+        {config.sideNav && isSideNavOpen && (
+          <SideNav onClickNav={toggleSideNav} />
+        )}
       </div>
       {/* Header is now fixed positioned, so we don't include it in the flex flow */}
       {config.header &&
@@ -127,13 +142,12 @@ const MainLayout = () => {
         </div>
 
         <main
-          className={` overflow-auto pt-[15px] md:pt-[20px] pb-[50px] ${
+          className={` overflow-auto  md:pt-[0px] pb-[50px] ${
             !config.sideNav ? "w-full" : ""
           }`}
         >
           <Outlet />
         </main>
-    
       </div>
     </div>
   );

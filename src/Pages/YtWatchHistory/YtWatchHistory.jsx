@@ -6,12 +6,19 @@ import React, { useState, useEffect } from "react";
 import WatchHistoryVideo from "../../components/Youtube/Components/WatchHistory/watchhistoryvideo";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import ThumbnailCard from "../../components/Youtube/Components/ThumbnailCard";
-
+import { selectHasInteracted } from '../../redux/slices/userInteractionSlice';
+import { useSelector } from "react-redux";
 function YtWatchHistory() {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [watchHistory, setWatchHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const globalHasInteracted = useSelector(selectHasInteracted);
+
+  console.log(
+    "Global Has ineracted value as component mount IN YtWatchHistory",
+    globalHasInteracted
+  );
   useEffect(() => {
     // Mock API call - This would be replaced with a real API call
     setTimeout(() => {

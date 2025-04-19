@@ -18,7 +18,7 @@ import LikedVideos from "./Pages/LikedVideos";
 import Subscribers from "./Pages/Subscribers";
 import SubscribedTo from "./Pages/SubscribedTo";
 import Instagram from "./Pages/Instagram";
-
+import YtPlaying from "./Pages/YtPlaying";
 // import YtWatchPage from "./Pages/YtWatchPage/YtWatchPage";
 // import YtShortsPage from "./Pages/YtShortsPage/YtShortsPage";
 
@@ -87,6 +87,10 @@ const router = createBrowserRouter([
           {
             path: "instagram",
             element: <Instagram/>,
+          },
+          {
+            path: "youtube/playing",
+            element: <YtPlaying />,
           },
           // {
           //   path: "youtube/watch/:videoId",

@@ -64,10 +64,11 @@ const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
         title: "Check out this video!",
       })
     );
-  };
+  };   
 
   // Handle auto scroll button click
   const handleAutoScroll = () => {
+    console.log("handle auto scroll is called");
     dispatch(toggleAutoScroll());
   };
 
@@ -164,7 +165,7 @@ const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
       </div>
 
       {/* Auto Scroll button */}
-      <div className="flex flex-col items-center gap-[4px] w-[36PX] justify-center">
+      <div className="flex flex-col items-center gap-[4px] w-[36px] justify-center">
         <button
           onClick={handleAutoScroll}
           className="bg-transparent border-none cursor-pointer"
@@ -184,6 +185,7 @@ const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
             //   color={iconColor}
             // />
             <svg
+              key={`autoscroll-off-${isAutoScrollEnabled}`}
               xmlns="http://www.w3.org/2000/svg"
               width="36"
               height="36"
@@ -194,6 +196,7 @@ const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
             </svg>
           ) : (
             <svg
+              key={`autoscroll-on-${isAutoScrollEnabled}`}
               xmlns="http://www.w3.org/2000/svg"
               height="36px"
               viewBox="0 -960 960 960"

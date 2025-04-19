@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 import SubscriberItem from "../../components/Youtube/Components/SubscriberItem/SubscriberItem";
-
+import { selectHasInteracted } from '../../redux/slices/userInteractionSlice';
+import { useSelector } from "react-redux";
 const SubscribedTo = () => {
   const [channels, setChannels] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const globalHasInteracted = useSelector(selectHasInteracted);
+
+  console.log(
+    "Global Has ineracted value as component mount IN SubscribedTo",
+    globalHasInteracted
+  );
+
 
   useEffect(() => {
     // In a real app, this would be an API call to fetch subscribed channels

@@ -32,15 +32,28 @@ const Header = ({ showSearchBar, upload }) => {
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4
                 bg-white/8 backdrop-blur-md border-b border-white/30 shadow-md"
     >
-      <Logo />
+      <Link to="/">
+        <Logo />
+      </Link>
       {showSearchBar && <SearchBar />}
       <div className="flex items-center gap-[50px]">
-        {upload && <Link to="/youtube/upload-videos">
-          <Button text="Upload" icon={faArrowUpFromBracket} />
-        </Link>}
-        <Link to="/login">
+        {upload && (
+          <Link
+            to="/youtube/upload-videos"
+            // No onClick handler that could stop propagation
+            // Event will naturally bubble up to document
+          >
+            <Button text="Upload" icon={faArrowUpFromBracket} />
+          </Link>
+        )}
+        <Link
+          to="/login"
+          // No onClick handler that could stop propagation
+          // Event will naturally bubble up to document
+        >
           <Button text="Login" icon={faArrowRightToBracket} />
         </Link>
+  
       </div>
     </header>
   );

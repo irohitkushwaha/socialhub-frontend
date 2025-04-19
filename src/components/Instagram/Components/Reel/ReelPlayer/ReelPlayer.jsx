@@ -2,15 +2,28 @@ import React, { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { selectIsAutoScrollEnabled } from "../../../../../redux/slices/autoScrollSlice";
 import { useSelector } from "react-redux";
+import { selectHasInteracted } from "../../../../../redux/slices/userInteractionSlice";
+import { faSmileWink } from "@fortawesome/free-solid-svg-icons";
 
 const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
+  const globalHasInteracted = useSelector(selectHasInteracted);
+
+  console.log(
+    "Global Has ineracted value as component mount IN REEL PLAYER",
+    globalHasInteracted
+  );
+
   const [playing, setPlaying] = useState(false); // Start paused
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isScrolling, setIsScrolling] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [startY, setStartY] = useState(0);
-  const [hasUserInteracted, setHasUserInteracted] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(
+    globalHasInteracted || false
+  );
+
+  console.log("user interacted value as it loads", hasUserInteracted);
   const [isSwiped, setIsSwiped] = useState(false);
 
   const playerRef = useRef(null);
@@ -155,26 +168,14 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   }, [isSwiped]);
 
   // Add document-level event listener to track first user interaction
-  useEffect(() => {
-    const markUserInteraction = () => {
-      setHasUserInteracted(true);
-    };
-
-    // Document level events to detect any user interaction
-    document.addEventListener("click", markUserInteraction, { once: true });
-    document.addEventListener("touchstart", markUserInteraction, {
-      once: true,
-    });
-    document.addEventListener("keydown", markUserInteraction, { once: true });
-    document.addEventListener("scroll", markUserInteraction, { once: true });
-
-    return () => {
-      document.removeEventListener("click", markUserInteraction);
-      document.removeEventListener("touchstart", markUserInteraction);
-      document.removeEventListener("keydown", markUserInteraction);
-      document.removeEventListener("scroll", markUserInteraction);
-    };
-  }, []);
+  // useEffect(() => {
+  //   if (globalHasInteracted) {
+  //     console.log("globalHasInteracted in the useEffect", globalHasInteracted);
+  //     // setHasUserInteracted(true);
+  //     setPlaying(true);
+  //     console.log("hasUserInteracted after globalhasinteracted", hasUserInteracted);
+  //   }
+  // }, [globalHasInteracted]);
 
   // Cleanup timeout on unmount
   useEffect(() => {

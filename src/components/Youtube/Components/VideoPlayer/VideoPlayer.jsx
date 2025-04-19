@@ -262,6 +262,7 @@ const VideoPlayer = ({ url }) => {
   }, [playing, muted]);
   
   return (
+    
     <div 
       className="relative w-full aspect-video bg-black rounded-lg overflow-hidden group"
       ref={playerContainerRef}
@@ -358,7 +359,7 @@ const VideoPlayer = ({ url }) => {
           {isMobile && (
             <div 
               ref={progressBarRef}
-              className="absolute bottom-0 left-0 right-0 h-[5px] bg-[#F5F5F5] z-10 cursor-pointer group"
+              className="absolute bottom-0 left-0 right-0 h-[5px] bg-[#F5F5F5] z-50 cursor-pointer group"
               onClick={(e) => {
                 e.stopPropagation();
                 if (!isDragging) {
