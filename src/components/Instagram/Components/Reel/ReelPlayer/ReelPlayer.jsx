@@ -3,15 +3,14 @@ import ReactPlayer from "react-player";
 import { selectIsAutoScrollEnabled } from "../../../../../redux/slices/autoScrollSlice";
 import { useSelector } from "react-redux";
 import { selectHasInteracted } from "../../../../../redux/slices/userInteractionSlice";
-import { faSmileWink } from "@fortawesome/free-solid-svg-icons";
 
 const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   const globalHasInteracted = useSelector(selectHasInteracted);
 
-  console.log(
-    "Global Has ineracted value as component mount IN REEL PLAYER",
-    globalHasInteracted
-  );
+  // console.log(
+  //   "Global Has ineracted value as component mount IN REEL PLAYER",
+  //   globalHasInteracted
+  // );
 
   const [playing, setPlaying] = useState(false); // Start paused
   const [hasError, setHasError] = useState(false);
@@ -20,8 +19,7 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   const [retryCount, setRetryCount] = useState(0);
   const [startY, setStartY] = useState(0);
   const [hasUserInteracted, setHasUserInteracted] = useState(
-    globalHasInteracted || false
-  );
+globalHasInteracted || false  );
 
   console.log("user interacted value as it loads", hasUserInteracted);
   const [isSwiped, setIsSwiped] = useState(false);
@@ -135,18 +133,18 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   };
 
   // // Reset states when video URL changes
-  useEffect(() => {
-    setIsLoading(true);
-    setHasError(false);
-    setRetryCount(0);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   setHasError(false);
+  //   setRetryCount(0);
 
-    // Keep initial load paused, but autoplay when scrolling between videos
-    if (hasUserInteracted) {
-      setPlaying(true); // Auto-play when scrolling between videos
-    } else {
-      setPlaying(false); // First load stays paused
-    }
-  }, [isSwiped]);
+  //   // Keep initial load paused, but autoplay when scrolling between videos
+  //   if (hasUserInteracted) {
+  //     setPlaying(true); // Auto-play when scrolling between videos
+  //   } else {
+  //     setPlaying(false); // First load stays paused
+  //   }
+  // }, [isSwiped]);
 
   // Use Intersection Observer to control play/pause based on visibility
   useEffect(() => {
@@ -282,6 +280,7 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
               style: { objectFit: "cover", width: "100%", height: "100%" },
               playsInline: true,
               preload: "auto",
+              // autoPlay: true,
             },
             forceVideo: true,
           },

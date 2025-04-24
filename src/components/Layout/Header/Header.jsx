@@ -53,6 +53,13 @@ const Header = ({ showSearchBar, upload }) => {
         >
           <Button text="Login" icon={faArrowRightToBracket} />
         </Link>
+        <Link
+          to="youtube/playing"
+          // No onClick handler that could stop propagation
+          // Event will naturally bubble up to document
+        >
+          <Button text="Youtube" icon={faArrowRightToBracket} />
+        </Link>
   
       </div>
     </header>

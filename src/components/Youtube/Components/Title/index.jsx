@@ -1,7 +1,6 @@
 import Title from "./Title";
-import VideoTitle from "./VideoTitle";
 
-export { Title, VideoTitle };
+export { Title };
 
 export default Title;
 

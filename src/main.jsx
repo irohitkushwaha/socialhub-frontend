@@ -137,10 +137,8 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <Provider store={store}>
       {/* <YtSearch /> */}
       <RouterProvider router={router} />
     </Provider>
-  </StrictMode>
 );

@@ -8,7 +8,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 function MobileHeader({ isSideNavOpen, onToggleSideNav }) {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-[30px] w-full px-[15px] py-[12px] bg-white/28 backdrop-blur-md border-b border-white/50 shadow-md">
-      <div class="relative flex items-center justify-between w-full rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] px-[8px]  py-[5px]">
+      <div class="relative flex items-center justify-between w-full rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] px-[8px]  py-[5px] z-50">
         <Logo textClass={"text-[14px]"} />
         <div className="flex items-center justify-center gap-[20px]">
           <FontAwesomeIcon

@@ -54,10 +54,10 @@ const Description = ({
   const displayParagraphs = expanded ? paragraphs : getTruncatedParagraphs();
   
   return (
-    <div className="w-full p-[15px]">
-      <div className="rounded-[8px] w-full px-[20px] md:px-[23px] py-[26px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]  relative">
+    <div className="w-full">
+      <div className="rounded-[8px] w-full px-[10px] md:px-[18px] py-[13px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]  relative">
         {/* Views and Published Date */}
-        <div className="flex items-center gap-[15px] md:gap-[27px] mb-[25px]">
+        <div className="flex items-center gap-[15px] md:gap-[20px] mb-[15px] md:mb-[20px]">
           <span className="text-[15px] md:text-[18px] font-bold text-[#414651]">
             {viewsText}
           </span>
@@ -71,13 +71,13 @@ const Description = ({
           ref={contentRef}
           className="relative"
         >
-          <div className="space-y-[28px]">
+          <div className="space-y-[13px] md:space-y-[13px]">
             {displayParagraphs.map((paragraph, index) => (
               <p 
                 key={index} 
-                className="text-[15px] md:text-[18px] font-semibold text-[#414651] 
-                leading-[29px]
-                md:leading-[35px]"
+                className="text-[15px] md:text-[17px] font-semibold text-[#414651] 
+                leading-[25px]
+                md:leading-[28px]"
               >
                 {paragraph}
               </p>
@@ -89,7 +89,7 @@ const Description = ({
         {showButton && (
           <>
             {/* Mobile Button */}
-            <div className="flex justify-end mt-4">
+            <div className={`flex justify-end ${expanded ? "mt-[15px]" : "mt-[0px]"} `}>
               <button
                 onClick={() => setExpanded(!expanded)}
                 className="px-[8px] py-[5px] text-[16px] font-semibold text-[#414651] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] rounded-[4px] cursor-pointer"

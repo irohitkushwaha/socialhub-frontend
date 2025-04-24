@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ThumbnailCard from "../../components/Youtube/Components/ThumbnailCard";
 import ThumbnailImg from "../../assets/thumbnail1.webp";
 import Avatar from "../../assets/shradha.jpg";
+import { Link } from "react-router-dom";
 // import axios from "axios";
 
 const YtHomepage = () => {
@@ -45,16 +46,18 @@ const YtHomepage = () => {
     <div className="px-[10px]">
       <div className="flex flex-wrap gap-[20px] justify-center">
         {videos.map((video) => (
-          <ThumbnailCard
-            key={video._id}
-            thumbnailSrc={video.Thumbnail}
-            title={video.Title}
-            channelIcon={video.Owner.Avatar}
-            channelName={video.Owner.FullName}
-            views={`${formatViews(video.views)}`}
-            uploadTime="3 days ago" // This would need to be calculated from the video data
-            duration={video.Duration}
-          />
+          <Link to="/youtube/playing">
+            <ThumbnailCard
+              key={video._id}
+              thumbnailSrc={video.Thumbnail}
+              title={video.Title}
+              channelIcon={video.Owner.Avatar}
+              channelName={video.Owner.FullName}
+              views={`${formatViews(video.views)}`}
+              uploadTime="3 days ago" // This would need to be calculated from the video data
+              duration={video.Duration}
+            />
+          </Link>
         ))}
       </div>
     </div>

@@ -34,6 +34,13 @@
   animation: thumbRotate 0.8s ease-in-out;
 }
 
+@media (min-width: 1425px) {
+  .media-custom {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
 .burst-animation {
   position: absolute;
   width: 100%;

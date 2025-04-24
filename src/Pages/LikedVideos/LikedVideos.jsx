@@ -6,19 +6,11 @@ import React, { useState, useEffect } from "react";
 import WatchHistoryVideo from "../../components/Youtube/Components/WatchHistory/watchhistoryvideo";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import ThumbnailCard from "../../components/Youtube/Components/ThumbnailCard/ThumbnailCard";
-import { selectHasInteracted } from '../../redux/slices/userInteractionSlice';
-import { useSelector } from "react-redux";
 const LikedVideos = () => {
   const [likedVideos, setLikedVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const globalHasInteracted = useSelector(selectHasInteracted);
-
-  console.log(
-    "Global Has ineracted value as component mount IN LikedVideos",
-    globalHasInteracted
-  );
   useEffect(() => {
     // In a real app, this would be an API call to fetch liked videos
     // For now, using sample data that matches the API response format

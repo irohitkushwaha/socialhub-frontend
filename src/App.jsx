@@ -21,9 +21,9 @@ function App() {
 
     // Add all the same listeners from ReelPlayer, but at app level
     document.addEventListener("click", handleInteraction, { once: true });
-    document.addEventListener("touchstart", handleInteraction, { once: true });
-    document.addEventListener("keydown", handleInteraction, { once: true });
-    document.addEventListener("scroll", handleInteraction, { once: true });
+    // document.addEventListener("touchstart", handleInteraction, { once: true });
+    // document.addEventListener("keydown", handleInteraction, { once: true });
+    // document.addEventListener("scroll", handleInteraction, { once: true });
 
     return () => {
       document.removeEventListener("click", handleInteraction);
