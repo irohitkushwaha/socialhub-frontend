@@ -54,7 +54,7 @@ const Description = ({
   const displayParagraphs = expanded ? paragraphs : getTruncatedParagraphs();
   
   return (
-    <div className="w-full h-fit min-h-[300px]">
+    <div className="w-full h-fit min-h-[80px]">
       <div className="rounded-[8px] w-full px-[10px] md:px-[18px] py-[13px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]  relative">
         {/* Views and Published Date */}
         <div className="flex items-center gap-[15px] md:gap-[20px] mb-[15px] md:mb-[20px]">

@@ -1,19 +1,32 @@
 import { useState, useEffect } from "react";
 
 export const useMediaQuery = (query) => {
-  const [matches, setMatches] = useState(false);
+  // Initialize with the current state of the media query
+  const [matches, setMatches] = useState(() => {
+    // Check if window is available (for SSR safety)
+    if (typeof window !== 'undefined') {
+      return window.matchMedia(query).matches;
+    }
+    return false; // Default for SSR
+  });
 
   useEffect(() => {
-    const media = window.matchMedia(query); 
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
+    // Safety check for SSR
+    if (typeof window === 'undefined') return;
 
+    const media = window.matchMedia(query);
+    
+    // Set initial value
+    setMatches(media.matches);
+
+    // Add listener for changes
     const listener = () => setMatches(media.matches);
+    
+    // Modern API
     media.addEventListener("change", listener);
 
     return () => media.removeEventListener("change", listener);
-  }, [matches, query]);
+  }, [query]); // Only re-run if query changes
 
   return matches;
 };

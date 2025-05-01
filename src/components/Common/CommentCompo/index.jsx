@@ -1,4 +1,3 @@
-import Comment from "./Comment";
+import CommentCompo from "./CommentCompo.jsx";
 
-export default Comment;
-
+export default CommentCompo;

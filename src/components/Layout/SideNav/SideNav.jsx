@@ -320,7 +320,7 @@ const SideNav = ({ onClickNav }) => {
   };
 
   return (
-    <div className="lg:border-r-2 lg:border-[#D5D7DA] lg:h-screen">
+    <div className="lg:border-r-2 lg:border-[#D5D7DA] lg:h-screen overflow-hidden">
       <div className="w-fit flex flex-col gap-5 lg:border-r h-fit py-3 px-6 rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_6px_#F5F5F5] lg:shadow-none lg:border-none">
         {/* Main Nav Items */}
         {navItems.map((item) => (

@@ -5,6 +5,8 @@ import ReelOwnerFollow from "../../components/Instagram/Components/Reel/ReelOwne
 import ShareModal from "../../components/Common/ShareModal";
 import { useSelector } from "react-redux";
 import { selectIsShareModalOpen } from "../../redux/slices/shareSlice";
+import { selectIsCommentOpen } from "../../redux/slices/commentSlice";
+import CommentCompo from "../../components/Common/CommentCompo";
 
 // Import local video files
 import reels1 from "../../assets/video/reels1.mp4";
@@ -52,6 +54,9 @@ const InstagramScroll = () => {
     },
   ];
 
+  console.log("isCommentOpen in instagram scroll page is", selectIsCommentOpen);
+  const isCommentOpen = useSelector(selectIsCommentOpen);
+  console.log("isCommentOpen in instagram scroll page is", isCommentOpen);
   const isShareModalOpen = useSelector(selectIsShareModalOpen);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const currentVideo = videoOptions[currentVideoIndex];
@@ -73,8 +78,6 @@ const InstagramScroll = () => {
   useEffect(() => {
     // Save the original styles
     const originalStyle = window.getComputedStyle(document.body).overflow;
-
-    console.log("the original style for overflow property is", originalStyle);
 
     // Prevent scrolling on body
     document.body.style.overflow = "hidden";
@@ -298,77 +301,86 @@ const InstagramScroll = () => {
   }, []);
 
   return (
-    <div
-      className="flex justify-center items-end gap-[18px] w-full h-auto bg-white overflow-hidden pb-[100px]"
-      onWheel={handleWheel}
-    >
-      {/* Main container with sliding effect */}
+    <>
       <div
-        ref={slideContainerRef}
-        className="w-full h-full relative flex justify-center items-end gap-[18px] "
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        className="flex justify-center items-end gap-[18px] w-full bg-white overflow-hidden pb-[100px]"
+        onWheel={handleWheel}
       >
-        {/* Player */}
-        <div className="relative w-full h-screen md:w-auto sm:max-w-[500px] overflow-hidden md:pb-[100px] ">
-          <ReelPlayer
-            videoUrl={currentVideo.url}
-            onNextVideo={handleNextVideo}
-            onPrevVideo={handlePrevVideo}
-            isTransitioning={isTransitioning}
-            disableSwipe={true} // Disable swipe in the component since we handle it here
-          />
-          {isMobile && (
-            <div className="absolute z-30 bottom-[150px] right-[13px] pb-[20px]">
+        {/* Main container with sliding effect */}
+        <div
+          ref={slideContainerRef}
+          className="w-full h-full relative flex justify-center items-end gap-[18px] "
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Player */}
+          <div className="relative w-full h-screen  md:w-auto sm:max-w-[500px] overflow-hidden md:pb-[100px] ">
+            <ReelPlayer
+              videoUrl={currentVideo.url}
+              onNextVideo={handleNextVideo}
+              onPrevVideo={handlePrevVideo}
+              isTransitioning={isTransitioning}
+              disableSwipe={true} // Disable swipe in the component since we handle it here
+            />
+            {isMobile && (
+              <div className="absolute z-30 bottom-[150px] right-[13px] pb-[20px]">
+                <ReelActions initialLikeCount={123} commentCount={39} />
+              </div>
+            )}
+            <div className="absolute z-30 bottom-[85px] md:bottom-[40px] flex justify-start w-fit pl-[15px] md:pb-[100px] pb-[90px]">
+              <ReelOwnerFollow
+                profileComponent={<ReelProfileOwner />}
+                username="@shradhakhapra123"
+              />
+            </div>
+          </div>
+
+          {!isMobile && (
+            <div className="mb-[70px] md:pb-[100px]">
               <ReelActions initialLikeCount={123} commentCount={39} />
             </div>
           )}
-          <div className="absolute z-30 bottom-[85px] md:bottom-[40px] flex justify-start w-fit pl-[15px] md:pb-[100px] pb-[90px]">
-            <ReelOwnerFollow
-              profileComponent={<ReelProfileOwner />}
-              username="@shradhakhapra123"
-            />
-          </div>
         </div>
 
-        {!isMobile && (
-          <div className="mb-[70px] md:pb-[100px]">
-            <ReelActions initialLikeCount={123} commentCount={39} />
+        {/* ShareModal Container - outside the sliding container */}
+        {isShareModalOpen && (
+          <div className="absolute z-50 inset-0 bg-opacity-50 flex items-center justify-center p-4">
+            <div className="max-w-md w-full">
+              <ShareModal />
+            </div>
+          </div>
+        )}
+
+        {isCommentOpen && (
+          <div className="absolute z-50 top-[150px] bg-opacity-50 p-[12px]">
+            <div className="w-full">
+              <CommentCompo isReel={true} />
+            </div>
+          </div>
+        )}
+        {/* Visual indicator for swipe direction */}
+        {touchDelta !== 0 && Math.abs(touchDelta) > 20 && (
+          <div
+            className={`absolute ${
+              touchDelta > 0 ? "top-8" : "bottom-8"
+            } left-1/2 transform -translate-x-1/2 bg-black bg-opacity-40 rounded-full p-2 z-50`}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="white"
+              style={{
+                transform: touchDelta > 0 ? "rotate(180deg)" : "rotate(0deg)",
+              }}
+            >
+              <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+            </svg>
           </div>
         )}
       </div>
-
-      {/* ShareModal Container - outside the sliding container */}
-      {isShareModalOpen && (
-        <div className="absolute z-50 inset-0 bg-opacity-50 flex items-center justify-center p-4">
-          <div className="max-w-md w-full">
-            <ShareModal />
-          </div>
-        </div>
-      )}
-
-      {/* Visual indicator for swipe direction */}
-      {touchDelta !== 0 && Math.abs(touchDelta) > 20 && (
-        <div
-          className={`absolute ${
-            touchDelta > 0 ? "top-8" : "bottom-8"
-          } left-1/2 transform -translate-x-1/2 bg-black bg-opacity-40 rounded-full p-2 z-50`}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="white"
-            style={{
-              transform: touchDelta > 0 ? "rotate(180deg)" : "rotate(0deg)",
-            }}
-          >
-            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
-          </svg>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

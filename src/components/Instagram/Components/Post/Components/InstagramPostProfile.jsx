@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import shradha from "../../assets/shradha.jpg";
+import shradha from "../../../../../assets/shradha.jpg";
 
 const InstagramPostProfile = ({
   profileImage = shradha,
   username = "@shradhakhapra123",
   isVerified = true,
   timeAgo = "1w",
+  isFollow,
   // onFollowClick,
 }) => {
   const [isMobile, setIsMobile] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(isFollow);
 
   useEffect(() => {
     const checkIfMobile = () => {

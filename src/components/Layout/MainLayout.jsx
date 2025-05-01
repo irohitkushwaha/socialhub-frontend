@@ -61,6 +61,12 @@ const routeConfig = {
     searchBar: false,
     upload: true,
   },
+  "/youtube/channel-detail": {
+    header: true,
+    sideNav: true,
+    searchBar: true,
+    upload: true,
+  },
   // Instagram routes
   "/instagram": { header: true, sideNav: true, searchBar: false, upload: true },
   "/instagram/reels": {
@@ -69,15 +75,27 @@ const routeConfig = {
     searchBar: false,
     upload: true,
   },
-
-  // WhatsApp routes
-  "/whatsapp": { header: true, sideNav: true, searchBar: true, upload: false },
-  "/whatsapp/chat": {
+  "/instagram/watched-reels": {
     header: true,
     sideNav: true,
     searchBar: false,
-    upload: false,
+    upload: true,
   },
+  "/instagram/saved-reels": {
+    header: true,
+    sideNav: true,
+    searchBar: false,
+    upload: true,
+  },
+  "/instagram/posts": {
+    header: true,
+    sideNav: true,
+    searchBar: false,
+    upload: true,
+  },
+
+  // WhatsApp routes
+  "/whatsapp": { header: true, sideNav: true, searchBar: false, upload: false },
 
   // Auth routes
   "/login": { header: true, sideNav: true, searchBar: true, upload: true },
@@ -133,11 +151,11 @@ const MainLayout = () => {
 
       {/* Add padding to account for the fixed header height */}
       <div
-        className={`md:grid md:pt-22 pt-18   ${
+        className={`md:grid md:pt-20 pt-18   ${
           config.sideNav ? "md:grid-cols-[auto_1fr]" : "grid-cols-1"
         }`}
       >
-        <div className="hidden md:block md:sticky md:top-22 md:self-start md:h-screen">
+        <div className="hidden md:block md:sticky md:top-20 md:self-start md:h-screen">
           {config.sideNav && !isMobile && <SideNav />}
         </div>
 

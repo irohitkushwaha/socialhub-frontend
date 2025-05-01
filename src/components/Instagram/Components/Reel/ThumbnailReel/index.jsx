@@ -1,4 +1,4 @@
-import ThumbnailReel from "./ThumbnailReel";
+import ThumbnailReel from "./ThumbnailReels.jsx";
 
 export { ThumbnailReel };
 

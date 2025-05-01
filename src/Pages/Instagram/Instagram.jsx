@@ -6,6 +6,8 @@ import ShareModal from "../../components/Common/ShareModal";
 import { useSelector } from "react-redux";
 import { selectIsShareModalOpen } from "../../redux/slices/shareSlice";
 
+
+
 // Import local video files
 import reels1 from "../../assets/video/reels1.mp4";
 import reels2 from "../../assets/video/reels2.mp4";
@@ -56,6 +58,8 @@ const ReelPlayerExample = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const currentVideo = videoOptions[currentVideoIndex];
   const [isMobile, setIsMobile] = useState(false);
+
+  console.log("isCommentOpen in instagram page is", isCommentOpen);
 
   // Prevent scrolling on the body when this component mounts
   useEffect(() => {
@@ -129,6 +133,8 @@ const ReelPlayerExample = () => {
             </div>
           </div>
         )}
+
+        
       </div>
       {!isMobile && (
         <div className="mb-[70px]">

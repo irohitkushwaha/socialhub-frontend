@@ -3,7 +3,6 @@ import YtUploadComponent from "../../components/Youtube/Components/YtUpload";
 import { selectHasInteracted } from "../../redux/slices/userInteractionSlice";
 import { useSelector } from "react-redux";
 function YtUpload() {
-
   const globalHasInteracted = useSelector(selectHasInteracted);
 
   console.log(
@@ -13,7 +12,7 @@ function YtUpload() {
 
   return (
     <div>
-            <YtUploadComponent />
+      <YtUploadComponent />
     </div>
   );
 }

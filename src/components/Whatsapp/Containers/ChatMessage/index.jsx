@@ -1,7 +1,7 @@
-import ChatMessage from "./ChatMessage";
+import ChatMessages from "./ChatMessages.jsx";
 
-export { ChatMessage };
+export { ChatMessages };
 
-export default ChatMessage;
+export default ChatMessages;
 
 

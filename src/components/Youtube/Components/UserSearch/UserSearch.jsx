@@ -16,6 +16,7 @@ function UserSearch({profileImage = shradha, name = "Rohit Kushwaha", username =
         nameTextSize="text-[20px] md:text-[25px]"
         usernameTextSize='text-[18px] md:text-[21px]'        
         imgDesktopSize='md:w-[150px] md:h-[150px]'
+        mainDivClassName="w-full"
         // gapbtweenImageAndText='gap-[15px]'
         // mainDivClassName='justify-between'
         

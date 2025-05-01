@@ -16,6 +16,10 @@ import {
   toggleAutoScroll,
   selectIsAutoScrollEnabled,
 } from "../../../../../redux/slices/autoScrollSlice";
+import {
+  openComment,
+  closeComment,
+} from "../../../../../redux/slices/commentSlice";
 
 const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
   const dispatch = useDispatch();
@@ -24,6 +28,7 @@ const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [isSaved, setIsSaved] = useState(false);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
 
   // Check if device is mobile
   useEffect(() => {
@@ -56,6 +61,34 @@ const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
     setIsSaved(!isSaved);
   };
 
+  // Handle comment button click
+  // const handleCommentClick = () => {
+  //   console.log("handle comment click is called");
+  //   setIsCommentOpen((prev) => !prev);
+  //   console.log("isCommentOpen", isCommentOpen);
+  //   if (isCommentOpen) {
+  //     dispatch(openComment());
+  //     console.log("open comment");
+  //   } else {
+  //     dispatch(closeComment());
+  //     console.log("close comment");
+  //   }
+  // };
+
+  const handleCommentClick = () => {
+    setIsCommentOpen((prev) => {
+      const newValue = !prev;
+      if (newValue) {
+        console.log("open comment dispatch is called");
+        dispatch(openComment());
+      } else {
+        console.log("close comment dispatch is called");
+        dispatch(closeComment());
+      }
+      return newValue;
+    });
+  };
+
   // Handle share button click
   const handleShareClick = () => {
     dispatch(
@@ -64,7 +97,7 @@ const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
         title: "Check out this video!",
       })
     );
-  };   
+  };
 
   // Handle auto scroll button click
   const handleAutoScroll = () => {
@@ -106,6 +139,7 @@ const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
         <button
           className="bg-transparent border-none cursor-pointer mb-1"
           aria-label="Comment"
+          onClick={handleCommentClick}
         >
           <FontAwesomeIcon
             icon={faComment}

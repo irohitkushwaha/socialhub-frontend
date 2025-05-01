@@ -1,10 +1,12 @@
 import VideoPlayer from "../../components/Youtube/Components/VideoPlayer";
 import videoFile from "../../assets/Megham Karukatha - Official Video Song _ Thiruchitrambalam _ Dhanush _ Anirudh _ Sun Pictures.mp4";
 import Title from "../../components/Youtube/Components/Title";
-import ChannelDetail from "../../components/Youtube/Components/ChannelDetail";
+import ChannelVideoData from "../../components/Youtube/Components/ChannelVideoData";
 import LikeDislike from "../../components/Youtube/Components/LikeDislike";
 import Button from "../../components/ui/Button";
 import Description from "../../components/Youtube/Components/Description";
+import CommentCompo from "../../components/Common/CommentCompo";
+import SuggestedThumbnail from "../../components/Youtube/Components/SuggestedThumbnail";
 
 const YtPlayingPage = () => {
   return (
@@ -15,7 +17,7 @@ const YtPlayingPage = () => {
           <Title>String Compression problem - Lecture 32 | Leetcode 443</Title>
           <div className="flex flex-col w-full gap-[35px] ">
             <div className="flex flex-col  gap-[27px] sm:gap-[27px]  media-custom  w-full ">
-              <ChannelDetail />
+              <ChannelVideoData />
               <div className="flex items-center justify-between sm:justify-normal sm:gap-[15px]  md:gap-[15px]">
                 <LikeDislike />
                 <Button
@@ -55,6 +57,8 @@ const YtPlayingPage = () => {
               </div>
             </div>
             <Description />
+            <CommentCompo />
+            <SuggestedThumbnail />
           </div>
         </div>
       </div>

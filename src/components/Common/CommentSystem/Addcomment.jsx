@@ -59,14 +59,14 @@ const AddComment = ({
   };
 
   return (
-    <div>
-      <div className="flex items-center gap-[30px] w-full">
+    <div className="w-full flex flex-col gap-[25px] py-[25px]">
+      <div className="flex items-center gap-[15px] w-full">
         {/* Profile Picture */}
-        <div className="flex-shrink-0 self-start mt-[10px]">
+        <div className="flex-shrink-0">
           <img
             src={profilePic}
             alt="Profile"
-            className="w-[63px] h-[63px] rounded-full object-cover"
+            className="w-[45px] h-[45px] lg:w-[55px] lg:h-[55px] rounded-full object-cover"
           />
         </div>
 
@@ -78,7 +78,7 @@ const AddComment = ({
               contentEditable
               onInput={(e) => setCommentText(e.currentTarget.textContent || "")}
               onFocus={handleFocus}
-              className="py-[15px] w-full text-start border-b-[3px] border-[#E6E6E6] focus:outline-none text-[18px] md:text-[20px] font-semibold text-[#686C73] bg-transparent min-h-[30px] overflow-hidden empty:before:content-[attr(data-placeholder)] empty:before:text-[#686C73] empty:before:opacity-70"
+              className="py-[10px] w-full text-start border-b-[3px] border-[#E6E6E6] focus:outline-none text-[16px]  md:text-[18px] font-semibold text-[#3f3f3f] bg-transparent min-h-[30px] overflow-hidden empty:before:content-[attr(data-placeholder)] empty:before:text-[#686C73] empty:before:opacity-70"
               data-placeholder="Add a comment..."
               style={{
                 lineHeight: 1.5,
@@ -91,7 +91,7 @@ const AddComment = ({
       </div>
       {/* Action Buttons - Only show when input is focused */}
       {isFocused && (
-        <div className="flex justify-end gap-4 mt-4">
+        <div className="flex justify-end gap-[25px] lg:gap-[40px]">
           <ButtonVideo icon="close" text="Cancel" onClick={handleCancel} />
           <ButtonVideo icon="send" text="Comment" onClick={handleSubmit} />
         </div>

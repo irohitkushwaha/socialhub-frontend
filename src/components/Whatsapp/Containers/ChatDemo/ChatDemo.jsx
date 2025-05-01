@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import ChatMessages from "../ChatMessages";
-import ChatHeader from "./ChatHeader";
-import MessageInput from "./MessageInput";
+import ChatMessages from "../ChatMessage";
+import ChatHeader from "../../Components/ChatHeader";
+import MessageInput from "../../Components/MessageInput";
+import { useSelector } from "react-redux";
+import { selectChatData } from "../../../../redux/slices/sidebarChatSlice";
 
 const ChatDemo = () => {
+  const selectedChat = useSelector(selectChatData);
   // Sample messages data with initial messages (ordered from newest to oldest)
   const [messages, setMessages] = useState([
     // Today's messages
@@ -238,13 +241,15 @@ const ChatDemo = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-md mx-auto border border-gray-300 shadow-lg">
+    <div className="flex flex-col h-full w-full rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]">
       {/* Chat header */}
-      <ChatHeader
-        name="John Doe"
-        status="Online"
-        profileImage="https://i.pravatar.cc/150?img=1"
-      />
+      <div className="w-full px-[10px] pt-[10px] pb-0.5">
+        <ChatHeader
+          name={selectedChat.name}
+          status="online"
+          profileImage={selectedChat.profileImage}
+        />
+      </div>
 
       {/* Messages area */}
       <div className="flex-1 overflow-hidden">
@@ -252,7 +257,7 @@ const ChatDemo = () => {
       </div>
 
       {/* Message input */}
-      <div className="p-3 bg-[#ffffff] border-t">
+      <div className="p-3">
         <MessageInput
           onMessageSend={handleSendMessage}
           onImageSelect={handleImageSelect}

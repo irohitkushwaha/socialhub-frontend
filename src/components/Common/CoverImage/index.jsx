@@ -1,7 +1,6 @@
 import CoverImage from "./CoverImage";
-import CoverImageExample from "./CoverImageExample";
 
-export { CoverImage, CoverImageExample };
+export { CoverImage };
 
 export default CoverImage;
 

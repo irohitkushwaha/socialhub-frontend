@@ -17,25 +17,25 @@ import {
   selectIsAutoScrollEnabled,
 } from "../../../../../redux/slices/autoScrollSlice";
 
-const ReelActions = () => {
+const ReelActions = ({ isLiked, isSaved, likeCount }) => {
   const dispatch = useDispatch();
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(5);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isLiking, setIsLiked] = useState(isLiked);
+  const [likeCounting, setLikeCount] = useState(likeCount);
+  const [isSaving, setIsSaved] = useState(isSaved);
 
   // Handle like button click
   const handleLike = () => {
-    if (isLiked) {
+    if (isLiking) {
       setLikeCount((prevCount) => prevCount - 1);
     } else {
       setLikeCount((prevCount) => prevCount + 1);
     }
-    setIsLiked(!isLiked);
+    setIsLiked(!isLiking);
   };
 
   // Handle save button click
   const handleSave = () => {
-    setIsSaved(!isSaved);
+    setIsSaved(!isSaving);
   };
 
   // Handle share button click
@@ -60,7 +60,7 @@ const ReelActions = () => {
             className="bg-transparent border-none cursor-pointer"
             aria-label="Like"
           >
-            {isLiked ? (
+            {isLiking ? (
               <FontAwesomeIcon
                 icon={faHeartSolid}
                 style={{ fontSize: "29px" }}
@@ -120,7 +120,7 @@ const ReelActions = () => {
               justifyContent: "center",
             }}
           >
-            {isSaved ? (
+            {isSaving ? (
               <FontAwesomeIcon
                 icon={faBookmarkSolid}
                 style={{ fontSize: "29px" }}

@@ -1,4 +1,4 @@
-import ChatDemo from "./ChatDemo";
+import ChatDemo from "./ChatDemo.jsx";
 
 export { ChatDemo };
 

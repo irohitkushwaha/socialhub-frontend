@@ -6,7 +6,6 @@ import { selectHasInteracted } from "../../../../redux/slices/userInteractionSli
 const VideoPlayer = ({ url }) => {
   const globalHasInteracted = useSelector(selectHasInteracted);
 
-  console.log("[VideoPlayer] Component rendered", { url });
 
   // Player state
   const [playing, setPlaying] = useState(false);
@@ -48,22 +47,12 @@ const VideoPlayer = ({ url }) => {
   //   }
   // }, [globalHasInteracted, url]);
 
-  useEffect(() => {
-    console.log("[VideoPlayer] Mounted", { url });
-    return () => console.log("[VideoPlayer] Unmounted", { url });
-  }, []);
 
   useEffect(() => {
-    console.log("[VideoPlayer] useEffect triggered", {
-      globalHasInteracted,
-      url,
-      alreadyAutoplayed: initialAutoplayRef.current,
-    });
 
     if (globalHasInteracted && playerReady && !initialAutoplayRef.current) {
       setPlaying(true);
       initialAutoplayRef.current = true;
-      console.log("[VideoPlayer] setPlaying(true) called");
     } else if (!globalHasInteracted) {
       setPlaying(false); // <-- This ensures the play icon is always correct
     }
@@ -79,9 +68,7 @@ const VideoPlayer = ({ url }) => {
       }
       // Your existing cleanup
       initialAutoplayRef.current = false;
-      console.log(
-        "[VideoPlayer] Cleanup: initialAutoplayRef reset and video paused"
-      );
+     
     };
   }, [globalHasInteracted, url, playerReady]);
 
@@ -171,7 +158,6 @@ const VideoPlayer = ({ url }) => {
   // };
 
   const handleFullscreen = () => {
-    console.log("Full screen is called");
     if (isMobile) {
       // For mobile, handle orientation along with fullscreen
       if (!document.fullscreenElement) {
@@ -427,7 +413,6 @@ const VideoPlayer = ({ url }) => {
               //   setPlaying(false);
               // }}
               onReady={() => {
-                console.log("[VideoPlayer] onReady event");
                 setPlayerReady(true);
 
                 setIsBuffering(false);

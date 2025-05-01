@@ -19,23 +19,11 @@ import Subscribers from "./Pages/Subscribers";
 import SubscribedTo from "./Pages/SubscribedTo";
 import Instagram from "./Pages/Instagram";
 import YtPlaying from "./Pages/YtPlaying";
-// import YtWatchPage from "./Pages/YtWatchPage/YtWatchPage";
-// import YtShortsPage from "./Pages/YtShortsPage/YtShortsPage";
-
-// Instagram pages
-// import InstaHomepage from "./Pages/InstaHomepage/InstaHomepage";
-// import InstaReelsPage from "./Pages/InstaReelsPage/InstaReelsPage";
-
-// // WhatsApp pages
-// import WhatsappHomepage from "./Pages/WhatsappHomepage/WhatsappHomepage";
-// import WhatsappChatPage from "./Pages/WhatsappChatPage/WhatsappChatPage";
-
-// // Auth pages
-// import LoginPage from "./Pages/Auth/LoginPage";
-// import SignupPage from "./Pages/Auth/SignupPage";
-
-// // 404 page
-// import NotFoundPage from "./Pages/NotFoundPage";
+import ChannelDetail from "./Pages/ChannelDeatail";
+import WatchedReels from "./Pages/WatchedReels";
+import SavedReels from "./Pages/SavedReels";
+import Whatsapp from "./Pages/Whatsapp";
+import InstagramPosts from "./Pages/InstagramPosts";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +35,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <MainLayout />,
         children: [
-          // YouTube routes               
+          // YouTube routes
           {
             index: true,
             element: <YtHomepage />,
@@ -62,74 +50,57 @@ const router = createBrowserRouter([
           },
           {
             path: "signup",
-            element: <Signup/>,
+            element: <Signup />,
           },
           {
             path: "youtube/upload-videos",
-            element: <YtUpload/>,
+            element: <YtUpload />,
           },
           {
             path: "youtube/watch-history",
-            element: <YtWatchHistory/>,
+            element: <YtWatchHistory />,
           },
           {
             path: "youtube/liked-videos",
-            element: <LikedVideos/>,
+            element: <LikedVideos />,
           },
           {
             path: "youtube/subscribers-list",
-            element: <Subscribers/>,
+            element: <Subscribers />,
           },
           {
             path: "youtube/subscribed-to",
-            element: <SubscribedTo/>,
+            element: <SubscribedTo />,
           },
           {
             path: "instagram",
-            element: <Instagram/>,
+            element: <Instagram />,
           },
           {
             path: "youtube/playing",
             element: <YtPlaying />,
           },
-          // {
-          //   path: "youtube/watch/:videoId",
-          //   element: <YtWatchPage />,
-          // },
-          // {
-          //   path: "youtube/shorts",
-          //   element: <YtShortsPage />,
-          // },
+          {
+            path: "youtube/channel-detail",
+            element: <ChannelDetail />,
+          },
+          {
+            path: "instagram/watched-reels",
+            element: <WatchedReels />,
+          },
+          {
+            path: "instagram/saved-reels",
+            element: <SavedReels />,
+          },
+          {
+            path: "whatsapp",
+            element: <Whatsapp />,
+          },
 
-          // // Instagram routes
-          // {
-          //   path: "instagram",
-          //   element: <InstaHomepage />,
-          // },
-          // {
-          //   path: "instagram/reels",
-          //   element: <InstaReelsPage />,
-          // },
-
-          // // WhatsApp routes
-          // {
-          //   path: "whatsapp",
-          //   element: <WhatsappHomepage />,
-          // },
-          // {
-          //   path: "whatsapp/chat/:chatId",
-          //   element: <WhatsappChatPage />,
-          // },
-
-          // // Auth routes
-          // {
-          //   path: "login",
-          //   element: <LoginPage />,
-          // },
-          // {
-          //   path: "signup",
-          //   element: <SignupPage />,
-          // },
+          {
+            path: "instagram/posts",
+            element: <InstagramPosts />,
+          },
         ],
       },
     ],
@@ -137,8 +108,8 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-    <Provider store={store}>
-      {/* <YtSearch /> */}
-      <RouterProvider router={router} />
-    </Provider>
+  <Provider store={store}>
+    {/* <YtSearch /> */}
+    <RouterProvider router={router} />
+  </Provider>
 );

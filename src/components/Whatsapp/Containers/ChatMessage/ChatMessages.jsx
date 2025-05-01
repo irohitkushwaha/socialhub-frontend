@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import MessageBubble from "./MessageBubble";
-import ChatDateSeparator from "./ChatDateSeparator";
-import { formatMessageTime } from "../../../../WhatsappComponents/chatAdapter";
+import MessageBubble from "../../Components/MessageBubble";
+import ChatDateSeparator from "../../Components/ChatDateSeparator";
+import { formatMessageTime } from "../../utils/chatAdapter";
+import "../../../../Pages/Whatsapp/Whatsapp.css"
 
 const ChatMessages = ({ messages }) => {
   const messagesEndRef = useRef(null);
@@ -104,7 +105,7 @@ const ChatMessages = ({ messages }) => {
   return (
     <div
       ref={containerRef}
-      className="flex flex-col h-full p-4 overflow-y-auto bg-[#ffffff]"
+      className="flex flex-col h-full p-4 overflow-y-auto bg-[#ffffff] px-[10%] thin-scrollbar"
       onScroll={handleScroll}
     >
       {/* Date display at the top */}

@@ -3,7 +3,6 @@ import EditIcon from "../../ui/EditIcon";
 
 const ProfileImageWithStatus = ({
   profileImage,
-  size = 50,
   name,
   email,
   username,
@@ -15,6 +14,7 @@ const ProfileImageWithStatus = ({
   emailTextSize = "text-[14px]",
   // nameTextColor = "text-[#414651]",
   nameTextColor = "text-black",
+  gapbetweentext = "gap-[4px]",
 
   gapbtweenImageAndText,
   mainDivClassName,
@@ -23,7 +23,7 @@ const ProfileImageWithStatus = ({
 }) => {
   return (
     <div
-      className={`flex items-center justify-between w-full ${mainDivClassName} ${gapbtweenImageAndText}`}
+      className={`flex items-center justify-between ${mainDivClassName} ${gapbtweenImageAndText}`}
     >
       <div className="relative overflow-visible">
         <img
@@ -47,7 +47,7 @@ const ProfileImageWithStatus = ({
         )}
       </div>
 
-      <div className="flex flex-col gap-[4px]">
+      <div className={`flex flex-col ${gapbetweentext}`}>
         <span className={`${nameTextSize} font-semibold ${nameTextColor}`}>
           {name}
         </span>
