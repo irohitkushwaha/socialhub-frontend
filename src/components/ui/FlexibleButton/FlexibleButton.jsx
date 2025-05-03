@@ -11,6 +11,7 @@ const FlexibleButton = ({
   bgColor = "bg-green-500",
   className = "",
   onClick,
+  type = "submit"
 }) => {
   // Base classes that will always be applied
   const baseClasses =
@@ -21,7 +22,7 @@ const FlexibleButton = ({
   const textClasses = `${textSize} font-semibold leading-6 ${textColor}`;
 
   return (
-    <button className={buttonClasses} onClick={onClick}>
+    <button className={buttonClasses} onClick={onClick} type={type}>
       {img && <img src={icon} alt="Icon" className="w-[33px] h-[33px]" />}
       <span className={textClasses}>{text}</span>
     </button>

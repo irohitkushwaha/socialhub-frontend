@@ -3,8 +3,31 @@ import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { markUserInteracted } from "./redux/slices/userInteractionSlice";
+import { loggedin, loggedout } from "./redux/slices/authentication.slice";
+import { userService } from "./Services/api/User.Service";
 function App() {
   const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("useffect runned")
+    const checkAuth = async () => {
+      try {
+        const apiUser = await userService.getCurrentUser();
+        console.log("user fecthed and logged ", apiUser)
+        const user = {
+          id: apiUser._id || null,
+          name: apiUser.FullName || null,
+          email: apiUser.Email || null,
+          avatar: apiUser.Avatar || null,
+          username: apiUser.UserName || null,
+        };
+        dispatch(loggedin(user));
+      } catch (error) {
+        dispatch(loggedout());
+        console.log("user logout")
+      }
+    };
+    checkAuth();
+  }, []);
 
   // Set up global interaction listeners
   useEffect(() => {
@@ -42,4 +65,3 @@ function App() {
 }
 
 export default App;
-

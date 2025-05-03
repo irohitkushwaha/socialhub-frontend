@@ -86,20 +86,7 @@ export const userService = {
       throw error;
     }
   },
-  
-  /**
-   * Refresh the access token using refresh token
-   * @returns {Promise} - API response with new tokens
-   */
-  refreshToken: async () => {
-    try {
-      const response = await api.post('/user/refresh-token');
-      return response.data.data;
-    } catch (error) {
-      console.error('Error refreshing token:', error);
-      throw error;
-    }
-  },
+
   
   /**
    * Change user's password
@@ -248,13 +235,4 @@ export const userService = {
    * @param {string} code - Authorization code from Google
    * @returns {Promise} - API response with user data and tokens
    */
-  handleGoogleCallback: async (code) => {
-    try {
-      const response = await api.get(`/user/auth/google/callback?code=${code}`);
-      return response.data.data;
-    } catch (error) {
-      console.error('Error handling Google callback:', error);
-      throw error;
-    }
-  }
 };

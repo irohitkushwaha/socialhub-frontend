@@ -38,7 +38,8 @@ export const videoService = {
       const response = await api.post('/video/upload-video', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        }, 
+        timeout : 3600000
       });
       
       return response.data.data;

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import FormTitle from "../../../ui/FormTitle/FormTitle";
-import Input from "../../../ui/Input";
-import FlexibleButton from "../../../ui/FlexibleButton/FlexibleButton";
+import FormTitle from "../../components/ui/FormTitle";
+import Input from "../../components/ui/Input";
+import FlexibleButton from "../../components/ui/FlexibleButton";
 import { useNavigate } from "react-router-dom";
-import FileUploadUpdated from "../../../Common/FileUpload";
-import { videoService } from "../../../../Services/api/Video.Service";
+import FileUploadUpdated from "../../components/Common/FileUpload";
+import { videoService } from "../../Services/api/Video.Service";
 
-function YtUpload() {
+function ReelUpload() {
   const navigate = useNavigate();
 
   // React Hook Form setup
@@ -56,9 +56,8 @@ function YtUpload() {
         videoFile: videoFile,
         thumbnailFile: thumbnailFile,
         title: data.title,
-        description: data.description,
         publishStatus: true, // Default value, could be made selectable
-        isShorts: false, // Default value, could be made selectable
+        isShorts: true, // Default value, could be made selectable
       };
 
       const response = await videoService.uploadVideo(videoData);
@@ -88,22 +87,14 @@ function YtUpload() {
         <div className="flex flex-col gap-[40px] w-full items-center">
           <div className="flex flex-col gap-[30px] w-full">
             <Input
-              placeholder="Enter your Video Title"
-              label="Title"
-              isMandatory={true}
-              {...register("title", {
-                required: "Title is required",
-              })}
+              placeholder="Enter Caption of your Reel"
+              label="Caption"
+              isMandatory={false}
+              {...register("title")}
               error={errors.title?.message}
             />
-            <Input
-              placeholder="Enter Description of your Video"
-              label="Description"
-              isMandatory={false}
-              {...register("description")}
-            />
             <FileUploadUpdated
-              label="Upload Video"
+              label="Upload Reel"
               isMandatory={true}
               padding="py-[30px]"
               icon={
@@ -119,7 +110,7 @@ function YtUpload() {
               onChange={handleVideoFileChange}
             />
             <FileUploadUpdated
-              label="Thumbnail"
+              label="Upload Reel`s Thumbnail"
               isMandatory={false}
               padding="py-[30px]"
               icon={
@@ -137,11 +128,7 @@ function YtUpload() {
           </div>
 
           {/* Status messages */}
-          {!videoFile && (
-            <div className="text-yellow-500 font-medium">
-              Please upload a video file
-            </div>
-          )}
+
           {uploadError && (
             <div className="text-red-500 font-medium">{uploadError}</div>
           )}
@@ -164,4 +151,4 @@ function YtUpload() {
   );
 }
 
-export default YtUpload;
+export default ReelUpload;

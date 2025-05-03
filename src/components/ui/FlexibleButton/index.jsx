@@ -1,7 +1,5 @@
 import FlexibleButton from "./FlexibleButton";
-import FlexibleButtonExample from "./FlexibleButtonExample";
 
-export { FlexibleButton, FlexibleButtonExample };
+export { FlexibleButton };
 
 export default FlexibleButton;
-

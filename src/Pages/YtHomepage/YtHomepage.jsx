@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ThumbnailCard from "../../components/Youtube/Components/ThumbnailCard";
+import { Link } from "react-router-dom";
+import {videoService} from "./../../Services/api/Video.Service"
 import ThumbnailImg from "../../assets/thumbnail1.webp";
 import Avatar from "../../assets/shradha.jpg";
-import { Link } from "react-router-dom";
+
 // import axios from "axios";
 
 const YtHomepage = () => {
@@ -20,7 +22,10 @@ const YtHomepage = () => {
         // setVideos(response.data.data);
 
         // Using sample data for demonstration
-        setVideos(sampleVideos);
+        const ThumbnailOfVideos = await videoService.getVideosList()
+
+        console.log("Thumbnail of videos", ThumbnailOfVideos)
+        setVideos(ThumbnailOfVideos.VideosList);
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch videos");
@@ -63,6 +68,11 @@ const YtHomepage = () => {
     </div>
   );
 };
+
+
+
+
+
 
 // Sample data structure matching what would come from the backend
 const sampleVideos = [

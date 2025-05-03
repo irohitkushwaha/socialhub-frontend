@@ -1,6 +1,13 @@
 import React from "react";
 
-const Input = ({ label, placeholder, helpText, isMandatory = false }) => {
+const Input = ({
+  label,
+  placeholder,
+  helpText,
+  error,
+  isMandatory = false,
+  ...otherProps
+}) => {
   return (
     //md:w-[360px]
     <div className="w-full px-[10px]  flex flex-col gap-[15px] md:gap-[11px]">
@@ -16,9 +23,13 @@ const Input = ({ label, placeholder, helpText, isMandatory = false }) => {
         type="text"
         placeholder={placeholder}
         className="w-full px-4 py-[15px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] text-[18px] md:text-[20px] font-semibold leading-6 text-[#717680] placeholder-[#717680] focus:outline-none focus:border-[#D5D7DA]"
+        {...otherProps}
       />
       {helpText && (
         <p className="text-[16px] font-normal text-[#535862]">{helpText}</p>
+      )}
+      {error && (
+        <p className="text-[14px] font-medium text-red-500 mt-1">{error}</p>
       )}
     </div>
   );

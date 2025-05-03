@@ -93,6 +93,12 @@ const routeConfig = {
     searchBar: false,
     upload: true,
   },
+  "/instagram/upload" : {
+    header: true,
+    sideNav : true,
+    searchBar : false,
+    upload : true
+  },
 
   // WhatsApp routes
   "/whatsapp": { header: true, sideNav: true, searchBar: false, upload: false },

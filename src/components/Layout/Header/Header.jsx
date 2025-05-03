@@ -6,10 +6,10 @@ import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { isLoggedin } from "../../../redux/slices/authentication.slice";
+import { isLoggedin, getUserData } from "../../../redux/slices/authentication.slice";
 import { useSelector } from "react-redux";
 import ProfileImage from "../../Common/ProfileImage/ProfileImageWithStatus";
-import Shradha from "../../../assets/shradha.jpg";
+import NullAvatar from "../../../assets/nullavatar.jpeg";
 import ActionButton from "../../ui/ActionButton/ActionButton";
 
 const Header = ({ showSearchBar, upload }) => {
@@ -17,6 +17,7 @@ const Header = ({ showSearchBar, upload }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const isLoggedIn = useSelector(isLoggedin);
+  const UserData = useSelector(getUserData)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,7 +65,7 @@ const Header = ({ showSearchBar, upload }) => {
           {isLoggedIn ? (
             <div className="cursor-pointer" onClick={handleProfileClick}>
               <ProfileImage
-                profileImage={Shradha}
+                profileImage={UserData.avatar || NullAvatar }
                 imgDesktopSize="md:w-[45px] md:h-[45px]"
                 isOnline={false}
               />
@@ -82,11 +83,11 @@ const Header = ({ showSearchBar, upload }) => {
         {isLoggedIn && showProfileMenu && (
           <div className="absolute top-[80px] right-[18px] px-[20px] py-[15px]  rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_5px_#F5F5F5] flex flex-col justify-start items-start gap-[12px]">
             <ProfileImage
-              profileImage={Shradha}
+              profileImage={UserData.avatar || NullAvatar}
               imgDesktopSize="md:w-[54px] md:h-[54px]"
               isOnline={false}
-              name="Shradha"
-              email="shradha@apnacollege.com"
+              name={UserData.name}
+              email={UserData.email}
               gapbtweenImageAndText="gap-[10px]"
               nameTextSize="text-[18px]"
               emailTextSize="text-[19px]"

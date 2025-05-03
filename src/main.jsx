@@ -24,6 +24,7 @@ import WatchedReels from "./Pages/WatchedReels";
 import SavedReels from "./Pages/SavedReels";
 import Whatsapp from "./Pages/Whatsapp";
 import InstagramPosts from "./Pages/InstagramPosts";
+import ReelUpload from "./Pages/ReelUpload";
 
 const router = createBrowserRouter([
   {
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
             path: "instagram/posts",
             element: <InstagramPosts />,
           },
+          {
+            path : "instagram/upload",
+            element : <ReelUpload/>
+          }
         ],
       },
     ],
