@@ -92,9 +92,9 @@ export const videoService = {
    * @param {string} videoId - ID of the video to fetch
    * @returns {Promise} - API response with video details, owner info, and stats
    */
-  getVideoDetails: async (videoId) => {
+  getVideoDetails: async (VideoId) => {
     try {
-      const response = await api.get(`/video/each-video/${videoId}`);
+      const response = await api.get(`/video/each-video/${VideoId}`);
       return response.data.data;
     } catch (error) {
       console.error('Error fetching video details:', error);

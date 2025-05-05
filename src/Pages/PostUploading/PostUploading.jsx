@@ -5,9 +5,9 @@ import Input from "../../components/ui/Input";
 import FlexibleButton from "../../components/ui/FlexibleButton";
 import { useNavigate } from "react-router-dom";
 import FileUploadUpdated from "../../components/Common/FileUpload";
-import { videoService } from "../../Services/api/Video.Service";
+import { postService } from "../../Services/api/Post.Service";
 
-function ReelUpload() {
+function PostUpload() {
   const navigate = useNavigate();
 
   // React Hook Form setup
@@ -18,22 +18,15 @@ function ReelUpload() {
   } = useForm({
     defaultValues: {
       title: "",
-      description: "",
     },
   });
 
   // State for file uploads and form status
-  const [videoFile, setVideoFile] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState("");
 
-  // Handle video file selection
-  const handleVideoFileChange = (file) => {
-    console.log("Selected video file:", file);
-    setVideoFile(file);
-  };
 
   // Handle thumbnail file selection
   const handleThumbnailFileChange = (file) => {
@@ -43,8 +36,8 @@ function ReelUpload() {
 
   // Form submission handler
   const onSubmit = async (data) => {
-    if (!videoFile) {
-      setUploadError("Video file is required");
+    if (!thumbnailFile) {
+      setUploadError("Post Image is required");
       return;
     }
 
@@ -52,15 +45,12 @@ function ReelUpload() {
       setIsUploading(true);
       setUploadError("");
 
-      const videoData = {
-        videoFile: videoFile,
-        thumbnailFile: thumbnailFile,
-        title: data.title,
-        publishStatus: true, // Default value, could be made selectable
-        isShorts: true, // Default value, could be made selectable
+      const PostData = {
+        PostImage: thumbnailFile,
+        Caption: data.title,
       };
 
-      const response = await videoService.uploadVideo(videoData);
+      const response = await postService.uploadPost(PostData);
 
       console.log("Upload successful:", response);
       setUploadSuccess(true);
@@ -70,7 +60,7 @@ function ReelUpload() {
     } catch (error) {
       console.error("Upload failed:", error);
       setUploadError(
-        error.message || "Failed to upload video. Please try again."
+        error.message || "Failed to upload Post. Please try again."
       );
     } finally {
       setIsUploading(false);
@@ -87,14 +77,14 @@ function ReelUpload() {
         <div className="flex flex-col gap-[40px] w-full items-center">
           <div className="flex flex-col gap-[30px] w-full">
             <Input
-              placeholder="Enter Caption of your Reel"
+              placeholder="Enter Caption of your Post"
               label="Caption"
-              isMandatory={false}
-              {...register("title")}
+              isMandatory={true}
+              {...register("title", { required: true })}
               error={errors.title?.message}
             />
             <FileUploadUpdated
-              label="Upload Reel"
+              label="Upload Post"
               isMandatory={true}
               padding="py-[30px]"
               icon={
@@ -106,23 +96,7 @@ function ReelUpload() {
                   <path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H520q-33 0-56.5-23.5T440-240v-206l-64 62-56-56 160-160 160 160-56 56-64-62v206h220q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-83 0-141.5 58.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41h100v80H260Zm220-280Z" />
                 </svg>
               }
-              placeholder="or drag video"
-              onChange={handleVideoFileChange}
-            />
-            <FileUploadUpdated
-              label="Upload Reel`s Thumbnail"
-              isMandatory={false}
-              padding="py-[30px]"
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 -960 960 960"
-                  fill="#535862"
-                >
-                  <path d="M260-160q-91 0-155.5-63T40-377q0-78 47-139t123-78q25-92 100-149t170-57q117 0 198.5 81.5T760-520q69 8 114.5 59.5T920-340q0 75-52.5 127.5T740-160H520q-33 0-56.5-23.5T440-240v-206l-64 62-56-56 160-160 160 160-56 56-64-62v206h220q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-83 0-141.5 58.5T280-520h-20q-58 0-99 41t-41 99q0 58 41 99t99 41h100v80H260Zm220-280Z" />
-                </svg>
-              }
-              placeholder="or drag thumbnail"
+              placeholder="or drag Post"
               onChange={handleThumbnailFileChange}
             />
           </div>
@@ -134,12 +108,12 @@ function ReelUpload() {
           )}
           {uploadSuccess && (
             <div className="text-green-500 font-medium">
-              Reel uploaded successfully!
+              Post Upload Succsessfully !{" "}
             </div>
           )}
 
           <FlexibleButton
-            text={isUploading ? "Uploading..." : "Upload Reel"}
+            text={isUploading ? "Uploading..." : "Upload Post"}
             disabled={isUploading}
             bgColor={isUploading ? "bg-gray-400" : "bg-[#7F56D9]"}
             textColor="text-white"
@@ -151,4 +125,4 @@ function ReelUpload() {
   );
 }
 
-export default ReelUpload;
+export default PostUpload;

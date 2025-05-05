@@ -7,6 +7,7 @@ const ChannelVideoData = ({
   channelName = "Shradha Khapra",
   subscribers = "4.9M",
   profileImage = shradha,
+  isSubscribed,
 }) => {
   return (
     <>
@@ -37,7 +38,7 @@ const ChannelVideoData = ({
           </div>
 
         </div>
-        <SubscribeBtn isSubscribed />
+        <SubscribeBtn isSubscribed={isSubscribed} />
       </div>
     </>
   );

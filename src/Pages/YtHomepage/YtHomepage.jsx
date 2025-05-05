@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ThumbnailCard from "../../components/Youtube/Components/ThumbnailCard";
 import { Link } from "react-router-dom";
-import {videoService} from "./../../Services/api/Video.Service"
+import { videoService } from "./../../Services/api/Video.Service";
 import ThumbnailImg from "../../assets/thumbnail1.webp";
 import Avatar from "../../assets/shradha.jpg";
+import { formatDuration } from "../../utils/formatDuration.js";
+import { formatCompactNumber } from "../../utils/formatCompactNumber.js";
+import { formatTimeAgo } from "../../utils/formatTimeAgo.js";
 
 // import axios from "axios";
 
@@ -17,14 +20,9 @@ const YtHomepage = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        // In a real implementation, this would be an actual API call
-        // const response = await axios.get('/api/v1/video/videos-list?page=1&limit=12');
-        // setVideos(response.data.data);
+        const ThumbnailOfVideos = await videoService.getVideosList();
 
-        // Using sample data for demonstration
-        const ThumbnailOfVideos = await videoService.getVideosList()
-
-        console.log("Thumbnail of videos", ThumbnailOfVideos)
+        console.log("Thumbnail of videos", ThumbnailOfVideos);
         setVideos(ThumbnailOfVideos.VideosList);
         setLoading(false);
       } catch (err) {
@@ -50,29 +48,28 @@ const YtHomepage = () => {
   return (
     <div className="px-[10px]">
       <div className="flex flex-wrap gap-[20px] justify-center">
-        {videos.map((video) => (
-          <Link to="/youtube/playing">
-            <ThumbnailCard
-              key={video._id}
-              thumbnailSrc={video.Thumbnail}
-              title={video.Title}
-              channelIcon={video.Owner.Avatar}
-              channelName={video.Owner.FullName}
-              views={`${formatViews(video.views)}`}
-              uploadTime="3 days ago" // This would need to be calculated from the video data
-              duration={video.Duration}
-            />
-          </Link>
-        ))}
+        {videos.map(
+          (video) => (
+            console.log("icon is", video.Owner.Avatar),
+            (
+              <Link to={`/youtube/playing/${video._id}`} key={video._id}>
+                <ThumbnailCard
+                  thumbnailSrc={video.Thumbnail}
+                  title={video.Title}
+                  channelIcon={video.Owner.Avatar}
+                  channelName={video.Owner.FullName}
+                  views={`${formatCompactNumber(video.views)}`}
+                  uploadTime={`${formatTimeAgo(video.createdAt)}`} // This would need to be calculated from the video data
+                  duration={`${formatDuration(video.Duration)}`}
+                />
+              </Link>
+            )
+          )
+        )}
       </div>
     </div>
   );
 };
-
-
-
-
-
 
 // Sample data structure matching what would come from the backend
 const sampleVideos = [

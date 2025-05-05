@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
-const LikeDislike = ({ initialLikes = "100" }) => {
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
+const LikeDislike = ({ initialLikes = "100", isDisliked = false, isLiked = false }) => {
+  const [liked, setLiked] = useState(isLiked);
+  const [disliked, setDisliked] = useState(isDisliked);
 
   const handleLike = () => {
     setLiked(!liked);

@@ -62,7 +62,7 @@ const CommentList = ({
           </span>
         </div>
 
-        <div class="flex flex-col gap-[10px] lg:gap-[14px]">
+        <div className="flex flex-col gap-[10px] lg:gap-[14px]">
           {/* Comment Text */}
           <p className="text-[16px] md:text-[18px] font-semibold text-[#414651] leading-[28px]">
             {text}
