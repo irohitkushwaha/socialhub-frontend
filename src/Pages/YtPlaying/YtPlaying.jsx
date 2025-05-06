@@ -7,21 +7,77 @@ import Description from "../../components/Youtube/Components/Description";
 import CommentCompo from "../../components/Common/CommentCompo";
 import SuggestedThumbnail from "../../components/Youtube/Components/SuggestedThumbnail";
 import { videoService } from "../../Services/api/Video.Service";
+import { commentService } from "../../Services/api/Comment.Service";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import React from "react";
+import { useInView } from "react-intersection-observer";
+import { formatTimeAgo } from "../../utils/formatTimeAgo";
+import { isLoggedin } from "../../redux/slices/authentication.slice";
+import { useSelector } from "react-redux";
 
 const YtPlayingPage = () => {
   const [video, setVideo] = useState({});
+  const [CommentResponse, setCommentResponse] = useState([]);
+  const [CommentCount, setCommentCount] = useState(0);
   const { videoid } = useParams();
+  const { ref, inView } = useInView({ threshold: 0.1 });
+  const [hasFetchedComments, setHasFetchedComments] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(video.isSubscribed ? video.isSubscribed : false);
+
+  const isUserLoggedin = useSelector(isLoggedin)
+
   useEffect(() => {
-    console.log("useffect run")
+    const CommentApi = async () => {
+      if (inView && !hasFetchedComments) {
+        const response = await commentService.getVideoComments({
+          videoId: videoid,
+        });
+        setCommentResponse(response.comments);
+        setCommentCount(response.ommentCount);
+        setHasFetchedComments(true);
+
+        console.log("response structure of comment is", response);
+      }
+    };
+    CommentApi();
+  }, [inView, hasFetchedComments, videoid]);
+
+  useEffect(() => {
+    console.log("useffect run");
     async function fetchVideo() {
       const response = await videoService.getVideoDetails(videoid);
-      console.log("resonse is", response)
+      console.log("resonse is", response);
       setVideo(response[0]);
     }
     fetchVideo();
   }, [videoid]);
+
+  const handleSubscribing = async () => {
+    // Optimistically update UI
+    if(isUserLoggedin){
+      setIsSubscribed(true);
+    try {
+      const response = await subscriptionService.subscribe(videoid);
+      if (response && response.statusCode === 200 && response.message === "Subscribed successfully") {
+        // Success - do nothing, UI already updated
+      } else {
+        // Rollback if something went wrong
+        setIsSubscribed(false);
+        alert("Subscription failed or unexpected response");
+      }
+    } catch (error) {
+      setIsSubscribed(false); // Rollback
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("Something went wrong while subscribing.");
+      }
+    }
+    }
+  };
+
+  // console.log("structure of videooo", video)
   return (
     <div className="w-full lg:px-[15%] md:px-[15px] py-[10px] px-[10px]">
       <div className="flex gap-[15px] lg:gap-[22px] flex-col">
@@ -30,9 +86,19 @@ const YtPlayingPage = () => {
           <Title>{video.Title}</Title>
           <div className="flex flex-col w-full gap-[35px] ">
             <div className="flex flex-col  gap-[27px] sm:gap-[27px]  media-custom  w-full ">
-              <ChannelVideoData channelName={video.Owner?.FullName} subscribers={video.SubscribersCount} profileImage={video.Owner?.Avatar} isSubscribed={video.isSubscribed ? video.isSubscribed : false}/>
+              <ChannelVideoData
+                channelName={video.Owner?.FullName}
+                subscribers={video.SubscribersCount}
+                profileImage={video.Owner?.Avatar}
+                isSubscribed={isSubscribed}
+                handleSubscribing={handleSubscribing}
+              />
               <div className="flex items-center justify-between sm:justify-normal sm:gap-[15px]  md:gap-[15px]">
-                <LikeDislike initialLikes={video.VideoLikesCount} isLiked={video.isLiked ? video.isLiked : false} isDisliked={video.isDisliked ? video.isDisliked : false}/>
+                <LikeDislike
+                  initialLikes={video.VideoLikesCount}
+                  isLiked={video.isLiked ? video.isLiked : false}
+                  isDisliked={video.isDisliked ? video.isDisliked : false}
+                />
                 <Button
                   text="Share"
                   gap="gap-[5px] lg:gap-[10px]"
@@ -69,9 +135,19 @@ const YtPlayingPage = () => {
                 />
               </div>
             </div>
-            <Description description={video.Description} views={video.views} />
-            <CommentCompo />
-            <SuggestedThumbnail />
+            <Description
+              description={video.Description}
+              views={video.views}
+              publishedDate={formatTimeAgo(video.createdAt)}
+            />
+            <div ref={ref}>
+              <CommentCompo
+                CommentResponse={CommentResponse}
+                CommentCount={CommentCount}
+                videoid={videoid}
+              />
+            </div>
+            {/* <SuggestedThumbnail /> */}
           </div>
         </div>
       </div>

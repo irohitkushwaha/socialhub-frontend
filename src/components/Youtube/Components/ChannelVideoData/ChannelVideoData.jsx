@@ -8,7 +8,12 @@ const ChannelVideoData = ({
   subscribers = "4.9M",
   profileImage = shradha,
   isSubscribed,
+  handleSubscribing,
 }) => {
+  const handleSubscribe = () => {
+    
+    handleSubscribing();
+  };
   return (
     <>
       <div className="flex items-center justify-between sm:justify-normal w-full lg:w-fit sm:gap-[25px] md:px-2">
@@ -32,11 +37,13 @@ const ChannelVideoData = ({
                 {channelName}
               </h2>
             </Link>
-            <p className="text-[#414651] text-[16px] md:text-[17px] font-bold font-inter">
+            <p
+              className="text-[#414651] text-[16px] md:text-[17px] font-bold font-inter"
+              onClick={handleSubscribe}
+            >
               {subscribers} Subscribers
             </p>
           </div>
-
         </div>
         <SubscribeBtn isSubscribed={isSubscribed} />
       </div>

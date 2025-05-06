@@ -1,26 +1,82 @@
-import CommentCount from "../../Common/CommentSystem/CommentCount.jsx";
+import CommentCountComp from "../../Common/CommentSystem/CommentCount.jsx";
 import Button from "../../ui/Button";
 import SummarizeComments from "../../Common/CommentSystem/SummarizeComments.jsx";
 import AddComment from "../../Common/CommentSystem/AddComment.jsx";
 import CommentList from "../../Common/CommentSystem/CommentList.jsx";
 import Shradha from "../../../assets/shradha.jpg";
 import { closeComment } from "../../../redux/slices/commentSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { formatTimeAgo } from "../../../utils/formatTimeAgo.js";
+import { commentService } from "../../../Services/api/Comment.Service.js";
+import { useState } from "react";
 
-const CommentCompo = ({ isReel }) => {
+const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(closeComment());
+  };
+  const [isComment, setIsComment] = useState(true);
+  const [positiveText, setPositiveText] = useState("");
+  const [negativeText, setNegativeText] = useState("");
+  const [showSummary, setShowSummary] = useState(false);
+
+  const fetchCommentSummary = async () => {
+    try {
+      const response = await commentService.getCommentSummary({
+        videoId: videoid,
+      });
+
+      if (response === "No comments to summarize") {
+        // No comments case
+        setIsComment(false); // Don't show the summary box
+      } else {
+        // Parse the sentiment analysis result
+        // The format is: "X% of comments are positive, by commenting... and Y% of comments are negative, by commenting..."
+        // You need to extract positive and negative parts
+
+        // Simple regex approach:
+        setIsComment(true);
+        const positiveMatch = response.match(
+          /(\d+)% of comments are positive[^.]*/
+        );
+        const negativeMatch = response.match(
+          /(\d+)% of comments are negative[^.]*/
+        );
+
+        setPositiveText(
+          positiveMatch ? positiveMatch[0] : "No positive comments"
+        );
+        setNegativeText(
+          negativeMatch ? negativeMatch[0] : "No negative comments"
+        );
+        setShowSummary(true);
+      }
+    } catch (error) {
+      console.error("Error fetching summary:", error);
+      setShowSummary(false);
+    }
+  };
+
+  const handleCommentSummarize = () => {
+    console.log("summarized button clicked")
+    const newShowSummary = !showSummary
+    setShowSummary(newShowSummary);
+    if (newShowSummary) {
+      console.log("summarization LLM api called")
+
+      fetchCommentSummary();
+    }
   };
 
   return (
     <div className="px-[10px] lg:px-[20px] py-[10px] lg:py-[25px] flex flex-col gap-[30px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] overflow-y-auto max-h-[90vh] relative">
       <div className="flex flex-col lg:flex-row lg:items-center lg:gap-[38px] gap-[18px] w-fit">
-        <CommentCount />
+        <CommentCountComp CommentCount={CommentCount} />
         <Button
           text="Summarize Comments"
           gap="gap-[5px] lg:gap-[10px]"
           textSize="text-[16px] lg:text-[17px]"
+          onClick={handleCommentSummarize}
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -43,10 +99,31 @@ const CommentCompo = ({ isReel }) => {
           }
         />
       </div>
-      <SummarizeComments />
-      <AddComment profilePic={Shradha} />
-      <CommentList profilePic={Shradha} />
-      <CommentList profilePic={Shradha} />
+      <SummarizeComments
+        isComment={isComment}
+        positiveText={positiveText}
+        negativeText={negativeText}
+        showSummary={showSummary}
+      />
+      <AddComment />
+      {CommentResponse.length > 0 ? (
+        CommentResponse[0].map((comment) => (
+          <CommentList
+            key={comment._id}
+            profilePic={comment.Owner?.Avatar}
+            name={comment.Owner?.FullName}
+            timeAgo={formatTimeAgo(comment.createdAt)}
+            text={comment.Content}
+            likeCount={comment.LikesCountForComment}
+            initialLiked={comment.IsLiked}
+            initialDisliked={comment.IsDisliked}
+          />
+        ))
+      ) : (
+        <div className="text-[16px] md:text-[18px] italic font-semibold text-[#414651] leading-[31px] tracking-[0.03em">
+          No comment yet
+        </div>
+      )}
       {isReel && (
         <div
           className="absolute top-[10px] right-[10px] cursor-pointer"

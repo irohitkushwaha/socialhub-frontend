@@ -9,7 +9,6 @@ const ThumbnailCard = ({
   uploadTime = "2 days ago",
   duration = "9:20",
 }) => {
-  console.log("channelicon in thumbnailcard ", channelIcon);
 
   return (
     <div className="w-[364px] mx-1.5 lg:mx-0 lg:w-[375px] border border-[#E9EAEB] rounded-xl shadow-[0_7px_16px_-4px_rgba(10,13,18,0.08),0_4px_6px_-2px_rgba(10,13,18,0.03)]">

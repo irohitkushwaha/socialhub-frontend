@@ -1,14 +1,15 @@
 import React from "react";
 
 const SummarizeComments = ({
-  showSummary = true,
+  isComment = true,
+  showSummary,
   positiveText = "60% of comments are positive, praising its innovative, tech-forward approach",
   negativeText = "40% of comments are negative, noting outdated points and shallow mobile design.",
 }) => {
   return (
     <div className="w-full">
       {/* Summarized Comments Section */}
-      {showSummary && (
+      {showSummary && isComment && (
         <div className="px-[10px] lg:px-[17px] py-[15px] lg:py-[15px] flex flex-col gap-[30px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]">
           {/* Positive Comments */}
           <div className="flex items-start gap-[13px] w-fit">
@@ -56,6 +57,11 @@ const SummarizeComments = ({
             </p>
           </div>
         </div>
+      )}
+      {showSummary && !isComment &&(
+        <div className="px-[10px] lg:px-[17px] py-[15px] lg:py-[15px] flex flex-col gap-[30px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] italic text-[16px] md:text-[18px] font-Inter font-semibold text-[#414651]">
+          No Any Comments to Summarize!
+          </div>
       )}
     </div>
   );

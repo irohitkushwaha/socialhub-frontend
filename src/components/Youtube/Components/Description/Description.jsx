@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 const Description = ({
   views = "",
-  publishedDateText = "2 Months ago",
+  publishedDate,
   description,
 }) => {
   const [expanded, setExpanded] = useState(false);
@@ -61,7 +61,7 @@ const Description = ({
             {views} views
           </span>
           <span className="text-[15px] md:text-[18px] font-bold text-[#414651]">
-            {publishedDateText}
+            {publishedDate}
           </span>
         </div>
 

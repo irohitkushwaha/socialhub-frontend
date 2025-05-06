@@ -59,7 +59,7 @@ const YtHomepage = () => {
                   channelIcon={video.Owner.Avatar}
                   channelName={video.Owner.FullName}
                   views={`${formatCompactNumber(video.views)}`}
-                  uploadTime={`${formatTimeAgo(video.createdAt)}`} // This would need to be calculated from the video data
+                  uploadTime={formatTimeAgo(video.createdAt)} // This would need to be calculated from the video data
                   duration={`${formatDuration(video.Duration)}`}
                 />
               </Link>

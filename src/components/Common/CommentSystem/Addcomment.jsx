@@ -1,14 +1,27 @@
 import React, { useState, useRef, useEffect } from "react";
 import ButtonVideo from "../../Youtube/Components/ButtonVideo/ButtonVideo";
+import {
+  isLoggedin,
+  getUserData,
+} from "../../../redux/slices/authentication.slice";
+import UnnamedImg from "../../../assets/unnamed (1).png";
+import { useSelector } from "react-redux";
 
-const AddComment = ({
-  profilePic = "https://via.placeholder.com/63",
-  onCancel,
-  onSubmit,
-}) => {
+const AddComment = ({ onCancel, onSubmit }) => {
   const [commentText, setCommentText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef(null);
+
+  const [addCommentProfile, setAddCommentProfile] = useState();
+
+  const isUserLogged = useSelector(isLoggedin);
+  const getUserAvatar = useSelector(getUserData);
+
+  useEffect(() => {
+    isUserLogged
+      ? setAddCommentProfile(getUserAvatar.avatar)
+      : setAddCommentProfile(UnnamedImg);
+  }, [isLoggedin]);
 
   // Auto-resize textarea as user types
   useEffect(() => {
@@ -64,7 +77,7 @@ const AddComment = ({
         {/* Profile Picture */}
         <div className="flex-shrink-0">
           <img
-            src={profilePic}
+            src={addCommentProfile}
             alt="Profile"
             className="w-[45px] h-[45px] lg:w-[55px] lg:h-[55px] rounded-full object-cover"
           />
