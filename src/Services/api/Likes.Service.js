@@ -18,6 +18,21 @@ export const likesService = {
   },
 
   /**
+   * Delete like for a video
+   * @param {string} videoId - ID of the video to unlike
+   * @returns {Promise} - API response confirming like was removed
+   */
+  deleteLikeVideo: async (videoId) => {
+    try {
+      const response = await api.delete(`/likes/video/${videoId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting like for video:", error);
+      throw error;
+    }
+  },
+
+  /**
    * Like a comment
    * @param {string} commentId - ID of the comment to like
    * @returns {Promise} - API response confirming like was saved
@@ -34,6 +49,18 @@ export const likesService = {
     }
   },
 
+  deleteLikeComment: async (commentId) => {
+    try {
+      const response = await api.delete("/likes/comment", {
+        data: { CommentId: commentId }
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting like for comment:", error);
+      throw error;
+    }
+  },
+
   /**
    * Like a post
    * @param {string} postId - ID of the post to like
@@ -45,6 +72,21 @@ export const likesService = {
       return response.data;
     } catch (error) {
       console.error("Error liking post:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Delete like for a post
+   * @param {string} postId - ID of the post to unlike
+   * @returns {Promise} - API response confirming like was removed
+   */
+  deleteLikePost: async (postId) => {
+    try {
+      const response = await api.delete(`/likes/post/${postId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting like for post:", error);
       throw error;
     }
   },

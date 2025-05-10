@@ -5,12 +5,11 @@ export const userService = {
   /**
    * Register a new user with avatar and optional cover image
    * @param {Object} userData - User registration data
-   * @param {string} userData.userName - Unique username
-   * @param {string} userData.fullName - User's full name
-   * @param {string} userData.email - User's email address
-   * @param {string} userData.password - User's password
-   * @param {File} userData.avatar - User's profile picture (required)
-   * @param {File} userData.coverImage - User's cover image (optional)
+   * @param {string} userData.FullName - User's full name
+   * @param {string} userData.Email - User's email address
+   * @param {string} userData.Password - User's password
+   * @param {File} userData.Avatar - User's profile picture (required)
+   * @param {File} userData.CoverImage - User's cover image (optional)
    * @returns {Promise} - API response with registered user data
    */
   registerUser: async (userData) => {
@@ -18,15 +17,14 @@ export const userService = {
       const formData = new FormData();
       
       // Append form fields
-      formData.append('UserName', userData.userName);
-      formData.append('FullName', userData.fullName);
-      formData.append('Email', userData.email);
-      formData.append('Password', userData.password);
+      formData.append('FullName', userData.FullName);
+      formData.append('Email', userData.Email);
+      formData.append('Password', userData.Password);
       
       // Append files
-      formData.append('Avatar', userData.avatar);
-      if (userData.coverImage) {
-        formData.append('CoverImage', userData.coverImage);
+      formData.append('Avatar', userData.Avatar);
+      if (userData.CoverImage) {
+        formData.append('CoverImage', userData.CoverImage);
       }
       
       const response = await api.post('/user/register', formData, {

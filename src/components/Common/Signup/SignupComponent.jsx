@@ -8,7 +8,12 @@ import { Link } from "react-router-dom";
 import FileUploadUpdated from "../FileUpload";
 import { useForm } from "react-hook-form";
 import { userService } from "../../../Services/api/User.Service";
-function LoginComponent() {
+function SignUpComponent() {
+  const [ProfileImg, setProfileImg] = useState(null);
+  const [CoverImg, setCoverImg] = useState(null);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [RegisterSuccess, setRegisterSuccess] = useState(false);
+  const [RegisterError, setRegisterError] = useState("");
   const {
     register,
     handleSubmit,
@@ -21,11 +26,18 @@ function LoginComponent() {
     },
   });
 
-  const [ProfileImg, setProfileImg] = useState(null);
-  const [CoverImg, setCoverImg] = useState(null);
-  const [isRegistering, setIsRegistering] = useState(false);
-  const [RegisterSuccess, setRegisterSuccess] = useState(false);
-  const [RegisterError, setRegisterError] = useState("");
+// Collect all frontend errors into an array
+const frontendErrors = Object.values(errors)
+  .map((err) => err.message)
+  .filter(Boolean);
+
+// Combine frontend and backend errors
+const allErrors = [
+  ...frontendErrors,
+  RegisterError && RegisterError
+].filter(Boolean);
+  
+ 
 
   const handleProfileImgChange = (ProfileImg) => {
     setProfileImg(ProfileImg);
@@ -36,19 +48,34 @@ function LoginComponent() {
   };
 
   const SubmitRegistration = async (data) => {
+    console.log("data of form", data);
     if (!ProfileImg) {
-      RegisterError("Profile Image is Required");
-      return;
-    }
-    if (!CoverImg) {
-      RegisterError("Cover Image is Required");
+      setRegisterError("Profile Image is Required");
       return;
     }
     try {
       setIsRegistering(true);
       setRegisterError("");
-      const response = await userService.registerUser(data);
-    } catch (error) {}
+      console.log("profile image", ProfileImg);
+      const SignupData = {
+        FullName: data.Name,
+        Email: data.Email,
+        Password: data.Password,
+        Avatar: ProfileImg,
+        CoverImage: CoverImg,
+      };
+      const response = await userService.registerUser(SignupData);
+      window.location.href = "/";
+
+      console.log("response of api for register", response);
+    } catch (error) {
+      setRegisterError(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Registration failed. Please try again."
+      );
+      console.log("error of api for register", error);
+    }
   };
 
   return (
@@ -80,6 +107,7 @@ function LoginComponent() {
           <Input
             placeholder="Create a Password"
             label="Password"
+            type="password"
             isMandatory={true}
             helpText={"Password must be at least 8 characters"}
             {...register("Password", {
@@ -118,8 +146,19 @@ function LoginComponent() {
             // iconType="material"
             placeholder="or drag cover image"
           />
+          {allErrors.length > 0 && (
+  <div className="text-red-500 text-[18px] font-semibold text-center">
+    {allErrors.map((err, idx) => (
+      <div key={idx}>{err}</div>
+    ))}
+  </div>
+)}
+           {RegisterError && (
+              <div className="text-red-500 text-[18px] font-semibold text-center">{RegisterError}</div>
+            )}
           <FlexibleButton
-            text="Login"
+            type="submit"
+            text="Sign Up"
             bgColor="bg-[#7F56D9]"
             textColor="text-white"
             textSize="text-[18px]"
@@ -137,4 +176,4 @@ function LoginComponent() {
   );
 }
 
-export default LoginComponent;
+export default SignUpComponent;

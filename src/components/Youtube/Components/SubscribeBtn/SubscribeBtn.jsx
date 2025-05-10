@@ -1,9 +1,16 @@
 import React from "react";
 import { useState } from "react";
+import { isLoggedin } from "../../../../redux/slices/authentication.slice";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 function SubscribeBtn({
-  isSubscribed = false,
+  isSubscribed,
   width = "w-[137px] md:w-[145px]",
+  videoid,
+  handleSubscribing,
+  handleUnsubscribing,
 }) {
   // Bell ring animation style
   const bellRingStyle = `
@@ -24,17 +31,36 @@ function SubscribeBtn({
 `;
 
   const [isSubscribe, setIsSubscribe] = useState(isSubscribed);
+  const [showPrompt, setShowPrompt] = useState(false);
   // New state just to track animation key
   const [animationCounter, setAnimationCounter] = useState(0);
 
-  const handleSubscribe = () => {
+  const isUserLogged = useSelector(isLoggedin);
+
+  const handleSubscribe = (e) => {
+    if (!isUserLogged) {
+      e.stopPropagation();
+      setShowPrompt(true); // (use a local state for prompt)
+      setTimeout(() => setShowPrompt(false), 5000);
+      return;
+    }
     setIsSubscribe(!isSubscribe);
 
     // Always increment the animation counter when switching to subscribed
     if (!isSubscribe) {
       setAnimationCounter((prev) => prev + 1);
     }
+
+    if (isSubscribe) {
+      handleUnsubscribing();
+    } else {
+      handleSubscribing();
+    }
   };
+
+  useEffect(() => {
+    setIsSubscribe(isSubscribed);
+  }, [isSubscribed]);
 
   // The key is to render the bell icon ALWAYS, not conditionally
   // This ensures the animation can play properly
@@ -113,6 +139,18 @@ function SubscribeBtn({
             </span>
           </button>
         </div>
+        {showPrompt && (
+          <div
+            className="absolute top-full left-3 mt-4 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+            style={{ wordSpacing: "5px" }}
+          >
+            Please{" "}
+            <span Link className="text-blue-500">
+              <Link to="/login">login</Link>
+            </span>
+            ! to Subscribe
+          </div>
+        )}
       </div>
     </>
   );

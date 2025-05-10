@@ -1,31 +1,75 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import { isLoggedin } from "../../../../redux/slices/authentication.slice";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
-const LikeDislike = ({ initialLikes = "100", isDisliked = false, isLiked = false }) => {
+const LikeDislike = ({
+  initialLikes = 0,
+  isDisliked = false,
+  isLiked = false,
+  handleLike,
+  handleDislike,
+}) => {
   const [liked, setLiked] = useState(isLiked);
   const [disliked, setDisliked] = useState(isDisliked);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [likesCount, setLikesCount] = useState(initialLikes);
 
-  const handleLike = () => {
+  const isUserLogged = useSelector(isLoggedin);
+
+  const onLikeClick = (e) => {
+    if (!isUserLogged) {
+      e.stopPropagation();
+      setShowPrompt(true); // (use a local state for prompt)
+      setTimeout(() => setShowPrompt(false), 5000);
+      return;
+    }
     setLiked(!liked);
+    if (!liked) {
+      setLikesCount(likesCount + 1);
+    } else {
+      setLikesCount(likesCount - 1);
+    }
     if (disliked) {
       setDisliked(false);
     }
+    if (handleLike) handleLike();
   };
 
-  const handleDislike = () => {
+  useEffect(() => {
+    setLiked(isLiked);
+    setDisliked(isDisliked);
+  }, [isLiked, isDisliked]);
+
+  useEffect(() => {
+    setLikesCount(initialLikes);
+  }, [initialLikes]);
+
+  const onDislikeClick = (e) => {
+    if (!isUserLogged) {
+      e.stopPropagation();
+      setShowPrompt(true); // (use a local state for prompt)
+      setTimeout(() => setShowPrompt(false), 5000);
+      return;
+    }
     setDisliked(!disliked);
+    // setLikesCount((prev) => prev - 1);
     if (liked) {
       setLiked(false);
+      setLikesCount((prev) => prev - 1);
     }
+    if (handleDislike) handleDislike();
   };
 
   return (
-    <div className="flex w-fit items-center px-[8px] lg:px-[10px] py-[6px] lg:py-[7px] gap-[8px] lg:gap-[10px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]">
+    <div className="relative flex w-fit items-center px-[8px] lg:px-[10px] py-[6px] lg:py-[7px] gap-[8px] lg:gap-[10px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]">
       {/* Like Button */}
       <button
         className="flex items-center cursor-pointer gap-[8px]"
-        onClick={handleLike}
+        onClick={onLikeClick}
         aria-label={liked ? "Unlike" : "Like"}
       >
         {!liked ? (
@@ -52,7 +96,7 @@ const LikeDislike = ({ initialLikes = "100", isDisliked = false, isLiked = false
           />
         )}
         <span className="text-[13px] lg:text-[15px] font-semibold text-[#414651]">
-          {initialLikes}
+          {likesCount}
         </span>
       </button>
 
@@ -64,7 +108,7 @@ const LikeDislike = ({ initialLikes = "100", isDisliked = false, isLiked = false
       {/* Dislike Button */}
       <button
         className="flex items-center cursor-pointer"
-        onClick={handleDislike}
+        onClick={onDislikeClick}
         aria-label={disliked ? "Undislike" : "Dislike"}
       >
         {!disliked ? (
@@ -92,6 +136,18 @@ const LikeDislike = ({ initialLikes = "100", isDisliked = false, isLiked = false
           />
         )}
       </button>
+      {showPrompt && (
+        <div
+          className="absolute top-full left-3 mt-4 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+          style={{ wordSpacing: "5px" }}
+        >
+          Please{" "}
+          <span Link className="text-blue-500">
+            <Link to="/login">login</Link>
+          </span>
+          ! to Like/Dislike
+        </div>
+      )}
     </div>
   );
 };

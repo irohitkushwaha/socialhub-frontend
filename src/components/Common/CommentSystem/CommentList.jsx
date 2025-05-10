@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { isLoggedin } from "../../../redux/slices/authentication.slice";
+import { Link } from "react-router-dom";
+import { likesService } from "../../../Services/api/Likes.Service";
+import { dislikesService } from "../../../Services/api/Dislikes.Service";
+import { useEffect } from "react";
 
 const CommentList = ({
   profilePic,
@@ -10,32 +16,83 @@ const CommentList = ({
   likeCount = 5,
   initialLiked = false,
   initialDisliked = false,
+  commentid,
 }) => {
   const [liked, setLiked] = useState(initialLiked);
   const [disliked, setDisliked] = useState(initialDisliked);
-  const [likes, setLikes] = useState(likeCount);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [likesCount, setLikesCount] = useState(likeCount);
 
-  const handleLike = () => {
+  const isUserLogged = useSelector(isLoggedin);
+
+  useEffect(() => {
+    setLiked(initialLiked);
+    setDisliked(initialDisliked);
+    setLikesCount(likeCount);
+  }, [initialLiked, initialDisliked, likeCount]);
+
+  const handleLike = async () => {
+    if (!isUserLogged) {
+      setShowPrompt(true);
+      setTimeout(() => setShowPrompt(false), 5000);
+      return;
+    }
     if (liked) {
       setLiked(false);
-      setLikes(likes - 1);
+      setLikesCount(likesCount - 1);
+      try {
+        const response = await likesService.deleteLikeComment(commentid);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       setLiked(true);
+      try {
+        const response = await likesService.likeComment(commentid);
+      } catch (error) {
+        console.log(error);
+      }
+
       if (disliked) {
         setDisliked(false);
+        try {
+          const response = await dislikesService.deleteDislikeComment(commentid);
+        } catch (error) {
+          console.log(error);
+        }
       }
-      setLikes(likes + 1);
+      setLikesCount(likesCount + 1);
     }
   };
 
-  const handleDislike = () => {
+  const handleDislike = async () => {
+    if (!isUserLogged) {
+      setShowPrompt(true);
+      setTimeout(() => setShowPrompt(false), 5000);
+      return;
+    }
     if (disliked) {
       setDisliked(false);
+      try {
+        const response = await dislikesService.deleteDislikeComment(commentid);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       setDisliked(true);
+      try {
+        const response = await dislikesService.dislikeComment(commentid);
+      } catch (error) {
+        console.log(error);
+      }
       if (liked) {
         setLiked(false);
-        setLikes(likes - 1);
+        setLikesCount(likesCount - 1);
+        try {
+          const response = await likesService.deleteLikeComment(commentid);
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   };
@@ -69,7 +126,7 @@ const CommentList = ({
           </p>
 
           {/* Like/Dislike Buttons */}
-          <div className="flex items-center gap-[24px] h-fit min-h-[35px]">
+          <div className="relative flex items-center gap-[24px] h-fit min-h-[35px]">
             {/* Like Button */}
             <div className="flex items-center gap-2">
               <button
@@ -102,7 +159,7 @@ const CommentList = ({
                 )}
               </button>
               <span className="text-[17px] font-semibold text-[#414651]">
-                {likes}
+                {likesCount}
               </span>
             </div>
 
@@ -119,7 +176,7 @@ const CommentList = ({
                   viewBox="0 0 24 24"
                   fill="#00c950"
                   className="w-[28px] h-[28px] lg:w-[28px] lg:h-[28px]"
-                  >
+                >
                   {/* <g>
                 <rect fill="none" height="24" width="24" />
               </g> */}
@@ -137,6 +194,18 @@ const CommentList = ({
                 />
               )}
             </button>
+            {showPrompt && (
+              <div
+                className="absolute top-full left-3 mt-4 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+                style={{ wordSpacing: "5px" }}
+              >
+                Please{" "}
+                <span Link className="text-blue-500">
+                  <Link to="/login">login</Link>
+                </span>
+                ! to Like/Dislike
+              </div>
+            )}
           </div>
         </div>
       </div>

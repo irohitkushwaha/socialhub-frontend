@@ -3,14 +3,15 @@ import Button from "../../ui/Button";
 import SummarizeComments from "../../Common/CommentSystem/SummarizeComments.jsx";
 import AddComment from "../../Common/CommentSystem/AddComment.jsx";
 import CommentList from "../../Common/CommentSystem/CommentList.jsx";
-import Shradha from "../../../assets/shradha.jpg";
 import { closeComment } from "../../../redux/slices/commentSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { formatTimeAgo } from "../../../utils/formatTimeAgo.js";
 import { commentService } from "../../../Services/api/Comment.Service.js";
 import { useState } from "react";
 
 const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
+  console.log("CommentResponse:", CommentResponse);
+  // console.log("CommentResponse[0]:", CommentResponse[0]);
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(closeComment());
@@ -58,11 +59,11 @@ const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
   };
 
   const handleCommentSummarize = () => {
-    console.log("summarized button clicked")
-    const newShowSummary = !showSummary
+    console.log("summarized button clicked");
+    const newShowSummary = !showSummary;
     setShowSummary(newShowSummary);
     if (newShowSummary) {
-      console.log("summarization LLM api called")
+      console.log("summarization LLM api called");
 
       fetchCommentSummary();
     }
@@ -105,9 +106,9 @@ const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
         negativeText={negativeText}
         showSummary={showSummary}
       />
-      <AddComment />
-      {CommentResponse.length > 0 ? (
-        CommentResponse[0].map((comment) => (
+      <AddComment videoId={videoid} />
+      {Array.isArray(CommentResponse) && CommentResponse.length > 0 ? (
+        CommentResponse.map((comment) => (
           <CommentList
             key={comment._id}
             profilePic={comment.Owner?.Avatar}
@@ -116,6 +117,7 @@ const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
             text={comment.Content}
             likeCount={comment.LikesCountForComment}
             initialLiked={comment.IsLiked}
+            commentid={comment._id}
             initialDisliked={comment.IsDisliked}
           />
         ))

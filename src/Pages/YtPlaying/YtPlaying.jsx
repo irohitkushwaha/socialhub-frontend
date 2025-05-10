@@ -15,6 +15,9 @@ import { useInView } from "react-intersection-observer";
 import { formatTimeAgo } from "../../utils/formatTimeAgo";
 import { isLoggedin } from "../../redux/slices/authentication.slice";
 import { useSelector } from "react-redux";
+import { subscriptionService } from "../../Services/api/Subscription.Service";
+import { likesService } from "../../Services/api/Likes.Service";
+import { dislikesService } from "../../Services/api/Dislikes.Service";
 
 const YtPlayingPage = () => {
   const [video, setVideo] = useState({});
@@ -23,61 +26,133 @@ const YtPlayingPage = () => {
   const { videoid } = useParams();
   const { ref, inView } = useInView({ threshold: 0.1 });
   const [hasFetchedComments, setHasFetchedComments] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(video.isSubscribed ? video.isSubscribed : false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const isUserLoggedin = useSelector(isLoggedin);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
+  const [initialLikes, setInitialLikes] = useState(0);
+  const [subscribersCount, setSubscribersCount] = useState(
+    video.SubscribersCount
+  );
 
-  const isUserLoggedin = useSelector(isLoggedin)
+  const CommentApi = async () => {
+    if (inView && !hasFetchedComments) {
+      const response = await commentService.getVideoComments({
+        videoId: videoid,
+      });
+      setCommentResponse(response.comments);
+      setCommentCount(response.commentCount);
+      setHasFetchedComments(true);
+
+      console.log("response structure of comment is", response);
+    }
+  };
 
   useEffect(() => {
-    const CommentApi = async () => {
-      if (inView && !hasFetchedComments) {
-        const response = await commentService.getVideoComments({
-          videoId: videoid,
-        });
-        setCommentResponse(response.comments);
-        setCommentCount(response.ommentCount);
-        setHasFetchedComments(true);
-
-        console.log("response structure of comment is", response);
-      }
-    };
     CommentApi();
   }, [inView, hasFetchedComments, videoid]);
 
+  const fetchVideo = async () => {
+    const response = await videoService.getVideoDetails(videoid);
+    setVideo(response[0]);
+  };
+
   useEffect(() => {
-    console.log("useffect run");
-    async function fetchVideo() {
-      const response = await videoService.getVideoDetails(videoid);
-      console.log("resonse is", response);
-      setVideo(response[0]);
-    }
     fetchVideo();
   }, [videoid]);
 
   const handleSubscribing = async () => {
-    // Optimistically update UI
-    if(isUserLoggedin){
-      setIsSubscribed(true);
+    if (!isUserLoggedin) return;
+    setIsSubscribed(true);
+    setSubscribersCount((prev) => prev + 1);
     try {
       const response = await subscriptionService.subscribe(videoid);
-      if (response && response.statusCode === 200 && response.message === "Subscribed successfully") {
-        // Success - do nothing, UI already updated
-      } else {
-        // Rollback if something went wrong
-        setIsSubscribed(false);
-        alert("Subscription failed or unexpected response");
-      }
+      console.log("response of subscribe is", response);
+      // UI is already updated, no further action needed
     } catch (error) {
-      setIsSubscribed(false); // Rollback
-      if (error.response && error.response.data && error.response.data.message) {
-        alert(error.response.data.message);
-      } else {
-        alert("Something went wrong while subscribing.");
-      }
-    }
+      setIsSubscribed(false); // Rollback on error
+      // alert("Subscription failed.");
+      console.log("error of api for subscribe", error);
     }
   };
 
-  // console.log("structure of videooo", video)
+  const handleUnsubscribing = async () => {
+    if (!isUserLoggedin) return;
+    setIsSubscribed(false); // Optimistic UI update
+    setSubscribersCount((prev) => prev - 1);
+    try {
+      const response = await subscriptionService.unsubscribe(videoid);
+
+      console.log("response of unsubscribe api call is", response);
+      // Optionally refetch video details here if you want to sync state
+    } catch (error) {
+      setIsSubscribed(true); // Rollback on error
+      console.log("unsubscription failed due to error", error);
+    }
+  };
+
+  const handleLike = async () => {
+    if (!isLiked) {
+      const likeVideo = await likesService.likeVideo(videoid);
+      console.log("like video api call is", likeVideo);
+      if (isDisliked) {
+        const deleteDislikeWhenLike = await dislikesService.deleteDislikeVideo(
+          videoid
+        );
+        console.log("disliked when liked called", deleteDislikeWhenLike);
+      }
+      setIsLiked(true);
+      setIsDisliked(false);
+    } else {
+      await likesService.deleteLikeVideo(videoid);
+      setIsLiked(false);
+    }
+  };
+
+  const handleDislike = async () => {
+    if (!isDisliked) {
+      const dislikevideo = await dislikesService.dislikeVideo(videoid);
+      console.log("response of dilsike video is", dislikevideo);
+      if (isLiked) {
+        const deleteLikewhenDislike = await likesService.deleteLikeVideo(
+          videoid
+        );
+        console.log("unliked when disliked called", deleteLikewhenDislike);
+      }
+      setIsDisliked(true);
+      setIsLiked(false);
+    } else {
+      await dislikesService.deleteDislikeVideo(videoid);
+      setIsDisliked(false);
+    }
+  };
+  useEffect(() => {
+    setIsLiked(!!video.isLiked);
+    setIsDisliked(!!video.isDisliked);
+    setInitialLikes(video.VideoLikesCount);
+    setSubscribersCount(video.SubscribersCount);
+  }, [
+    video.isLiked,
+    video.isDisliked,
+    video.VideoLikesCount,
+    video.SubscribersCount,
+  ]);
+
+  useEffect(() => {
+    setCommentResponse();
+  }, []);
+
+  console.log("initial likes", initialLikes);
+
+  useEffect(() => {
+    setIsSubscribed(!!video.isSubscribed);
+  }, [video.isSubscribed]);
+
+  useEffect(() => {
+    console.log("value of issubscribed (updated):", isSubscribed);
+  }, [isSubscribed]);
+
+  console.log("structure of videooo", video);
   return (
     <div className="w-full lg:px-[15%] md:px-[15px] py-[10px] px-[10px]">
       <div className="flex gap-[15px] lg:gap-[22px] flex-col">
@@ -88,16 +163,19 @@ const YtPlayingPage = () => {
             <div className="flex flex-col  gap-[27px] sm:gap-[27px]  media-custom  w-full ">
               <ChannelVideoData
                 channelName={video.Owner?.FullName}
-                subscribers={video.SubscribersCount}
+                subscribers={subscribersCount}
                 profileImage={video.Owner?.Avatar}
                 isSubscribed={isSubscribed}
                 handleSubscribing={handleSubscribing}
+                handleUnsubscribing={handleUnsubscribing}
               />
               <div className="flex items-center justify-between sm:justify-normal sm:gap-[15px]  md:gap-[15px]">
                 <LikeDislike
-                  initialLikes={video.VideoLikesCount}
-                  isLiked={video.isLiked ? video.isLiked : false}
-                  isDisliked={video.isDisliked ? video.isDisliked : false}
+                  initialLikes={initialLikes}
+                  isLiked={isLiked}
+                  isDisliked={isDisliked}
+                  handleLike={handleLike}
+                  handleDislike={handleDislike}
                 />
                 <Button
                   text="Share"
