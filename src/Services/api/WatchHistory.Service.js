@@ -1,5 +1,5 @@
 // src/Services/api/WatchHistoryService.js
-import api from './axios';
+import api from "./axios";
 
 export const watchHistoryService = {
   /**
@@ -9,14 +9,35 @@ export const watchHistoryService = {
    */
   saveToWatchHistory: async (videoId) => {
     try {
-      const response = await api.post(`/watchhistory/save-watchhistory/${videoId}`);
+      const response = await api.post(
+        `/watchhistory/save-watchhistory/${videoId}`
+      );
       return response.data;
     } catch (error) {
-      console.error('Error saving to watch history:', error);
+      console.error("Error saving to watch history:", error);
       throw error;
     }
   },
-  
+
+  // /**
+  //  * Get the user's watch history
+  //  * @param {boolean} isShorts - Whether to fetch shorts or regular videos (optional)
+  //  * @returns {Promise} - API response with watch history data
+  //  */
+  // getWatchHistory: async (isShorts = false) => {
+  //   try {
+  //     // The backend expects isShorts in the request body
+  //     const response = await api.get('/watchhistory/get-watchhistory', {
+  //       data: { isShorts }
+  //     });
+
+  //     return response.data.data;
+  //   } catch (error) {
+  //     console.error('Error fetching watch history:', error);
+  //     throw error;
+  //   }
+  // }
+
   /**
    * Get the user's watch history
    * @param {boolean} isShorts - Whether to fetch shorts or regular videos (optional)
@@ -24,15 +45,14 @@ export const watchHistoryService = {
    */
   getWatchHistory: async (isShorts = false) => {
     try {
-      // The backend expects isShorts in the request body
-      const response = await api.get('/watchhistory/get-watchhistory', {
-        data: { isShorts }
+      // Use POST method to match backend's req.body.isShorts expectation
+      const response = await api.get("/watchhistory/get-watchhistory", {
+        params: { isShorts },
       });
-      
       return response.data.data;
     } catch (error) {
-      console.error('Error fetching watch history:', error);
+      console.error("Error fetching watch history:", error);
       throw error;
     }
-  }
+  },
 };

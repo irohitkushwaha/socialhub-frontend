@@ -19,7 +19,8 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   const [retryCount, setRetryCount] = useState(0);
   const [startY, setStartY] = useState(0);
   const [hasUserInteracted, setHasUserInteracted] = useState(
-globalHasInteracted || false  );
+    globalHasInteracted || false
+  );
 
   console.log("user interacted value as it loads", hasUserInteracted);
   const [isSwiped, setIsSwiped] = useState(false);

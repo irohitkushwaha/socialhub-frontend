@@ -20,31 +20,17 @@ import {
   openComment,
   closeComment,
 } from "../../../../../redux/slices/commentSlice";
+import {useMediaQuery} from "../../../../../hooks/useMediaQuery"
 
-const ReelActions = ({ initialLikeCount = 123, commentCount = 39 }) => {
+const ReelActions = ({ initialLikeCount = 123, commentCount = 39, videoId,  IntitialIsLiked, IntitialIsSaved }) => {
   const dispatch = useDispatch();
   const isAutoScrollEnabled = useSelector(selectIsAutoScrollEnabled);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(IntitialIsLiked);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSaved, setIsSaved] = useState(IntitialIsSaved);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
 
-  // Check if device is mobile
-  useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    // Initial check
-    checkIfMobile();
-
-    // Add event listener for window resize
-    window.addEventListener("resize", checkIfMobile);
-
-    // Cleanup
-    return () => window.removeEventListener("resize", checkIfMobile);
-  }, []);
+const isMobile = useMediaQuery("(max-width: 768px)")
 
   // Handle like button click
   const handleLike = () => {

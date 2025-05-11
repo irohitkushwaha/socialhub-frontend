@@ -10,24 +10,21 @@ const WatchHistoryVideo = ({
   duration = "9:20",
 }) => {
   return (
-    <div className="md:w-full mx-auto border border-[#E9EAEB] rounded-xl shadow-[0_7px_16px_-4px_rgba(10,13,18,0.08),0_4px_6px_-2px_rgba(10,13,18,0.03)] flex gap-[50px">
+    <div className="md:w-[1000px] border border-[#E9EAEB] rounded-xl shadow-[0_7px_16px_-4px_rgba(10,13,18,0.08),0_4px_6px_-2px_rgba(10,13,18,0.03)] flex">
       {/* Thumbnail Container */}
-      <div className="relative w-[432px] aspect-video rounded-xl overflow-hidden">
-        <div className="p-[2px]">
-          <img
-            src={thumbnailSrc}
-            alt={title}
-            className="w-full h-full object-cover rounded-xl"
-          />
-        </div>
+      <div className="relative w-[432px] aspect-video rounded-xl p-[2px] gap-[20px]">
+        <img
+          src={thumbnailSrc}
+          alt={title}
+          className="w-full h-full object-cover rounded-xl"
+        />
         {/* Duration Badge */}
         <div className="absolute bottom-2 right-2 bg-black bg-opacity-80 px-1.5 rounded">
           <span className="text-[14px] font-bold text-white">{duration}</span>
         </div>
       </div>
 
-      {/* Content Container */}
-      <div className="flex flex-col gap-[21px] px-[19px] py-[30px] items-start justify-start">
+      <div className="flex w-[548px] flex-col gap-[21px] px-[19px] py-[30px] items-start justify-start">
         <h3 className="text-[18px] leading-[31px] font-bold text-[#181D27] line-clamp-2">
           {title}
         </h3>
@@ -56,14 +53,16 @@ const WatchHistoryVideo = ({
               <span className="text-[16px] font-semibold text-[#414651]">
                 {views} views
               </span>
-              <span className="text-[16px] font-semibold text-[#414651]">•</span>
+              <span className="text-[16px] font-semibold text-[#414651]">
+                •
+              </span>
               <span className="text-[16px] font-semibold text-[#414651]">
                 {uploadTime}
               </span>
             </div>
           </div>
         </div>
-      </div>
+      </div>     
     </div>
   );
 };

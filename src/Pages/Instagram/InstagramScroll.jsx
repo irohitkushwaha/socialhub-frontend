@@ -7,59 +7,18 @@ import { useSelector } from "react-redux";
 import { selectIsShareModalOpen } from "../../redux/slices/shareSlice";
 import { selectIsCommentOpen } from "../../redux/slices/commentSlice";
 import CommentCompo from "../../components/Common/CommentCompo";
-
-// Import local video files
-import reels1 from "../../assets/video/reels1.mp4";
-import reels2 from "../../assets/video/reels2.mp4";
-import reels3 from "../../assets/video/reels3.mp4";
-import reels4 from "../../assets/video/reels4.mp4";
-import reels5 from "../../assets/video/reels5.mp4";
-
-import shradha from "../../assets/shradha.jpg";
-// Sample profile component - replace with your actual profile component
-const ReelProfileOwner = () => (
-  <div className="w-fit h-fit rounded-ful flex items-center justify-center">
-    <div className="w-[42px] h-[42px] rounded-full border-[1px] border-gray-300 overflow-hidden">
-      <img
-        src={shradha}
-        alt="User profile"
-        className="w-full h-full object-cover"
-      />
-    </div>
-  </div>
-);
+import { videoService } from "../../Services/api/Video.Service";
 
 const InstagramScroll = () => {
-  // Local MP4 videos from assets
-  const videoOptions = [
-    {
-      id: 1,
-      url: reels1,
-    },
-    {
-      id: 2,
-      url: reels2,
-    },
-    {
-      id: 3,
-      url: reels3,
-    },
-    {
-      id: 4,
-      url: reels4,
-    },
-    {
-      id: 5,
-      url: reels5,
-    },
-  ];
+  const [videoOptions, setVideoOptions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  console.log("isCommentOpen in instagram scroll page is", selectIsCommentOpen);
   const isCommentOpen = useSelector(selectIsCommentOpen);
-  console.log("isCommentOpen in instagram scroll page is", isCommentOpen);
   const isShareModalOpen = useSelector(selectIsShareModalOpen);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const currentVideo = videoOptions[currentVideoIndex];
+  const currentVideo = videoOptions[currentVideoIndex] || {};
   const [isMobile, setIsMobile] = useState(false);
 
   // Add new state for slide transitions
@@ -73,6 +32,70 @@ const InstagramScroll = () => {
   const slideContainerRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
   const transitionTimeoutRef = useRef(null);
+
+  // Function to fetch videos
+  const fetchVideos = async (page) => {
+    if (!hasMore && page > 1) {
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const response = await videoService.getShortsList(page, 2);
+
+      console.log("response for shorts list", response);
+
+      if (response) {
+        const newVideos = response.VideosList.map((video) => ({
+          id: video._id,
+          url: video.VideoFile,
+          owner: video.Owner,
+          likes: video.VideoLikesCount,
+          comments: video.CommentsCount,
+          isLiked: video.IsLiked,
+          isSaved: video.IsSaved,
+          isFollowing: video.IsFollow,
+        }));
+
+        console.log("new videos", newVideos);
+
+        // Add to existing videos
+        setVideoOptions((prev) => [...prev, ...newVideos]);
+        setCurrentPage(page);
+        setHasMore(response.HasMore);
+      }
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+      setHasMore(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Load initial videos
+  useEffect(() => {
+    // Only fetch initial videos if we haven't already
+    if (videoOptions.length === 0 && hasMore) {
+      fetchVideos(1);
+    }
+  }, []);
+
+  console.log("videoOptions", videoOptions);
+
+  console.log("currentVideo", currentVideo);
+
+  // Load more videos when we're close to the end
+  useEffect(() => {
+    // If we have 3 or fewer videos left and there are more to load
+    if (
+      videoOptions.length > 0 && // Important: Must have at least 1 video from initial load
+      videoOptions.length - currentVideoIndex <= 3 &&
+      hasMore &&
+      !isLoading &&
+      currentPage > 0
+    ) {
+      fetchVideos(currentPage + 1);
+    }
+  }, [currentVideoIndex, videoOptions.length, hasMore, isLoading, currentPage]);
 
   // Prevent scrolling on the body when this component mounts
   useEffect(() => {
@@ -306,6 +329,20 @@ const InstagramScroll = () => {
         className="flex justify-center items-end gap-[18px] w-full bg-white overflow-hidden pb-[100px]"
         onWheel={handleWheel}
       >
+        {/* Initial loading spinner - when no videos are loaded yet */}
+        {isLoading && videoOptions.length === 0 && (
+          <div className="absolute inset-0 flex justify-center items-center bg-white z-50">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+          </div>
+        )}
+
+        {/* Empty state - when no videos are found after loading */}
+        {!isLoading && videoOptions.length === 0 && (
+          <div className="absolute inset-0 flex flex-col justify-center items-center bg-white z-50">
+            <p className="text-lg text-gray-500">No Reels available</p>
+          </div>
+        )}
+
         {/* Main container with sliding effect */}
         <div
           ref={slideContainerRef}
@@ -317,7 +354,7 @@ const InstagramScroll = () => {
           {/* Player */}
           <div className="relative w-full h-screen  md:w-auto sm:max-w-[500px] overflow-hidden md:pb-[100px] ">
             <ReelPlayer
-              videoUrl={currentVideo.url}
+              videoUrl={currentVideo?.url}
               onNextVideo={handleNextVideo}
               onPrevVideo={handlePrevVideo}
               isTransitioning={isTransitioning}
@@ -325,24 +362,44 @@ const InstagramScroll = () => {
             />
             {isMobile && (
               <div className="absolute z-30 bottom-[150px] right-[13px] pb-[20px]">
-                <ReelActions initialLikeCount={123} commentCount={39} />
+                <ReelActions
+                  initialLikeCount={currentVideo?.likes}
+                  commentCount={currentVideo?.comments}
+                  videoId={currentVideo?.id}
+                  IntitialIsLiked={currentVideo?.isLiked}
+                  IntitialIsSaved={currentVideo?.isSaved}
+                />
               </div>
             )}
             <div className="absolute z-30 bottom-[85px] md:bottom-[40px] flex justify-start w-fit pl-[15px] md:pb-[100px] pb-[90px]">
               <ReelOwnerFollow
-                profileComponent={<ReelProfileOwner />}
-                username="@shradhakhapra123"
+                profileImg={currentVideo?.owner?.ProfileImage}
+                username={currentVideo?.owner?.Username}
+                InitialIsFollowing={currentVideo?.isFollowing}
+                ownerId={currentVideo?.owner?._id}
               />
             </div>
           </div>
 
           {!isMobile && (
             <div className="mb-[70px] md:pb-[100px]">
-              <ReelActions initialLikeCount={123} commentCount={39} />
+              <ReelActions
+                initialLikeCount={currentVideo?.likes || 0}
+                commentCount={currentVideo?.comments || 0}
+                videoId={currentVideo?.id}
+                IntitialIsLiked={currentVideo?.isLiked}
+                IntitialIsSaved={currentVideo?.isSaved}
+              />
             </div>
           )}
         </div>
 
+        {/* Bottom loading indicator - when loading more videos */}
+        {isLoading && videoOptions.length > 0 && (
+          <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center h-40 z-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+          </div>
+        )}
         {/* ShareModal Container - outside the sliding container */}
         {isShareModalOpen && (
           <div className="absolute z-50 inset-0 bg-opacity-50 flex items-center justify-center p-4">

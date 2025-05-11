@@ -18,6 +18,8 @@ import { useSelector } from "react-redux";
 import { subscriptionService } from "../../Services/api/Subscription.Service";
 import { likesService } from "../../Services/api/Likes.Service";
 import { dislikesService } from "../../Services/api/Dislikes.Service";
+import { watchHistoryService } from "../../Services/api/WatchHistory.Service";
+import { useRef } from "react";
 
 const YtPlayingPage = () => {
   const [video, setVideo] = useState({});
@@ -34,6 +36,8 @@ const YtPlayingPage = () => {
   const [subscribersCount, setSubscribersCount] = useState(
     video.SubscribersCount
   );
+  const [watchHistorySaved, setWatchHistorySaved] = useState(false);
+  const watchHistoryTimeout = useRef(null);
 
   const CommentApi = async () => {
     if (inView && !hasFetchedComments) {
@@ -60,6 +64,40 @@ const YtPlayingPage = () => {
   useEffect(() => {
     fetchVideo();
   }, [videoid]);
+
+  // Now add this useEffect right after your fetchVideo useEffect
+  useEffect(() => {
+    // Only run if video is loaded, user is logged in, and watch history hasn't been saved yet
+    if (video && video._id && isUserLoggedin && !watchHistorySaved) {
+      console.log("Starting 5-second timer for watch history...");
+
+      // Clear any previous timeout
+      if (watchHistoryTimeout.current) {
+        clearTimeout(watchHistoryTimeout.current);
+      }
+
+      // Set new timeout for 5 seconds
+      watchHistoryTimeout.current = setTimeout(async () => {
+        console.log("Saving watch history for video:", videoid);
+
+        try {
+          const response = await watchHistoryService.saveToWatchHistory(videoid);
+          console.log("Watch history saved successfully:", response);
+          setWatchHistorySaved(true);
+        } catch (error) {
+          console.error("Error saving watch history:", error);
+        }
+      }, 4000); // 5 seconds
+
+      // Cleanup function
+      return () => {
+        if (watchHistoryTimeout.current) {
+          clearTimeout(watchHistoryTimeout.current);
+          watchHistoryTimeout.current = null;
+        }
+      };
+    }
+  }, [video, videoid, isUserLoggedin, watchHistorySaved]);
 
   const handleSubscribing = async () => {
     if (!isUserLoggedin) return;
@@ -137,10 +175,6 @@ const YtPlayingPage = () => {
     video.VideoLikesCount,
     video.SubscribersCount,
   ]);
-
-  useEffect(() => {
-    setCommentResponse();
-  }, []);
 
   console.log("initial likes", initialLikes);
 

@@ -7,6 +7,8 @@ export const savedService = {
    * @param {string} reelId - ID of the reel to save
    * @returns {Promise} - API response confirming reel was saved
    */
+
+  //DELETE SAVE REEL ALSO REQUIRED - .deleteSavedReel
   saveReel: async (reelId) => {
     try {
       const response = await api.post(`/saved/reel/${reelId}`);

@@ -56,7 +56,9 @@ const CommentList = ({
       if (disliked) {
         setDisliked(false);
         try {
-          const response = await dislikesService.deleteDislikeComment(commentid);
+          const response = await dislikesService.deleteDislikeComment(
+            commentid
+          );
         } catch (error) {
           console.log(error);
         }
@@ -81,7 +83,9 @@ const CommentList = ({
     } else {
       setDisliked(true);
       try {
+        console.log("before dislike comment id is", commentid);
         const response = await dislikesService.dislikeComment(commentid);
+        console.log("response of disliked comment is", response);
       } catch (error) {
         console.log(error);
       }
