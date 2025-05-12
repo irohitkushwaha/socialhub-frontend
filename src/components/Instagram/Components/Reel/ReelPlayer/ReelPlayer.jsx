@@ -4,7 +4,12 @@ import { selectIsAutoScrollEnabled } from "../../../../../redux/slices/autoScrol
 import { useSelector } from "react-redux";
 import { selectHasInteracted } from "../../../../../redux/slices/userInteractionSlice";
 
-const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
+const ReelPlayer = ({
+  videoUrl,
+  onNextVideo,
+  onPrevVideo,
+  disableSwipe = true,
+}) => {
   const globalHasInteracted = useSelector(selectHasInteracted);
 
   // console.log(
@@ -45,6 +50,8 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   };
 
   const handleTouchEnd = (e) => {
+    if (disableSwipe) return;
+
     const endY = e.changedTouches[0].clientY;
     const diff = startY - endY;
 
@@ -64,6 +71,7 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   // Handle wheel scroll for desktop
   const handleWheel = (e) => {
     setHasUserInteracted(true);
+    if (disableSwipe) return;
 
     // Prevent multiple scroll events from firing too quickly
     if (isScrolling) return;
@@ -209,6 +217,9 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
     const handleKeyDown = (e) => {
       setHasUserInteracted(true);
 
+      if (disableSwipe) return;
+
+
       // Prevent handling if already scrolling
       if (isScrolling) return;
 
@@ -248,6 +259,7 @@ const ReelPlayer = ({ videoUrl, onNextVideo, onPrevVideo }) => {
   }, [isScrolling, onNextVideo, onPrevVideo]);
 
   const handleNextVideo = () => {
+    if (disableSwipe) return;
     if (onNextVideo) onNextVideo();
   };
 

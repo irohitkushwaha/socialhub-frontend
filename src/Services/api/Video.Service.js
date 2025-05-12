@@ -100,5 +100,21 @@ export const videoService = {
       console.error('Error fetching video details:', error);
       throw error;
     }
+  },
+
+/**
+   * Get a single short video by ID
+   * @param {string} videoId - ID of the short video to fetch
+   * @returns {Promise} - API response with video details, owner info, and interaction status
+   */
+getSingleShort: async (videoId) => {
+  try {
+    const response = await api.get(`/video/shorts/${videoId}`);
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching single short video:', error);
+    throw error;
   }
+},
+
 };

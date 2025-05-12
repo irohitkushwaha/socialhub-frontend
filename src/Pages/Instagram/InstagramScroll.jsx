@@ -368,13 +368,15 @@ const InstagramScroll = () => {
                   videoId={currentVideo?.id}
                   IntitialIsLiked={currentVideo?.isLiked}
                   IntitialIsSaved={currentVideo?.isSaved}
+                  AutoScroll={true}
                 />
               </div>
             )}
+           {console.log("profile of owner is",currentVideo?.owner?.Avatar)}
             <div className="absolute z-30 bottom-[85px] md:bottom-[40px] flex justify-start w-fit pl-[15px] md:pb-[100px] pb-[90px]">
               <ReelOwnerFollow
-                profileImg={currentVideo?.owner?.ProfileImage}
-                username={currentVideo?.owner?.Username}
+                profileImg={currentVideo?.owner?.Avatar}
+                username={currentVideo?.owner?.UserName}
                 InitialIsFollowing={currentVideo?.isFollowing}
                 ownerId={currentVideo?.owner?._id}
               />
@@ -417,7 +419,7 @@ const InstagramScroll = () => {
           </div>
         )}
         {/* Visual indicator for swipe direction */}
-        {touchDelta !== 0 && Math.abs(touchDelta) > 20 && (
+        {/* {touchDelta !== 0 && Math.abs(touchDelta) > 20 && (
           <div
             className={`absolute ${
               touchDelta > 0 ? "top-8" : "bottom-8"
@@ -435,7 +437,7 @@ const InstagramScroll = () => {
               <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
             </svg>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

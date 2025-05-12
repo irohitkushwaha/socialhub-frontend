@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 
-const ReelOwnerFollow = ({ profileImg, username, InitialIsFollowing, ownerId }) => {
-
+const ReelOwnerFollow = ({
+  profileImg,
+  username,
+  InitialIsFollowing,
+  ownerId,
+}) => {
   const [isFollowing, setIsFollowing] = useState(InitialIsFollowing);
 
   const handleFollowClick = () => {
@@ -13,7 +17,7 @@ const ReelOwnerFollow = ({ profileImg, username, InitialIsFollowing, ownerId }) 
       {/* Profile component (Left side) */}
       <div className="flex-shrink-0 cursor-pointer">
         <div className="w-fit h-fit rounded-ful flex items-center justify-center">
-          <div className="w-[42px] h-[42px] rounded-full border-[1px] border-gray-300 overflow-hidden">
+          <div className="w-[42px] h-[42px] rounded-full border-[0px] border-gray-300 overflow-hidden">
             <img
               src={profileImg}
               alt="User profile"
@@ -24,17 +28,17 @@ const ReelOwnerFollow = ({ profileImg, username, InitialIsFollowing, ownerId }) 
       </div>
 
       {/* Username (Right side) */}
-      <div className="text-black text-[15px] font-[550] cursor-pointer">
-        {username}
+      <div className="text-white text-[16px] font-[550] cursor-pointer tracking-[0.5px] ">
+        {username ? (username.startsWith("@") ? username : `@${username}`) : ""}
       </div>
 
       {/* Dot separator */}
-      <div className="w-[5px] h-[5px] bg-black rounded-full"></div>
+      <div className="w-[5px] h-[5px] bg-white rounded-full "></div>
 
       {/* Follow button */}
       <button
         onClick={handleFollowClick}
-        className="cursor-pointer rounded-[5px] border border-white text-black text-[16px] font-[550] px-[8px] py-[2px] md:px-[10px] md:py-[3px] transition-colors"
+        className="cursor-pointer rounded-[5px] border border-white text-white text-[16px] font-[550] px-[8px] py-[2px] md:px-[10px] md:py-[3px] transition-colors "
       >
         {isFollowing ? "Following" : "Follow"}
       </button>

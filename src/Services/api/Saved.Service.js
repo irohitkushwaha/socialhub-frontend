@@ -50,5 +50,35 @@ export const savedService = {
       console.error('Error fetching saved reels:', error);
       throw error;
     }
+  },
+
+  /**
+ * Delete a saved reel from the user's collection
+ * @param {string} reelId - ID of the reel to unsave
+ * @returns {Promise} - API response confirming reel was unsaved
+ */
+deleteSavedReel: async (reelId) => {
+  try {
+    const response = await api.delete(`/saved/reel/${reelId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error unsaving reel:', error);
+    throw error;
   }
+},
+
+/**
+ * Delete a saved post from the user's collection
+ * @param {string} postId - ID of the post to unsave
+ * @returns {Promise} - API response confirming post was unsaved
+ */
+deleteSavePost: async (postId) => {
+  try {
+    const response = await api.delete(`/saved/post/${postId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error unsaving post:', error);
+    throw error;
+  }
+},
 };

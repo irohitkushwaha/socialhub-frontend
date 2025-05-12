@@ -26,6 +26,7 @@ import Whatsapp from "./Pages/Whatsapp";
 import InstagramPosts from "./Pages/InstagramPosts";
 import ReelUpload from "./Pages/ReelUpload";
 import PostUpload from "./Pages/PostUploading";
+import SingleReel from "./Pages/SingleReel";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
           {
             path: "instagram",
             element: <Instagram />,
+          },
+          {
+            path: "instagram/reels/:videoid",
+            element: <SingleReel />,
           },
           {
             path: "youtube/playing/:videoid",
