@@ -1,19 +1,36 @@
 import React, { useState } from "react";
+import { handleFollow } from "../../../../../utils/reelApiHandlers";
+import { isLoggedin } from "../../../../../redux/slices/authentication.slice";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const ReelOwnerFollow = ({
   profileImg,
   username,
   InitialIsFollowing,
-  ownerId,
+  reelId,
 }) => {
   const [isFollowing, setIsFollowing] = useState(InitialIsFollowing);
+  const [showPromptforFollow, setShowPromptforFollow] = useState(false);
+
+  const isUserLoggedin = useSelector(isLoggedin);
 
   const handleFollowClick = () => {
-    setIsFollowing(!isFollowing);
+    if (!isUserLoggedin) {
+      e.stopPropagation();
+      setShowPromptforFollow(true); // (use a local state for prompt)
+      setTimeout(() => setShowPromptforFollow(false), 5000);
+      return;
+    }
+    handleFollow(reelId, isFollowing, setIsFollowing);
   };
 
+  useEffect(() => {
+    setIsFollowing(InitialIsFollowing);
+  }, [InitialIsFollowing]);
+
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="relative flex items-center justify-center gap-2">
       {/* Profile component (Left side) */}
       <div className="flex-shrink-0 cursor-pointer">
         <div className="w-fit h-fit rounded-ful flex items-center justify-center">
@@ -42,6 +59,18 @@ const ReelOwnerFollow = ({
       >
         {isFollowing ? "Following" : "Follow"}
       </button>
+      {showPromptforFollow && (
+        <div
+          className="absolute top-full left-5 mt-0 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+          style={{ wordSpacing: "5px" }}
+        >
+          Please{" "}
+          <span Link className="text-blue-500">
+            <Link to="/login">login</Link>
+          </span>
+          ! to Follow/Unfollow
+        </div>
+      )}
     </div>
   );
 };

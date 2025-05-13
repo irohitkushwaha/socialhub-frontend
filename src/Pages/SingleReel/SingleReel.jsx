@@ -11,8 +11,7 @@ import { selectIsShareModalOpen } from "../../redux/slices/shareSlice";
 import { selectIsCommentOpen } from "../../redux/slices/commentSlice";
 
 const SingleReel = () => {
-
-    console.log("SingleReel")
+  console.log("SingleReel");
 
   const { videoid } = useParams(); // Get videoId from URL parameter
   const navigate = useNavigate();
@@ -130,7 +129,9 @@ const SingleReel = () => {
           <div className="relative w-full h-screen md:w-auto sm:max-w-[500px] overflow-hidden md:pb-[100px]">
             <ReelPlayer
               videoUrl={video.url}
-              disableSwipe={true} // Disable swipe in single view
+              disableSwipe={true} 
+              videoId={video.id}
+              // Disable swipe in single view
             />
 
             {isMobile && (
@@ -151,7 +152,7 @@ const SingleReel = () => {
                 profileImg={video.owner?.Avatar}
                 username={video.owner?.UserName}
                 InitialIsFollowing={video.isFollowing}
-                ownerId={video.owner?._id}
+                reelId={video.id}
               />
             </div>
 

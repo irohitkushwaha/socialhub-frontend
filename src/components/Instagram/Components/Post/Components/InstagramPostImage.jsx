@@ -20,7 +20,7 @@ const InstagramPostImage = ({ imageUrl, altText = "Instagram post" }) => {
 
   return (
     <div
-      className="overflow-hidden w-full aspect-[4/4] md:aspect-[4/3]"
+      className="relative overflow-hidden w-full aspect-[4/4] md:aspect-[4/5]"
       style={{
         // width: isMobile ? "100%" : "300px",
         // height: isMobile ? "427px" : "572px",
@@ -33,7 +33,7 @@ const InstagramPostImage = ({ imageUrl, altText = "Instagram post" }) => {
       <img
         src={imageUrl}
         alt={altText}
-        className="w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover object-center"
         loading="lazy"
       />
     </div>

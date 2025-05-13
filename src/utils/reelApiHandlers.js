@@ -58,20 +58,20 @@ export const handleReelSave = async (videoId, isSaved, setIsSaved) => {
 };
 
 // Follow/Unfollow handler
-export const handleFollow = async (userId, isFollowing, setIsFollowing) => {
+export const handleFollow = async (reelId, isFollowing, setIsFollowing) => {
   try {
     if (!isFollowing) {
       // Optimistic UI update
       setIsFollowing(true);
       
       // API call
-      await subscriptionService.subscribe(userId);
+      await subscriptionService.subscribe(reelId);
     } else {
       // Optimistic UI update
       setIsFollowing(false);
       
       // API call
-      await subscriptionService.unsubscribe(userId);
+      await subscriptionService.unsubscribe(reelId);
     }
   } catch (error) {
     // Rollback on error

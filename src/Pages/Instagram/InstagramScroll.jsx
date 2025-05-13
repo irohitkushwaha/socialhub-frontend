@@ -357,6 +357,7 @@ const InstagramScroll = () => {
               videoUrl={currentVideo?.url}
               onNextVideo={handleNextVideo}
               onPrevVideo={handlePrevVideo}
+              videoId={currentVideo?.id}
               isTransitioning={isTransitioning}
               disableSwipe={true} // Disable swipe in the component since we handle it here
             />
@@ -378,7 +379,7 @@ const InstagramScroll = () => {
                 profileImg={currentVideo?.owner?.Avatar}
                 username={currentVideo?.owner?.UserName}
                 InitialIsFollowing={currentVideo?.isFollowing}
-                ownerId={currentVideo?.owner?._id}
+                reelId={currentVideo?.id}
               />
             </div>
           </div>

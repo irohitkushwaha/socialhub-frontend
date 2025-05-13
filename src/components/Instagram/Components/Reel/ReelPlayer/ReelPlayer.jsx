@@ -3,11 +3,14 @@ import ReactPlayer from "react-player";
 import { selectIsAutoScrollEnabled } from "../../../../../redux/slices/autoScrollSlice";
 import { useSelector } from "react-redux";
 import { selectHasInteracted } from "../../../../../redux/slices/userInteractionSlice";
+import { isLoggedin } from "../../../../../redux/slices/authentication.slice";
+import { watchHistoryService } from "../../../../../Services/api/WatchHistory.Service";
 
 const ReelPlayer = ({
   videoUrl,
   onNextVideo,
   onPrevVideo,
+  videoId,
   disableSwipe = true,
 }) => {
   const globalHasInteracted = useSelector(selectHasInteracted);
@@ -34,7 +37,50 @@ const ReelPlayer = ({
   const containerRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
 
+  const videoSavedToHistoryRef = useRef(false);
+  const watchHistoryTimerRef = useRef(null);
+
   const isAutoScrollEnabled = useSelector(selectIsAutoScrollEnabled);
+
+  const saveToWatchHistory = async (videoId) => {
+    // Prevent duplicate API calls for the same video
+    if (!videoId || videoSavedToHistoryRef.current) return;
+
+    try {
+      await watchHistoryService.saveToWatchHistory(videoId);
+      videoSavedToHistoryRef.current = true;
+      console.log("Added to watch history:", videoId);
+    } catch (error) {
+      console.error("Error saving to watch history:", error);
+    }
+  };
+
+  // Track video watch time and save to history after 3 seconds
+  useEffect(() => {
+    // Reset saved state when video changes
+    videoSavedToHistoryRef.current = false;
+
+    // Clear any existing timer
+    if (watchHistoryTimerRef.current) {
+      clearTimeout(watchHistoryTimerRef.current);
+      watchHistoryTimerRef.current = null;
+    }
+
+    // Only start timer if video is playing and we have a valid ID
+    if (playing && videoId) {
+      watchHistoryTimerRef.current = setTimeout(() => {
+        saveToWatchHistory(videoId);
+
+        console.log("reel saved to watched reels video id is", videoId);
+      }, 3000); // 3 seconds
+    }
+
+    return () => {
+      if (watchHistoryTimerRef.current) {
+        clearTimeout(watchHistoryTimerRef.current);
+      }
+    };
+  }, [videoId, playing]);
 
   // Handle video click to toggle play/pause
   const handlePlayPause = (e) => {
@@ -218,7 +264,6 @@ const ReelPlayer = ({
       setHasUserInteracted(true);
 
       if (disableSwipe) return;
-
 
       // Prevent handling if already scrolling
       if (isScrolling) return;

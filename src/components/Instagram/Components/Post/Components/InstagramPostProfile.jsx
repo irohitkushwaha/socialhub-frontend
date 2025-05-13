@@ -6,11 +6,11 @@ const InstagramPostProfile = ({
   username = "@shradhakhapra123",
   isVerified = true,
   timeAgo = "1w",
-  isFollow,
+  InitialIsFollow,
   // onFollowClick,
 }) => {
   const [isMobile, setIsMobile] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(isFollow);
+  const [isFollowing, setIsFollowing] = useState(InitialIsFollow);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -59,7 +59,7 @@ const InstagramPostProfile = ({
     <div className="flex justify-start items-center gap-[15px]">
       {/* Left side - Profile Image (same for both mobile and desktop) */}
       <div
-        className="w-[60px] h-[60px] rounded-full overflow-hidden flex-shrink-0"
+        className="w-[45px] h-[45px] rounded-full overflow-hidden flex-shrink-0"
         // style={{ flexBasis: "69px" }}
       >
         <img

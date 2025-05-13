@@ -64,12 +64,6 @@ const ReelActions = ({
       return;
     }
     handleReelLike(videoId, isLiked, setIsLiked, setLikeCount);
-    // if (isLiked) {
-    //   setLikeCount((prevCount) => prevCount - 1);
-    // } else {
-    //   setLikeCount((prevCount) => prevCount + 1);
-    // }
-    // setIsLiked(!isLiked);
   };
 
   // Handle save button click
@@ -81,22 +75,7 @@ const ReelActions = ({
       return;
     }
     handleReelSave(videoId, isSaved, setIsSaved);
-    // setIsSaved(!isSaved);
   };
-
-  // Handle comment button click
-  // const handleCommentClick = () => {
-  //   console.log("handle comment click is called");
-  //   setIsCommentOpen((prev) => !prev);
-  //   console.log("isCommentOpen", isCommentOpen);
-  //   if (isCommentOpen) {
-  //     dispatch(openComment());
-  //     console.log("open comment");
-  //   } else {
-  //     dispatch(closeComment());
-  //     console.log("close comment");
-  //   }
-  // };
 
   const handleCommentClick = () => {
     setIsCommentOpen((prev) => {

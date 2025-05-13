@@ -6,36 +6,32 @@ import {
   faPaperPlane,
   faBookmark as faBookmarkSolid,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faHeart,
-  faBookmark,
-  faComment,
-} from "@fortawesome/free-regular-svg-icons";
+import { faHeart, faComment } from "@fortawesome/free-regular-svg-icons";
 import { openShareModal } from "../../../../../redux/slices/shareSlice";
-import {
-  toggleAutoScroll,
-  selectIsAutoScrollEnabled,
-} from "../../../../../redux/slices/autoScrollSlice";
 
-const ReelActions = ({ isLiked, isSaved, likeCount }) => {
+const PostAction = ({
+  InitialIsLiked,
+  InitialIsSaved,
+  InitialLikeCount,
+  handleLike,
+}) => {
   const dispatch = useDispatch();
-  const [isLiking, setIsLiked] = useState(isLiked);
-  const [likeCounting, setLikeCount] = useState(likeCount);
-  const [isSaving, setIsSaved] = useState(isSaved);
+  const [isLiked, setIsLiked] = useState(InitialIsLiked);
+  const [isSaved, setIsSaved] = useState(InitialIsSaved);
+
+  useEffect(() => {
+    setIsLiked(InitialIsLiked);
+    setIsSaved(InitialIsSaved);
+  }, [InitialIsLiked, InitialIsSaved]);
 
   // Handle like button click
-  const handleLike = () => {
-    if (isLiking) {
-      setLikeCount((prevCount) => prevCount - 1);
-    } else {
-      setLikeCount((prevCount) => prevCount + 1);
-    }
-    setIsLiked(!isLiking);
+  const handleLikeClick = () => {
+    handleLike();
   };
 
   // Handle save button click
   const handleSave = () => {
-    setIsSaved(!isSaving);
+    setIsSaved(!isSaved);
   };
 
   // Handle share button click
@@ -56,11 +52,11 @@ const ReelActions = ({ isLiked, isSaved, likeCount }) => {
         {/* Like button */}
         <div className="flex flex-col items-center justify-center gap-[4px]">
           <button
-            onClick={handleLike}
+            onClick={handleLikeClick}
             className="bg-transparent border-none cursor-pointer"
             aria-label="Like"
           >
-            {isLiking ? (
+            {isLiked ? (
               <FontAwesomeIcon
                 icon={faHeartSolid}
                 style={{ fontSize: "29px" }}
@@ -120,7 +116,7 @@ const ReelActions = ({ isLiked, isSaved, likeCount }) => {
               justifyContent: "center",
             }}
           >
-            {isSaving ? (
+            {isSaved ? (
               <FontAwesomeIcon
                 icon={faBookmarkSolid}
                 style={{ fontSize: "29px" }}
@@ -141,4 +137,4 @@ const ReelActions = ({ isLiked, isSaved, likeCount }) => {
   );
 };
 
-export default ReelActions;
+export default PostAction;

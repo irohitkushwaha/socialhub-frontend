@@ -72,7 +72,7 @@ function PostUpload() {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-[40px] items-center py-[25px] w-full px-[150px]"
     >
-      <FormTitle isWavy={true}>Share your Heart with the World</FormTitle>
+      <FormTitle isWavy={true}>Share your Emotion with the World</FormTitle>
       <div className="flex flex-col gap-[18px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] px-[50px] py-[20px] items-center w-full">
         <div className="flex flex-col gap-[40px] w-full items-center">
           <div className="flex flex-col gap-[30px] w-full">

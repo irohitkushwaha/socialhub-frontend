@@ -90,7 +90,7 @@ const PostDetails = ({ likeCount, title }) => {
           fontSize: isMobile ? "16px" : "18px",
         }}
       >
-        {likeCount.toLocaleString()} likes
+        {likeCount} likes
       </p>
 
       {/* Post title */}

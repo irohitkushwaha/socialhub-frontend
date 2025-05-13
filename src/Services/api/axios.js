@@ -6,7 +6,7 @@ const api = axios.create({
   baseURL: isMobile
     ? "http://192.168.207.212:8000/api/v1"
     : "http://localhost:8000/api/v1",
-  timeout: 10000,
+  timeout: 60000,
   withCredentials: true, // This is what enables cookies to be sent!
 });
 
