@@ -5,9 +5,14 @@ import ReelOwnerFollow from "../../components/Instagram/Components/Reel/ReelOwne
 import ShareModal from "../../components/Common/ShareModal";
 import { useSelector } from "react-redux";
 import { selectIsShareModalOpen } from "../../redux/slices/shareSlice";
-import { selectIsCommentOpen } from "../../redux/slices/commentSlice";
+import {
+  selectIsCommentOpen,
+  selectActiveItemId,
+  selectItemType,
+} from "../../redux/slices/commentSlice";
 import CommentCompo from "../../components/Common/CommentCompo";
 import { videoService } from "../../Services/api/Video.Service";
+import { commentService } from "../../Services/api/Comment.Service";
 
 const InstagramScroll = () => {
   const [videoOptions, setVideoOptions] = useState([]);
@@ -17,9 +22,15 @@ const InstagramScroll = () => {
 
   const isCommentOpen = useSelector(selectIsCommentOpen);
   const isShareModalOpen = useSelector(selectIsShareModalOpen);
+  const activeItemId = useSelector(selectActiveItemId);
+  const itemType = useSelector(selectItemType);
+
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const currentVideo = videoOptions[currentVideoIndex] || {};
   const [isMobile, setIsMobile] = useState(false);
+
+  const [CommentResponse, setCommentResponse] = useState([]);
+  const [CommentCount, setCommentCount] = useState(0);
 
   // Add new state for slide transitions
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -32,6 +43,9 @@ const InstagramScroll = () => {
   const slideContainerRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
   const transitionTimeoutRef = useRef(null);
+
+  const isActivePost =
+    isCommentOpen && activeItemId === currentVideo.id && itemType === "video";
 
   // Function to fetch videos
   const fetchVideos = async (page) => {
@@ -112,6 +126,25 @@ const InstagramScroll = () => {
       document.documentElement.style.overflow = "";
     };
   }, []);
+
+  const fetchComment = async () => {
+    try {
+      console.log("video id is", currentVideo.id);
+      const response = await commentService.getVideoComments({
+        videoId: currentVideo.id,
+      });
+      setCommentResponse(response.comments);
+      setCommentCount(response.commentCount);
+    } catch (error) {
+      console.log("error in api calling for comment for reels", error.msg);
+    }
+  };
+
+  useEffect(() => {
+    if (isActivePost) {
+      fetchComment();
+    }
+  }, [isActivePost]);
 
   const handleNextVideo = () => {
     if (isTransitioning) return;
@@ -359,7 +392,7 @@ const InstagramScroll = () => {
               onPrevVideo={handlePrevVideo}
               videoId={currentVideo?.id}
               isTransitioning={isTransitioning}
-              disableSwipe={true} // Disable swipe in the component since we handle it here
+              disableSwipe={false} // Disable swipe in the component since we handle it here
             />
             {isMobile && (
               <div className="absolute z-30 bottom-[150px] right-[13px] pb-[20px]">
@@ -373,7 +406,7 @@ const InstagramScroll = () => {
                 />
               </div>
             )}
-           {console.log("profile of owner is",currentVideo?.owner?.Avatar)}
+            {console.log("profile of owner is", currentVideo?.owner?.Avatar)}
             <div className="absolute z-30 bottom-[85px] md:bottom-[40px] flex justify-start w-fit pl-[15px] md:pb-[100px] pb-[90px]">
               <ReelOwnerFollow
                 profileImg={currentVideo?.owner?.Avatar}
@@ -392,6 +425,7 @@ const InstagramScroll = () => {
                 videoId={currentVideo?.id}
                 IntitialIsLiked={currentVideo?.isLiked}
                 IntitialIsSaved={currentVideo?.isSaved}
+                AutoScroll={true}
               />
             </div>
           )}
@@ -412,10 +446,14 @@ const InstagramScroll = () => {
           </div>
         )}
 
-        {isCommentOpen && (
+        {isActivePost && (
           <div className="absolute z-50 top-[150px] bg-opacity-50 p-[12px]">
             <div className="w-full">
-              <CommentCompo isReel={true} />
+              <CommentCompo
+                isReel={true}
+                CommentCount={CommentCount}
+                CommentResponse={CommentResponse}
+              />
             </div>
           </div>
         )}

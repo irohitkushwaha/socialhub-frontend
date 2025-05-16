@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { markUserInteracted } from "./redux/slices/userInteractionSlice";
 import { loggedin, loggedout } from "./redux/slices/authentication.slice";
 import { userService } from "./Services/api/User.Service";
+import  socket from "./Services/socket/SocketServices"
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {

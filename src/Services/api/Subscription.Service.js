@@ -17,6 +17,16 @@ export const subscriptionService = {
     }
   },
 
+  subscribePost: async (postId) => {
+    try {
+      const response = await api.post(`/subscription/post/${postId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error subscribing to channel:", error);
+      throw error;
+    }
+  },
+
   /**
    * Check if the current user is subscribed to a channel (via video)
    * @param {string} videoId - ID of the video to check subscription status for
@@ -46,6 +56,18 @@ export const subscriptionService = {
       throw error;
     }
   },
+
+  unsubscribePost: async (postId) => {
+    try {
+      const response = await api.get(`/subscription/unsubscribe/post/${postId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error unsubscribing from channel:", error);
+      throw error;
+    }
+  },
+
+
 
   /**
    * Get list of users who have subscribed to the current user's channel

@@ -19,6 +19,7 @@ import { isLoggedin } from "../../../../../redux/slices/authentication.slice";
 import {
   openComment,
   closeComment,
+  selectIsCommentOpen,
 } from "../../../../../redux/slices/commentSlice";
 import { useMediaQuery } from "../../../../../hooks/useMediaQuery";
 import { openShareModal } from "../../../../../redux/slices/shareSlice";
@@ -41,13 +42,17 @@ const ReelActions = ({
   const [isLiked, setIsLiked] = useState(IntitialIsLiked);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [isSaved, setIsSaved] = useState(IntitialIsSaved);
-  const [isCommentOpen, setIsCommentOpen] = useState(false);
   const [showPromptforLike, setShowPromptforLike] = useState(false);
   const [showPromptforSave, setShowPromptforSave] = useState(false);
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const isUserLoggedin = useSelector(isLoggedin);
+
+  const isCommentOpen = useSelector(selectIsCommentOpen);
+
+
+  console.log("autoscroll value is ", AutoScroll);
 
   useEffect(() => {
     setIsLiked(IntitialIsLiked);
@@ -78,17 +83,11 @@ const ReelActions = ({
   };
 
   const handleCommentClick = () => {
-    setIsCommentOpen((prev) => {
-      const newValue = !prev;
-      if (newValue) {
-        console.log("open comment dispatch is called");
-        dispatch(openComment());
-      } else {
-        console.log("close comment dispatch is called");
-        dispatch(closeComment());
-      }
-      return newValue;
-    });
+    if (isCommentOpen) {
+      dispatch(closeComment());
+    } else {
+      dispatch(openComment({ id: videoId, type: "video" }));
+    }
   };
 
   // Handle share button click

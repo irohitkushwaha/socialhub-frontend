@@ -1,7 +1,7 @@
 // WavyText.jsx
 import React from 'react';
 
-const WavyText = ({ text, color = "inherit" }) => {
+const WavyText = ({ text, color = "inherit", translateValue = "16" }) => {
   return (
     <>
       <style>
@@ -11,7 +11,7 @@ const WavyText = ({ text, color = "inherit" }) => {
               transform: translateY(0);
             }
             50% {
-              transform: translateY(-16px);
+              transform: translateY(-${translateValue}px);
             }
           }
           .wavy-char {

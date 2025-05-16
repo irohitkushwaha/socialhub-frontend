@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import shradha from "../../../../../assets/shradha.jpg";
+import { Link } from "react-router-dom";
+import { isLoggedin } from "../../../../../redux/slices/authentication.slice";
+import { useSelector } from "react-redux";
+import { subscriptionService } from "../../../../../Services/api/Subscription.Service";
 
 const InstagramPostProfile = ({
   profileImage = shradha,
@@ -7,10 +11,13 @@ const InstagramPostProfile = ({
   isVerified = true,
   timeAgo = "1w",
   InitialIsFollow,
-  // onFollowClick,
+  postId,
 }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isFollowing, setIsFollowing] = useState(InitialIsFollow);
+  const [showPromptforFollow, setShowPromptforFollow] = useState(false);
+
+  const isUserLoggedin = useSelector(isLoggedin);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -27,11 +34,21 @@ const InstagramPostProfile = ({
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
-  const handleFollowClick = () => {
+  const handleFollowClick = async (e) => {
+    if (!isUserLoggedin) {
+      e.stopPropagation();
+      setShowPromptforFollow(true); // (use a local state for prompt)
+      setTimeout(() => setShowPromptforFollow(false), 5000);
+      return;
+    }
     setIsFollowing(!isFollowing);
-    // if (onFollowClick) {
-    //   onFollowClick(!isFollowing);
-    // }
+    if (isFollowing) {
+      const response = await subscriptionService.unsubscribePost(postId);
+      console.log("response for follow post is", isFollowing);
+    } else {
+      const response = await subscriptionService.subscribePost(postId);
+      console.log("response for follow post is", response);
+    }
   };
 
   // Custom verified badge that doesn't rely on Material Icons
@@ -97,8 +114,8 @@ const InstagramPostProfile = ({
         </div>
       ) : (
         // Desktop Layout
-        <div className="flex items-center gap-[8px]">
-          <span className="text-[20px] font-semibold text-[#414651]">
+        <div className="relative flex items-center gap-[8px]">
+          <span className="text-[20px] font-semibold text-[#414651] ">
             {username}
           </span>
 
@@ -118,6 +135,18 @@ const InstagramPostProfile = ({
           >
             {isFollowing ? "Following" : "Follow"}
           </button>
+          {showPromptforFollow && (
+            <div
+              className="absolute top-full left-5 mt-5 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+              style={{ wordSpacing: "5px" }}
+            >
+              Please{" "}
+              <span Link className="text-blue-500">
+                <Link to="/login">login</Link>
+              </span>
+              ! to Follow/Unfollow
+            </div>
+          )}
         </div>
       )}
     </div>

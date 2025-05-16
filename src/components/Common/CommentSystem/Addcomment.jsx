@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { commentService } from "../../../Services/api/Comment.Service";
 
-const AddComment = ({ videoId }) => {
+const AddComment = ({ videoId, postId }) => {
   const [commentText, setCommentText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef(null);
@@ -47,10 +47,6 @@ const AddComment = ({ videoId }) => {
     }
   }, [commentText]);
 
-  const handleChange = (e) => {
-    // This is now handled by the onInput prop
-  };
-
   const handleFocus = (e) => {
     console.log("is focused executed");
     if (!isUserLogged) {
@@ -73,10 +69,18 @@ const AddComment = ({ videoId }) => {
   const handleSubmit = async () => {
     if (!commentText.trim()) return;
     try {
-      await commentService.saveVideoComment({
-        videoId,
-        content: commentText,
-      });
+      if (videoId) {
+        await commentService.saveVideoComment({
+          videoId,
+          content: commentText,
+        });
+      } else if (postId) {
+        await commentService.savePostComment({
+          postId,
+          content: commentText,
+        });
+      }
+
       setCommentText("");
       if (textareaRef.current) textareaRef.current.textContent = "";
       setIsFocused(false);

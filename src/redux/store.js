@@ -5,9 +5,11 @@ import userInteractionReducer from "./slices/userInteractionSlice";
 import commentReducer from "./slices/commentSlice";
 import sidebarChatReducer from "./slices/sidebarChatSlice";
 import authenticationReducer from "./slices/authentication.slice";
+import chatReducer from "./slices/chatSlice"
 
 export const store = configureStore({
   reducer: {
+    chat: chatReducer, 
     share: shareReducer,
     autoScroll: autoScrollReducer,
     userInteraction: userInteractionReducer,

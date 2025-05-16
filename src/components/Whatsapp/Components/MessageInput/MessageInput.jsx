@@ -1,4 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { sendTypingStatus } from "../../../../Services/socket/SocketServices";
+import { selectChatData } from "../../../../redux/slices/sidebarChatSlice";
+import { useSelector } from "react-redux";
 
 const MessageInput = ({ onMessageSend }) => {
   const [inputValue, setInputValue] = useState("");
@@ -9,19 +12,93 @@ const MessageInput = ({ onMessageSend }) => {
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
+  const selectedChat = useSelector(selectChatData);
+
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimerRef = useRef(null);
+  const lastTypedRef = useRef(Date.now());
+
+  // // Handle typing indication with debounce
+  // useEffect(() => {
+  //   // Only proceed if there's a selected chat
+  //   if (!selectedChat?.id) return;
+
+  //   // If user starts typing and we haven't sent the typing indicator yet
+  //   if (inputValue && !isTyping) {
+  //     setIsTyping(true);
+  //     sendTypingStatus(selectedChat.id, true);
+  //   }
+
+  //   // Set a timer to detect when user stops typing
+  //   const typingTimer = setTimeout(() => {
+  //     if (isTyping) {
+  //       setIsTyping(false);
+  //       sendTypingStatus(selectedChat.id, false);
+  //     }
+  //   }, 10);
+
+  //   // Clean up the timer when component unmounts or when dependencies change
+  //   return () => clearTimeout(typingTimer);
+  // }, [inputValue, isTyping, selectedChat]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputValue.trim() || selectedFile) {
-      onMessageSend(inputValue, selectedFile);
+      onMessageSend(inputValue); //remove from passing selectedFile
       setInputValue("");
       setSelectedFile(null);
       setPreviewUrl(null);
       setFileType(null);
     }
+    if (isTyping) {
+      setIsTyping(false);
+      sendTypingStatus(selectedChat.id, false);
+
+      // Clear any pending timer
+      if (typingTimerRef.current) {
+        clearTimeout(typingTimerRef.current);
+      }
+    }
   };
 
+  // const handleInputChange = (e) => {
+  //   setInputValue(e.target.value);
+  // };
+
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    const newValue = e.target.value;
+    setInputValue(newValue);
+
+    // Record the time of this keystroke
+    lastTypedRef.current = Date.now();
+
+    // Only proceed if there's a selected chat
+    if (!selectedChat?.id) return;
+
+    // Send typing indicator if not already typing
+    if (!isTyping && newValue) {
+      setIsTyping(true);
+      sendTypingStatus(selectedChat.id, true);
+    }
+
+    // Clear any existing timer
+    if (typingTimerRef.current) {
+      clearTimeout(typingTimerRef.current);
+    }
+
+    // Set a new timer to detect when typing stops
+    typingTimerRef.current = setTimeout(() => {
+      // If there's no text or user cleared the input, send stopped typing
+      if (!newValue || newValue.trim() === "") {
+        setIsTyping(false);
+        sendTypingStatus(selectedChat.id, false);
+      }
+      // If user has been inactive for the timeout period, send stopped typing
+      else if (isTyping) {
+        setIsTyping(false);
+        sendTypingStatus(selectedChat.id, false);
+      }
+    }, 500); // 1.5 seconds of inactivity = stopped typing
   };
 
   const handleFileSelect = (e) => {

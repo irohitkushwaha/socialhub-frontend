@@ -11,7 +11,7 @@ const ReelPlayer = ({
   onNextVideo,
   onPrevVideo,
   videoId,
-  disableSwipe = true,
+  disableSwipe = false,
 }) => {
   const globalHasInteracted = useSelector(selectHasInteracted);
 

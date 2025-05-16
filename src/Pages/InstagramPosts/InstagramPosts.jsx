@@ -1,17 +1,3 @@
-// import InstagramPost from "../../components/Instagram/Components/Post/InstagramPost";
-// import React from "react";
-// import {postService} from "../../Services/api/Post.Service";
-
-// function InstagramPosts() {
-//   return (
-//     <div>
-//       <InstagramPost />
-//     </div>
-
-//   );
-// }
-
-// export default InstagramPosts;
 
 import InstagramPost from "../../components/Instagram/Components/Post/InstagramPost";
 import React, { useState, useEffect } from "react";
@@ -137,3 +123,5 @@ function InstagramPosts() {
 }
 
 export default InstagramPosts;
+
+

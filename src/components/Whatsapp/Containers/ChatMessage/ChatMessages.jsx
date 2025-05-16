@@ -2,12 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import MessageBubble from "../../Components/MessageBubble";
 import ChatDateSeparator from "../../Components/ChatDateSeparator";
 import { formatMessageTime } from "../../utils/chatAdapter";
-import "../../../../Pages/Whatsapp/Whatsapp.css"
+import "../../../../Pages/Whatsapp/Whatsapp.css";
+import { selectIsUserTyping } from "../../../../redux/slices/chatSlice";
+import { selectChatData } from "../../../../redux/slices/sidebarChatSlice";
+import { useSelector } from "react-redux";
+// import WavyText from "../../../ui/WavyText";
+import TypewriterEffect from "../../../../utils/typewritereffect";
 
 const ChatMessages = ({ messages }) => {
   const messagesEndRef = useRef(null);
   const containerRef = useRef(null);
   const [visibleDate, setVisibleDate] = useState(null);
+
+  const selectedChat = useSelector(selectChatData);
+  const isTyping = useSelector((state) =>
+    selectIsUserTyping(state, selectedChat?.id)
+  );
 
   const scrollToBottom = () => {
     if (containerRef.current) {
@@ -43,19 +53,19 @@ const ChatMessages = ({ messages }) => {
   const handleScroll = (e) => {
     const container = e.target;
     const messageElements = container.querySelectorAll(".message-container");
-  
+
     if (messageElements.length === 0) return;
-  
+
     // Get container's position
     const containerRect = container.getBoundingClientRect();
-  
+
     // Find the first visible message
     for (let i = 0; i < messageElements.length; i++) {
       const rect = messageElements[i].getBoundingClientRect();
-  
+
       // Calculate position relative to container
       const relativeTop = rect.top - containerRect.top;
-  
+
       // Check if message is visible in the container
       if (relativeTop >= 0 && relativeTop < container.clientHeight) {
         const timestamp = messageElements[i].dataset.timestamp;
@@ -66,41 +76,6 @@ const ChatMessages = ({ messages }) => {
       }
     }
   };
-  // const handleScroll = (e) => {
-  //   const container = e.target;
-  //   const messageElements = container.querySelectorAll(".message-container");
-
-  //   if (messageElements.length === 0) return;
-
-  //   // Get container's position
-  //   const containerRect = container.getBoundingClientRect();
-
-  //   // Find the last visible message (first visible from bottom)
-  //   let lastVisibleMessageTimestamp = null;
-
-  //   // Iterate through all messages to find the last one visible
-  //   for (let i = 0; i < messageElements.length; i++) {
-  //     const rect = messageElements[i].getBoundingClientRect();
-
-  //     // Calculate position relative to container
-  //     const relativeTop = rect.top - containerRect.top;                                                    
-  //     const relativeBottom = relativeTop + rect.height;
-
-  //     // Check if message is visible in the container
-  //     if (relativeTop < container.clientHeight && relativeBottom > 0) {
-  //       // This message is visible, store its timestamp
-  //       const timestamp = messageElements[i].dataset.timestamp;
-  //       if (timestamp) {
-  //         lastVisibleMessageTimestamp = timestamp;
-  //       }
-  //     }
-  //   }
-
-  //   // Update the visible date with the last visible message's timestamp
-  //   if (lastVisibleMessageTimestamp) {
-  //     setVisibleDate(lastVisibleMessageTimestamp);
-  //   }
-  // };
 
   return (
     <div
@@ -124,15 +99,49 @@ const ChatMessages = ({ messages }) => {
             data-timestamp={msg.timestamp || msg.TimeStamps}
           >
             <MessageBubble
-              message={msg.text || msg.MessageText}
-              timestamp={formatMessageTime(msg.timestamp || msg.TimeStamps)}
-              isSent={msg.isSent || msg.SenderId === "currentUserId"}
-              profileImage={!msg.isSent ? msg.profileImage : null}
-              status={msg.status || msg.MessageStatus}
+              message={msg.text}
+              timestamp={formatMessageTime(msg.timestamp)}
+              isSent={msg.isSent}
+              // profileImage={!msg.isSent ? msg.profileImage : null}
+              status={msg.status}
             />
           </div>
         ))}
       </div>
+      {isTyping && selectedChat && (
+        <div className="flex justify-start mb-4 ml-3">
+          <div className="p-3 flex items-center space-x-1">
+            <div className="flex space-x-1">
+              <div
+                className="h-2 w-2 bg-gray-300 rounded-full custom-bounce"
+                style={{ animationDelay: "0ms" }}
+              ></div>
+              <div
+                className="h-2 w-2 bg-gray-300 rounded-full custom-bounce"
+                style={{ animationDelay: "150ms" }}
+              ></div>
+              <div
+                className="h-2 w-2 bg-gray-300 rounded-full custom-bounce"
+                style={{ animationDelay: "300ms" }}
+              ></div>
+            </div>
+            <style jsx>{`
+              @keyframes custom-bounce {
+                0%, 100% {
+                  transform: translateY(0);
+                }
+                50% {
+                  transform: translateY(-5px); /* Increased bounce height */
+                }
+              }
+              .custom-bounce {
+                animation: custom-bounce 1s infinite ease-in-out;
+              }
+            `}</style>
+          </div>
+        </div>
+      )}
+
       <div ref={messagesEndRef}></div>
       {/* <div ref={messagesEndRef} </div > */}
     </div>

@@ -1,30 +1,4 @@
 /**
- * Adapts chat messages from API format to component format
- *
- * API Format:
- * {
- *   _id: "65f1a2b3c4d5e6f7g8h9i0j1",
- *   SenderId: "65f1a2b3c4d5e6f7g8h9i0j2",
- *   ReceiverId: "65f1a2b3c4d5e6f7g8h9i0j3",
- *   MessageType: "text",
- *   MessageText: "Hello!",
- *   MessageFileUrl: null,
- *   MessageStatus: "delivered",
- *   TempMsgId: "msg_123456789",
- *   TimeStamps: "2024-02-28T10:00:00.000Z"
- * }
- *
- * Component Format:
- * {
- *   id: "65f1a2b3c4d5e6f7g8h9i0j1",
- *   text: "Hello!",
- *   timestamp: "2024-02-28T10:00:00.000Z",
- *   isSent: true,
- *   status: "delivered"
- * }
- */
-
-/**
  * Converts API message format to component format
  */
 export const convertApiMessagesToComponentFormat = (

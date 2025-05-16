@@ -9,12 +9,20 @@ import { formatTimeAgo } from "../../../utils/formatTimeAgo.js";
 import { commentService } from "../../../Services/api/Comment.Service.js";
 import { useState } from "react";
 
-const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
+const CommentCompo = ({
+  isReel,
+  CommentResponse,
+  CommentCount,
+  videoid,
+  postId,
+}) => {
   console.log("CommentResponse:", CommentResponse);
   // console.log("CommentResponse[0]:", CommentResponse[0]);
   const dispatch = useDispatch();
+
   const handleClose = () => {
     dispatch(closeComment());
+    console.log("comment is closed");
   };
   const [isComment, setIsComment] = useState(true);
   const [positiveText, setPositiveText] = useState("");
@@ -23,6 +31,7 @@ const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
 
   const fetchCommentSummary = async () => {
     try {
+      console.log("api called for this video id", videoid)
       const response = await commentService.getCommentSummary({
         videoId: videoid,
       });
@@ -31,24 +40,20 @@ const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
         // No comments case
         setIsComment(false); // Don't show the summary box
       } else {
-        // Parse the sentiment analysis result
-        // The format is: "X% of comments are positive, by commenting... and Y% of comments are negative, by commenting..."
-        // You need to extract positive and negative parts
-
-        // Simple regex approach:
+        
         setIsComment(true);
-        const positiveMatch = response.match(
-          /(\d+)% of comments are positive[^.]*/
-        );
-        const negativeMatch = response.match(
-          /(\d+)% of comments are negative[^.]*/
-        );
+        const positiveRegex = /APIPOSITIVE\s*(.*?)(?=APINEGATIVE|$)/s;
+        const positiveMatch = response.match(positiveRegex);
+        
+        // Extract negative comments (everything after APINEGATIVE)
+        const negativeRegex = /APINEGATIVE\s*(.*?)$/s;
+        const negativeMatch = response.match(negativeRegex);
 
         setPositiveText(
-          positiveMatch ? positiveMatch[0] : "No positive comments"
+          positiveMatch && positiveMatch[1] ? positiveMatch[1].trim() : "No positive comments"
         );
         setNegativeText(
-          negativeMatch ? negativeMatch[0] : "No negative comments"
+          negativeMatch && negativeMatch[1] ? negativeMatch[1].trim() : "No negative comments"
         );
         setShowSummary(true);
       }
@@ -60,6 +65,13 @@ const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
 
   const handleCommentSummarize = () => {
     console.log("summarized button clicked");
+
+    if (CommentResponse.length === 0) {
+      // Set state to show "no comments" message without API call
+      setIsComment(false);
+      setShowSummary(true);
+      return;
+    }
     const newShowSummary = !showSummary;
     setShowSummary(newShowSummary);
     if (newShowSummary) {
@@ -106,7 +118,7 @@ const CommentCompo = ({ isReel, CommentResponse, CommentCount, videoid }) => {
         negativeText={negativeText}
         showSummary={showSummary}
       />
-      <AddComment videoId={videoid} />
+      <AddComment videoId={videoid} postId={postId} />
       {Array.isArray(CommentResponse) && CommentResponse.length > 0 ? (
         CommentResponse.map((comment) => (
           <CommentList

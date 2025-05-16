@@ -2,13 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { videoService } from "../../Services/api/Video.Service";
+import { commentService } from "../../Services/api/Comment.Service";
 import ReelPlayer from "../../components/Instagram/Components/Reel/ReelPlayer";
 import ReelActions from "../../components/Instagram/Components/Reel/ReelAction";
 import ReelOwnerFollow from "../../components/Instagram/Components/Reel/ReelOwnerFollow";
 import ShareModal from "../../components/Common/ShareModal";
 import CommentCompo from "../../components/Common/CommentCompo";
 import { selectIsShareModalOpen } from "../../redux/slices/shareSlice";
-import { selectIsCommentOpen } from "../../redux/slices/commentSlice";
+import {
+  selectIsCommentOpen,
+  selectActiveItemId,
+  selectItemType,
+} from "../../redux/slices/commentSlice";
 
 const SingleReel = () => {
   console.log("SingleReel");
@@ -22,9 +27,17 @@ const SingleReel = () => {
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
+  const [CommentResponse, setCommentResponse] = useState([]);
+  const [CommentCount, setCommentCount] = useState(0);
+
   // Redux selectors
   const isCommentOpen = useSelector(selectIsCommentOpen);
   const isShareModalOpen = useSelector(selectIsShareModalOpen);
+  const activeItemId = useSelector(selectActiveItemId);
+  const itemType = useSelector(selectItemType);
+
+  const isActivePost =
+    isCommentOpen && activeItemId === video.id && itemType === "video";
 
   // Fetch the video data
   useEffect(() => {
@@ -98,6 +111,24 @@ const SingleReel = () => {
     };
   }, []);
 
+  const fetchComment = async () => {
+    try {
+      const response = await commentService.getVideoComments({
+        videoId: video.id,
+      });
+      setCommentResponse(response.comments);
+      setCommentCount(response.commentCount);
+    } catch (error) {
+      console.log("error in api calling for comment for reels", error.msg);
+    }
+  };
+
+  useEffect(() => {
+    if (isActivePost) {
+      fetchComment();
+    }
+  }, [isActivePost]);
+
   if (isLoading) {
     return (
       <div className="absolute inset-0 flex justify-center items-center bg-white z-50">
@@ -129,7 +160,7 @@ const SingleReel = () => {
           <div className="relative w-full h-screen md:w-auto sm:max-w-[500px] overflow-hidden md:pb-[100px]">
             <ReelPlayer
               videoUrl={video.url}
-              disableSwipe={true} 
+              disableSwipe={true}
               videoId={video.id}
               // Disable swipe in single view
             />
@@ -190,10 +221,15 @@ const SingleReel = () => {
         )}
 
         {/* Comments Container */}
-        {isCommentOpen && (
+        {isActivePost && (
           <div className="absolute z-50 top-[150px] bg-opacity-50 p-[12px]">
             <div className="w-full">
-              <CommentCompo isReel={true} />
+              <CommentCompo
+                videoid={videoid}
+                isReel={true}
+                CommentCount={CommentCount}
+                CommentResponse={CommentResponse}
+              />
             </div>
           </div>
         )}

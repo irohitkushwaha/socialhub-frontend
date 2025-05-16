@@ -3,6 +3,7 @@ import { handleFollow } from "../../../../../utils/reelApiHandlers";
 import { isLoggedin } from "../../../../../redux/slices/authentication.slice";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const ReelOwnerFollow = ({
   profileImg,
@@ -15,7 +16,7 @@ const ReelOwnerFollow = ({
 
   const isUserLoggedin = useSelector(isLoggedin);
 
-  const handleFollowClick = () => {
+  const handleFollowClick = (e) => {
     if (!isUserLoggedin) {
       e.stopPropagation();
       setShowPromptforFollow(true); // (use a local state for prompt)
@@ -61,7 +62,7 @@ const ReelOwnerFollow = ({
       </button>
       {showPromptforFollow && (
         <div
-          className="absolute top-full left-5 mt-0 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+          className="absolute bottom-full left-5 mb-5 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
           style={{ wordSpacing: "5px" }}
         >
           Please{" "}
