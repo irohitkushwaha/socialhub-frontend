@@ -153,7 +153,7 @@ function Whatsapp() {
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
           </div>
         ) : (
-          <div className="w-full justify-center items-end py-[5px] h-[calc(100vh-95px)] md:px-[15px] px-[8px] flex gap-[10px] overflow-hidden pt-[15px] pb-[30px]">
+          <div className="w-full justify-center items-end py-[5px] h-[calc(100vh-95px)] md:px-[15px] px-[8px] flex gap-[10px] overflow-hidden pt-[15px] pb-[30px] md:pb-[5px]">
             <div
               className={`${
                 isSelected ? "hidden" : "block"
