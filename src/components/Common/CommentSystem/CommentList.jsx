@@ -200,7 +200,7 @@ const CommentList = ({
             </button>
             {showPrompt && (
               <div
-                className="absolute top-full left-3 mt-4 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+                className="absolute bottom-full md:bottom-auto md:top-full right-1.5 mb-3 md:right-0 md:mb-0 md:left-3 md:mt-4 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
                 style={{ wordSpacing: "5px" }}
               >
                 Please{" "}

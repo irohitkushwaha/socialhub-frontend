@@ -26,18 +26,15 @@ function SignUpComponent() {
     },
   });
 
-// Collect all frontend errors into an array
-const frontendErrors = Object.values(errors)
-  .map((err) => err.message)
-  .filter(Boolean);
+  // Collect all frontend errors into an array
+  const frontendErrors = Object.values(errors)
+    .map((err) => err.message)
+    .filter(Boolean);
 
-// Combine frontend and backend errors
-const allErrors = [
-  ...frontendErrors,
-  RegisterError && RegisterError
-].filter(Boolean);
-  
- 
+  // Combine frontend and backend errors
+  const allErrors = [...frontendErrors, RegisterError && RegisterError].filter(
+    Boolean
+  );
 
   const handleProfileImgChange = (ProfileImg) => {
     setProfileImg(ProfileImg);
@@ -78,14 +75,22 @@ const allErrors = [
     }
   };
 
+   const handleGoogleLogin = () => {
+      console.log("google btn clicked before");
+      window.location.href = userService.googleLogin();
+      console.log("google btn clicked after");
+    };
+
   return (
     <form
       onSubmit={handleSubmit(SubmitRegistration)}
-      className="flex flex-col gap-[40px] items-center py-[25px]"
+      className="w-full flex flex-col gap-[40px] items-center py-[25px] px-[10px]"
     >
-      <FormTitle>Sign up to your Account</FormTitle>
-      <div className="flex flex-col gap-[18px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] px-[50px] py-[20px] items-center">
-        <GoogleButton />
+      <FormTitle fontSize="text-[25px] md:text-[28px]">
+        Sign up to your Account
+      </FormTitle>
+      <div className="flex flex-col gap-[18px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] px-[15px] py-[20px] items-center w-full md:w-auto">
+        <GoogleButton  onClick={handleGoogleLogin}/>
         <Separator />
         <div className="flex flex-col gap-[30px]">
           <Input
@@ -147,15 +152,17 @@ const allErrors = [
             placeholder="or drag cover image"
           />
           {allErrors.length > 0 && (
-  <div className="text-red-500 text-[18px] font-semibold text-center">
-    {allErrors.map((err, idx) => (
-      <div key={idx}>{err}</div>
-    ))}
-  </div>
-)}
-           {RegisterError && (
-              <div className="text-red-500 text-[18px] font-semibold text-center">{RegisterError}</div>
-            )}
+            <div className="text-red-500 text-[18px] font-semibold text-center">
+              {allErrors.map((err, idx) => (
+                <div key={idx}>{err}</div>
+              ))}
+            </div>
+          )}
+          {RegisterError && (
+            <div className="text-red-500 text-[18px] font-semibold text-center">
+              {RegisterError}
+            </div>
+          )}
           <FlexibleButton
             type="submit"
             text="Sign Up"

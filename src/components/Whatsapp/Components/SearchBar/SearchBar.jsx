@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 
-const SearchBar = () => {
+const SearchBar = ({ onSearch }) => {
   const [searchText, setSearchText] = useState("");
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchText(value);
+    if (onSearch) {
+      onSearch(value);
+    }
   };
 
   console.log(searchText);

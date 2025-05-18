@@ -88,7 +88,7 @@ const router = createBrowserRouter([
             element: <YtPlaying />,
           },
           {
-            path: "youtube/channel-detail",
+            path: "youtube/channel-detail/:userid",
             element: <ChannelDetail />,
           },
           {

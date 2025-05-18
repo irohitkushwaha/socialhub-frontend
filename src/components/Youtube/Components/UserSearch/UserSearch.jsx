@@ -1,8 +1,6 @@
 import React from 'react'
 import ProfileImageWithStatus from '../../../Common/ProfileImage'
 import shradha from "../../../../assets/shradha.jpg";
-
-
 function UserSearch({profileImage = shradha, name = "Rohit Kushwaha", username = "@rohitkushwaha123"}) {
   return (
     <div className='w-full px-[20px] md:px-[0px] overflow-x-hidden'>

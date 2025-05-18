@@ -107,7 +107,7 @@ const PostAction = ({ InitialIsLiked, InitialIsSaved, handleLike, postId }) => {
           </button>
           {showPromptforLike && (
             <div
-              className="absolute top-full left-5 mt-0 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+              className="absolute top-full md:left-5 left-0 md:mt-0 mt-2 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
               style={{ wordSpacing: "5px" }}
             >
               Please{" "}
@@ -132,22 +132,7 @@ const PostAction = ({ InitialIsLiked, InitialIsSaved, handleLike, postId }) => {
               color={iconColor}
             />
           </button>
-        </div>
-
-        {/* Share button */}
-        <div className="flex flex-col items-center">
-          <button
-            className="bg-transparent border-none cursor-pointer"
-            aria-label="Share"
-            onClick={handleShareClick}
-          >
-            <FontAwesomeIcon
-              icon={faPaperPlane}
-              style={{ fontSize: "29px" }}
-              color={iconColor}
-            />
-          </button>
-        </div>
+        </div>        
       </div>
       <div>
         {/* Save button */}
@@ -181,7 +166,7 @@ const PostAction = ({ InitialIsLiked, InitialIsSaved, handleLike, postId }) => {
           </button>
           {showPromptforSave && (
             <div
-              className="absolute top-full right-full mt-3 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+              className="absolute top-full md:right-full right-0 mt-3 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
               style={{ wordSpacing: "5px" }}
             >
               Please{" "}

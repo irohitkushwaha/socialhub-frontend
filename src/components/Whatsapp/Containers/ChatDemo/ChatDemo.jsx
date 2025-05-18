@@ -3,10 +3,7 @@ import ChatMessages from "../ChatMessage";
 import ChatHeader from "../../Components/ChatHeader";
 import MessageInput from "../../Components/MessageInput";
 import { useSelector } from "react-redux";
-import {
-  selectChat,
-  selectChatData,
-} from "../../../../redux/slices/sidebarChatSlice";
+import { selectChatData } from "../../../../redux/slices/sidebarChatSlice";
 import { sendMessage } from "../../../../Services/socket/SocketServices";
 import { getUserData } from "../../../../redux/slices/authentication.slice";
 import { selectChatMessages } from "../../../../redux/slices/chatSlice";
@@ -31,6 +28,11 @@ const ChatDemo = () => {
   );
 
   const [loadedChatHistories, setLoadedChatHistories] = useState({});
+  const [comingSoon, setComingSoon] = useState(false);
+
+  const handleComingSoon = () => {
+    setComingSoon(!comingSoon);
+  };
 
   // Fetch chat history when selectedChat changes
   useEffect(() => {
@@ -140,8 +142,16 @@ const ChatDemo = () => {
       </div>
 
       {/* Messages area */}
-      <div className="flex-1 overflow-hidden">
+      <div className="relative flex-1 overflow-hidden">
         <ChatMessages messages={messages} />
+        {comingSoon && (
+          <div
+            className="absolute bottom-[20px] left-[50px] px-[15px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] z-50"
+            style={{ wordSpacing: "5px" }}
+          >
+            Coming Soon! for sending images/Document
+          </div>
+        )}
       </div>
 
       {/* Message input */}
@@ -150,6 +160,7 @@ const ChatDemo = () => {
           onMessageSend={handleSendMessage}
           onImageSelect={handleImageSelect}
           onDocumentSelect={handleDocumentSelect}
+          handleComingSoon={handleComingSoon}
         />
       </div>
     </div>

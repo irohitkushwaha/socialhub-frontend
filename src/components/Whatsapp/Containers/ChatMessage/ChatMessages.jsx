@@ -77,6 +77,12 @@ const ChatMessages = ({ messages }) => {
     }
   };
 
+  useEffect(() => {
+    if (isTyping) {
+      scrollToBottom();
+    }
+  }, [isTyping]);
+
   return (
     <div
       ref={containerRef}

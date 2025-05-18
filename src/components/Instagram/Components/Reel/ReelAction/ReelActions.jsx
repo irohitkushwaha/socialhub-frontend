@@ -16,6 +16,7 @@ import {
   selectIsAutoScrollEnabled,
 } from "../../../../../redux/slices/autoScrollSlice";
 import { isLoggedin } from "../../../../../redux/slices/authentication.slice";
+import ButtonVideo from "../../../../Youtube/Components/ButtonVideo";
 import {
   openComment,
   closeComment,
@@ -28,6 +29,7 @@ import {
   handleReelSave,
 } from "../../../../../utils/reelApiHandlers";
 import { Link } from "react-router-dom";
+import { icon } from "@fortawesome/fontawesome-svg-core";
 
 const ReelActions = ({
   initialLikeCount = 123,
@@ -50,7 +52,6 @@ const ReelActions = ({
   const isUserLoggedin = useSelector(isLoggedin);
 
   const isCommentOpen = useSelector(selectIsCommentOpen);
-
 
   console.log("autoscroll value is ", AutoScroll);
 
@@ -135,7 +136,7 @@ const ReelActions = ({
         </button>
         {showPromptforLike && (
           <div
-            className="absolute top-full left-5 mt-0 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+            className="absolute top-full md:left-5 right-3 md:right-0 mt-0 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
             style={{ wordSpacing: "5px" }}
           >
             Please{" "}
@@ -202,17 +203,20 @@ const ReelActions = ({
               color={iconColor}
             />
           ) : (
-            <span
-              className="material-icons"
-              style={{ color: iconColor, fontSize: "36px" }}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="36px"
+              viewBox="0 -960 960 960"
+              width="36px"
+              fill={iconColor}
             >
-              bookmark_border
-            </span>
+              <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z" />
+            </svg>
           )}
         </button>
         {showPromptforSave && (
           <div
-            className="absolute top-full left-5 mt-0 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+            className="absolute -top-20 md:top-full  md:left-5 right-2 md:right-0 mt-0 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
             style={{ wordSpacing: "5px" }}
           >
             Please{" "}

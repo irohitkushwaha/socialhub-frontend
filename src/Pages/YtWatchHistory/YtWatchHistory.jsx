@@ -63,7 +63,7 @@ function YtWatchHistory() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-[50px] w-full">
+        <div className="flex flex-col gap-[30px] mt-[10px] md:gap-[45px] w-full">
           {Array.isArray(watchHistory) &&
             watchHistory.map((video) => (
               <div

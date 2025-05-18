@@ -1,4 +1,3 @@
-
 import InstagramPost from "../../components/Instagram/Components/Post/InstagramPost";
 import React, { useState, useEffect } from "react";
 import { postService } from "../../Services/api/Post.Service";
@@ -81,8 +80,11 @@ function InstagramPosts() {
                     : `@${post.Owner.UserName}`
                   : ""
               }
+              userId={post.Owner?._id}
               isVerified={true}
-              timeAgo={post.createdAt ? formatTimeAgo(post.createdAt, true) : "1w"}
+              timeAgo={
+                post.createdAt ? formatTimeAgo(post.createdAt, true) : "1w"
+              }
               InitialLikeCount={post.LikesCountForPost}
               title={post.Title}
               InitialIsFollow={post.isFollowed}
@@ -123,5 +125,3 @@ function InstagramPosts() {
 }
 
 export default InstagramPosts;
-
-

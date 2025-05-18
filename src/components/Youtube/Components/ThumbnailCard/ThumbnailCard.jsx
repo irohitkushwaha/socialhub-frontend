@@ -11,7 +11,7 @@ const ThumbnailCard = ({
 }) => {
 
   return (
-    <div className="w-[364px] mx-1.5 lg:mx-0 lg:w-[375px] border border-[#E9EAEB] rounded-xl shadow-[0_7px_16px_-4px_rgba(10,13,18,0.08),0_4px_6px_-2px_rgba(10,13,18,0.03)]">
+    <div className="w-[344px] lg:mx-0 lg:w-[375px] border border-[#E9EAEB] rounded-xl shadow-[0_7px_16px_-4px_rgba(10,13,18,0.08),0_4px_6px_-2px_rgba(10,13,18,0.03)]">
       {/* Thumbnail Container */}
       <div className="relative w-full aspect-video rounded-xl overflow-hidden">
         <div className="p-[2px] ">

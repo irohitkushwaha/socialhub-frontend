@@ -172,7 +172,7 @@ const MainLayout = () => {
         </div>
 
         <main
-          className={` overflow-auto  md:pt-[0px] pb-[50px] ${
+          className={` overflow-auto  pb-[50px] ${
             !config.sideNav ? "w-full" : ""
           }`}
         >

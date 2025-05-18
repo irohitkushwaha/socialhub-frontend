@@ -413,6 +413,7 @@ const InstagramScroll = () => {
                 username={currentVideo?.owner?.UserName}
                 InitialIsFollowing={currentVideo?.isFollowing}
                 reelId={currentVideo?.id}
+                userid={currentVideo?.owner?._id}
               />
             </div>
           </div>
@@ -447,12 +448,13 @@ const InstagramScroll = () => {
         )}
 
         {isActivePost && (
-          <div className="absolute z-50 top-[150px] bg-opacity-50 p-[12px]">
-            <div className="w-full">
+          <div className="w-full md:w-auto absolute z-50 top-[150px] md:left-[40%]  bg-opacity-50 md:p-[12px] p-[13px] md:h-[600px]  h-[500px] ">
+            <div className="w-full h-full">
               <CommentCompo
                 isReel={true}
                 CommentCount={CommentCount}
                 CommentResponse={CommentResponse}
+                videoid={currentVideo.id}
               />
             </div>
           </div>

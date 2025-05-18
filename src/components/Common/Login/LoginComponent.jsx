@@ -49,9 +49,9 @@ function LoginComponent() {
   });
 
   return (
-    <div className="flex flex-col gap-[40px] items-center py-[25px]">
-      <FormTitle>Login to your Account</FormTitle>
-      <div className="flex flex-col gap-[18px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] px-[50px] py-[20px] items-center">
+    <div className="w-full flex flex-col gap-[40px] items-center py-[25px] px-[10px]">
+      <FormTitle  fontSize="text-[25px] md:text-[28px]">Login to your Account</FormTitle>
+      <div className="flex flex-col gap-[18px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] px-[15px] py-[20px] items-center w-full md:w-auto">
         <GoogleButton onClick={handleGoogleLogin} />
         <Separator />
         <form

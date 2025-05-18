@@ -6,18 +6,76 @@ import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { isLoggedin, getUserData } from "../../../redux/slices/authentication.slice";
+import {
+  isLoggedin,
+  getUserData,
+} from "../../../redux/slices/authentication.slice";
 import { useSelector } from "react-redux";
 import ProfileImage from "../../Common/ProfileImage/ProfileImageWithStatus";
 import NullAvatar from "../../../assets/nullavatar.jpeg";
 import ActionButton from "../../ui/ActionButton/ActionButton";
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loggedout } from "../../../redux/slices/authentication.slice";
+import { userService } from "../../../Services/api/User.Service";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ showSearchBar, upload }) => {
   const [scrolled, setScrolled] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
+  const location = useLocation();
+  const path = location.pathname;
+
   const isLoggedIn = useSelector(isLoggedin);
-  const UserData = useSelector(getUserData)
+  const UserData = useSelector(getUserData);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      // Call the logout API
+      await userService.logout();
+
+      // Dispatch the logout action to update Redux state
+      dispatch(loggedout());
+
+      // Navigate to home page
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // You could add a visual error notification here
+    }
+  };
+
+  // Determine upload destination based on current path
+  const getUploadConfig = () => {
+    // For Instagram post paths
+    if (path.startsWith("/instagram/posts")) {
+      return {
+        to: "/instagram/post/upload",
+        text: "Upload Post",
+      };
+    }
+    // For Instagram main or other Instagram paths
+    else if (path.startsWith("/instagram")) {
+      return {
+        to: "/instagram/reel/upload",
+        text: "Upload Reel",
+      };
+    }
+    // Default: YouTube or homepage
+    else {
+      return {
+        to: "/youtube/upload-videos",
+        text: "Upload Video",
+      };
+    }
+  };
+
+  // Get the appropriate configuration
+  const uploadConfig = getUploadConfig();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,19 +111,15 @@ const Header = ({ showSearchBar, upload }) => {
         {showSearchBar && <SearchBar />}
         <div className="flex items-center gap-[50px]">
           {upload && (
-            <Link
-              to="/youtube/upload-videos"
-              // No onClick handler that could stop propagation
-              // Event will naturally bubble up to document
-            >
-              <Button text="Upload" icon={faArrowUpFromBracket} />
+            <Link to={uploadConfig.to}>
+              <Button text={uploadConfig.text} icon={faArrowUpFromBracket} />
             </Link>
           )}
 
           {isLoggedIn ? (
             <div className="cursor-pointer" onClick={handleProfileClick}>
               <ProfileImage
-                profileImage={UserData.avatar || NullAvatar }
+                profileImage={UserData.avatar || NullAvatar}
                 imgDesktopSize="md:w-[45px] md:h-[45px]"
                 isOnline={false}
               />
@@ -94,69 +148,88 @@ const Header = ({ showSearchBar, upload }) => {
               nameTextColor="text-[#414651]"
               gapbetweentext="gap-[1px]"
             />
-            <div className="flex flex-col justify-start w-full gap-[10px]">
-              <ActionButton
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    enable-background="new 0 0 24 24"
-                    viewBox="0 0 24 24"
-                    fill="#00c950"
-                    className="w-[23px] h-[23px] lg:w-[30px] lg:h-[30px]"
-                  >
-                    {/* <g>
+            <div
+              onClick={handleProfileClick}
+              className="flex flex-col justify-start w-full gap-[10px]"
+            >
+              <Link to="/youtube/upload-videos">
+                <ActionButton
+                  icon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      enable-background="new 0 0 24 24"
+                      viewBox="0 0 24 24"
+                      fill="#00c950"
+                      className="w-[23px] h-[23px] lg:w-[30px] lg:h-[30px]"
+                    >
+                      {/* <g>
                         <rect fill="none" height="24" width="24" />
                       </g> */}
-                    <g>
-                      <path d="M18,15v3H6v-3H4v3c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2v-3H18z M17,11l-1.41-1.41L13,12.17V4h-2v8.17L8.41,9.59L7,11l5,5 L17,11z" />
-                    </g>
-                  </svg>
-                }
-                text="Upload"
-              />
-              <ActionButton
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    enable-background="new 0 0 24 24"
-                    viewBox="0 0 24 24"
-                    fill="#00c950"
-                    className="w-[23px] h-[23px] lg:w-[30px] lg:h-[30px]"
-                  >
-                    <path d="M0 0h24v24H0V0z" fill="none" />
-                    <path d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z" />
-                  </svg>
-                }
-                text="View Profile"
-              />
-              <ActionButton
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    enable-background="new 0 0 24 24"
-                    viewBox="0 0 24 24"
-                    fill="#00c950"
-                    className="w-[23px] h-[23px] lg:w-[30px] lg:h-[30px]"
-                  >
-                    <rect fill="none" height="24" width="24" />
-                    <path d="M18.6,19.5H21v2h-6v-6h2v2.73c1.83-1.47,3-3.71,3-6.23c0-4.07-3.06-7.44-7-7.93V2.05c5.05,0.5,9,4.76,9,9.95 C22,14.99,20.68,17.67,18.6,19.5z M4,12c0-2.52,1.17-4.77,3-6.23V8.5h2v-6H3v2h2.4C3.32,6.33,2,9.01,2,12c0,5.19,3.95,9.45,9,9.95 v-2.02C7.06,19.44,4,16.07,4,12z M16.24,8.11l-5.66,5.66l-2.83-2.83l-1.41,1.41l4.24,4.24l7.07-7.07L16.24,8.11z" />
-                  </svg>
-                }
-                text="Update Profile"
-              />
-              <ActionButton
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 -960 960 960"
-                    fill="#00c950"
-                    className="w-[23px] h-[23px] lg:w-[30px] lg:h-[30px]"
-                  >
-                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
-                  </svg>
-                }
-                text="Logout"
-              />
+                      <g>
+                        <path d="M18,15v3H6v-3H4v3c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2v-3H18z M17,11l-1.41-1.41L13,12.17V4h-2v8.17L8.41,9.59L7,11l5,5 L17,11z" />
+                      </g>
+                    </svg>
+                  }
+                  text="Upload Videos"
+                />
+              </Link>
+              <Link to="/instagram/reel/upload">
+                <ActionButton
+                  icon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      enable-background="new 0 0 24 24"
+                      viewBox="0 0 24 24"
+                      fill="#00c950"
+                      className="w-[23px] h-[23px] lg:w-[30px] lg:h-[30px]"
+                    >
+                      {/* <g>
+                        <rect fill="none" height="24" width="24" />
+                      </g> */}
+                      <g>
+                        <path d="M18,15v3H6v-3H4v3c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2v-3H18z M17,11l-1.41-1.41L13,12.17V4h-2v8.17L8.41,9.59L7,11l5,5 L17,11z" />
+                      </g>
+                    </svg>
+                  }
+                  text="Upload Reels"
+                />
+              </Link>
+              <Link to="/instagram/post/upload">
+                <ActionButton
+                  icon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      enable-background="new 0 0 24 24"
+                      viewBox="0 0 24 24"
+                      fill="#00c950"
+                      className="w-[23px] h-[23px] lg:w-[30px] lg:h-[30px]"
+                    >
+                      {/* <g>
+                        <rect fill="none" height="24" width="24" />
+                      </g> */}
+                      <g>
+                        <path d="M18,15v3H6v-3H4v3c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2v-3H18z M17,11l-1.41-1.41L13,12.17V4h-2v8.17L8.41,9.59L7,11l5,5 L17,11z" />
+                      </g>
+                    </svg>
+                  }
+                  text="Upload Posts"
+                />
+              </Link>
+              <div onClick={handleLogout}>
+                <ActionButton
+                  icon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 -960 960 960"
+                      fill="#00c950"
+                      className="w-[23px] h-[23px] lg:w-[25px] lg:h-[25px]"
+                    >
+                      <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
+                    </svg>
+                  }
+                  text="Logout"
+                />
+              </div>
             </div>
           </div>
         )}

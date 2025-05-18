@@ -56,8 +56,6 @@ function App() {
       document.removeEventListener("scroll", handleInteraction);
     };
   }, [dispatch]);
-
-  console.log("hello i am from app.jsx");
   return (
     <div className="min-h-screen">
       <Outlet />

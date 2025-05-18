@@ -12,6 +12,7 @@ const InstagramPostProfile = ({
   timeAgo = "1w",
   InitialIsFollow,
   postId,
+  userId
 }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isFollowing, setIsFollowing] = useState(InitialIsFollow);
@@ -75,16 +76,17 @@ const InstagramPostProfile = ({
   return (
     <div className="flex justify-start items-center gap-[15px]">
       {/* Left side - Profile Image (same for both mobile and desktop) */}
-      <div
-        className="w-[45px] h-[45px] rounded-full overflow-hidden flex-shrink-0"
-        // style={{ flexBasis: "69px" }}
-      >
-        <img
-          src={profileImage}
-          alt={`${username}'s profile`}
-          className="w-full h-full object-cover"
-        />
-      </div>
+      <Link to={`/youtube/channel-detail/${userId}`}>
+        <div
+          className="w-[45px] h-[45px] rounded-full overflow-hidden flex-shrink-0"
+        >
+          <img
+            src={profileImage}
+            alt={`${username}'s profile`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </Link>
 
       {/* Right side - Different layouts for desktop and mobile */}
       {isMobile ? (
@@ -92,9 +94,11 @@ const InstagramPostProfile = ({
         <div className="flex flex-col gap-[2px] justify-center items-start">
           {/* Top row: username and verify icon */}
           <div className="flex items-center gap-[10px]">
-            <span className="text-[19px] font-semibold text-[#414651]">
-              {username}
-            </span>
+          <Link to={`/youtube/channel-detail/${userId}`}>
+              <span className="text-[19px] font-semibold text-[#414651]">
+                {username}
+              </span>
+            </Link>
             {isVerified && <VerifiedBadge />}
           </div>
 
@@ -115,9 +119,11 @@ const InstagramPostProfile = ({
       ) : (
         // Desktop Layout
         <div className="relative flex items-center gap-[8px]">
-          <span className="text-[20px] font-semibold text-[#414651] ">
-            {username}
-          </span>
+           <Link to={`/youtube/channel-detail/${userId}`}>
+            <span className="text-[20px] font-semibold text-[#414651] ">
+              {username}
+            </span>
+          </Link>
 
           {isVerified && <VerifiedBadge />}
 

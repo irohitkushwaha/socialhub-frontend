@@ -1,57 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from 'react-router-dom';
+
 import TypewriterEffect from "../../../utils/typewritereffect.jsx";
 
 const SearchBar = ({ defaultPlaceholder = "Search videos...." }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
 
   const [placeholder, setPlaceholder] = useState("");
-  // const fullText = defaultPlaceholder;
-  // const [isTyping, setIsTyping] = useState(true);
-  // const [index, setIndex] = useState(0);
+
   const [searchTerm, setSearchTerm] = useState("");
-
-  // useEffect(() => {
-  //   let timer;
-
-  //   if (isTyping) {
-  //     // Typing forward
-  //     if (index < fullText.length) {
-  //       timer = setTimeout(() => {
-  //         setPlaceholder(fullText.substring(0, index + 1));
-  //         setIndex(index + 1);
-  //       }, 100); // Typing speed
-  //     } else {
-  //       // Pause at the end
-  //       timer = setTimeout(() => {
-  //         setIsTyping(false);
-  //       }, 600); // Pause duration
-  //     }
-  //   } else {
-  //     // Erasing
-  //     if (index > 0) {
-  //       timer = setTimeout(() => {
-  //         setPlaceholder(fullText.substring(0, index - 1));
-  //         setIndex(index - 1);
-  //       }, 70); // Erasing speed (faster than typing)
-  //     } else {
-  //       // Pause before typing again
-  //       timer = setTimeout(() => {
-  //         setIsTyping(true);
-  //       }, 200); // Pause before starting again
-  //     }
-  //   }
-
-  //   return () => clearTimeout(timer);
-  // }, [fullText, index, isTyping]);
 
   // Handler for input changes
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
+  useEffect(() => {
+    // Extract current search query from URL, if any
+    const searchParams = new URLSearchParams(location.search);
+    const queryParam = searchParams.get('q');
+    
+    // Only set the search term from URL if we're on the search page
+    // Otherwise, clear the search input
+    if (location.pathname === '/youtube/search') {
+      setSearchTerm(queryParam || '');
+    } else {
+      setSearchTerm('');
+    }
+  }, [location.pathname, location.search]);
 
   // Handler for form submission
   const handleSubmit = (e) => {
@@ -89,7 +70,7 @@ const SearchBar = ({ defaultPlaceholder = "Search videos...." }) => {
         placeholder={placeholder}
         value={searchTerm}
         onChange={handleInputChange}
-        className="w-full text-[17px] py-2 lg:py-2.5 pl-2 pr-4 rounded-[8px] bg-transparent text-[#414651] font-Inter font-semibold placeholder:text-[17px] focus:outline-none [&::placeholder]:text-[#414651] [&::placeholder]:font-Inter [&::placeholder]:font-bold"
+        className="w-full text-[15px] md:text-[17px] py-2 lg:py-2.5 pl-2 pr-4 rounded-[8px] bg-transparent text-[#414651] font-Inter font-semibold md:placeholder:text-[17px] placeholder:text-[15px] focus:outline-none [&::placeholder]:text-[#414651] [&::placeholder]:font-Inter [&::placeholder]:font-bold"
       />
     </form>
   );

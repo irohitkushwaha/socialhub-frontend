@@ -10,6 +10,7 @@ const ReelOwnerFollow = ({
   username,
   InitialIsFollowing,
   reelId,
+  userid,
 }) => {
   const [isFollowing, setIsFollowing] = useState(InitialIsFollowing);
   const [showPromptforFollow, setShowPromptforFollow] = useState(false);
@@ -33,22 +34,30 @@ const ReelOwnerFollow = ({
   return (
     <div className="relative flex items-center justify-center gap-2">
       {/* Profile component (Left side) */}
-      <div className="flex-shrink-0 cursor-pointer">
-        <div className="w-fit h-fit rounded-ful flex items-center justify-center">
-          <div className="w-[42px] h-[42px] rounded-full border-[0px] border-gray-300 overflow-hidden">
-            <img
-              src={profileImg}
-              alt="User profile"
-              className="w-full h-full object-cover"
-            />
+      <Link to={`/youtube/channel-detail/${userid}`}>
+        <div className="flex-shrink-0 cursor-pointer">
+          <div className="w-fit h-fit rounded-ful flex items-center justify-center">
+            <div className="w-[42px] h-[42px] rounded-full border-[0px] border-gray-300 overflow-hidden">
+              <img
+                src={profileImg}
+                alt="User profile"
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
 
-      {/* Username (Right side) */}
-      <div className="text-white text-[16px] font-[550] cursor-pointer tracking-[0.5px] ">
-        {username ? (username.startsWith("@") ? username : `@${username}`) : ""}
-      </div>
+      <Link to={`/youtube/channel-detail/${userid}`}>
+        {/* Username (Right side) */}
+        <div className="text-white text-[16px] font-[550] cursor-pointer tracking-[0.5px] ">
+          {username
+            ? username.startsWith("@")
+              ? username
+              : `@${username}`
+            : ""}
+        </div>
+      </Link>
 
       {/* Dot separator */}
       <div className="w-[5px] h-[5px] bg-white rounded-full "></div>

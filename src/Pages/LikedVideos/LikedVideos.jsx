@@ -62,7 +62,7 @@ const LikedVideos = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-[50px] w-full">
+        <div className="flex flex-col gap-[30px] mt-[10px] md:gap-[45px] w-full">
           {Array.isArray(likedVideos) &&
             likedVideos.map((video) => (
               <div

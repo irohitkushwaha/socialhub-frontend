@@ -17,6 +17,7 @@ const CommentCompo = ({
   postId,
 }) => {
   console.log("CommentResponse:", CommentResponse);
+  console.log("comment id is o f vide", videoid)
   // console.log("CommentResponse[0]:", CommentResponse[0]);
   const dispatch = useDispatch();
 
@@ -24,38 +25,58 @@ const CommentCompo = ({
     dispatch(closeComment());
     console.log("comment is closed");
   };
-  const [isComment, setIsComment] = useState(true);
+  const [isComment, setIsComment] = useState(null);
   const [positiveText, setPositiveText] = useState("");
   const [negativeText, setNegativeText] = useState("");
   const [showSummary, setShowSummary] = useState(false);
+  const [summarizing, setSummarizing] = useState(true);
 
   const fetchCommentSummary = async () => {
     try {
-      console.log("api called for this video id", videoid)
-      const response = await commentService.getCommentSummary({
-        videoId: videoid,
-      });
+      setSummarizing(true);
+      let requestParams = {};
+
+      if (videoid) {
+        console.log("api called for this video id", videoid);
+        requestParams = { videoId: videoid };
+      } else if (postId) {
+        console.log("api called for this post id", postId);
+        requestParams = { postId: postId };
+      } else {
+        console.log("No valid ID found for comment summary");
+        return;
+      }
+      console.log("api called for this video id", videoid);
+      const response = await commentService.getCommentSummary(requestParams);
+
+      console.log("structure of response is", response);
 
       if (response === "No comments to summarize") {
         // No comments case
-        setIsComment(false); // Don't show the summary box
+        setIsComment(false);
+        setSummarizing(false);
+        return;
+        // Don't show the summary box
       } else {
-        
         setIsComment(true);
         const positiveRegex = /APIPOSITIVE\s*(.*?)(?=APINEGATIVE|$)/s;
         const positiveMatch = response.match(positiveRegex);
-        
+
         // Extract negative comments (everything after APINEGATIVE)
         const negativeRegex = /APINEGATIVE\s*(.*?)$/s;
         const negativeMatch = response.match(negativeRegex);
 
         setPositiveText(
-          positiveMatch && positiveMatch[1] ? positiveMatch[1].trim() : "No positive comments"
+          positiveMatch && positiveMatch[1]
+            ? positiveMatch[1].trim()
+            : "No positive comments"
         );
         setNegativeText(
-          negativeMatch && negativeMatch[1] ? negativeMatch[1].trim() : "No negative comments"
+          negativeMatch && negativeMatch[1]
+            ? negativeMatch[1].trim()
+            : "No negative comments"
         );
-        setShowSummary(true);
+        setSummarizing(false);
       }
     } catch (error) {
       console.error("Error fetching summary:", error);
@@ -65,25 +86,25 @@ const CommentCompo = ({
 
   const handleCommentSummarize = () => {
     console.log("summarized button clicked");
-
-    if (CommentResponse.length === 0) {
-      // Set state to show "no comments" message without API call
-      setIsComment(false);
-      setShowSummary(true);
-      return;
-    }
     const newShowSummary = !showSummary;
     setShowSummary(newShowSummary);
     if (newShowSummary) {
       console.log("summarization LLM api called");
 
-      fetchCommentSummary();
+      if (CommentResponse.length === 0) {
+        // Set state to show "no comments" message without API call
+        setIsComment(false);
+        setSummarizing(false);
+        return;
+      } else {
+        fetchCommentSummary();
+      }
     }
   };
 
   return (
-    <div className="px-[10px] lg:px-[20px] py-[10px] lg:py-[25px] flex flex-col gap-[30px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] overflow-y-auto max-h-[90vh] relative">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:gap-[38px] gap-[18px] w-fit">
+    <div className="px-[10px] lg:px-[20px] py-[10px] lg:py-[25px] flex flex-col gap-[30px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] overflow-y-auto relative h-full ">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:gap-[38px] gap-[18px] w-fit md:pt-[20px]">
         <CommentCountComp CommentCount={CommentCount} />
         <Button
           text="Summarize Comments"
@@ -117,6 +138,7 @@ const CommentCompo = ({
         positiveText={positiveText}
         negativeText={negativeText}
         showSummary={showSummary}
+        summarizing={summarizing}
       />
       <AddComment videoId={videoid} postId={postId} />
       {Array.isArray(CommentResponse) && CommentResponse.length > 0 ? (
@@ -140,7 +162,7 @@ const CommentCompo = ({
       )}
       {isReel && (
         <div
-          className="absolute top-[10px] right-[10px] cursor-pointer"
+          className="absolute top-[4px] right-[7px] cursor-pointer"
           onClick={handleClose}
         >
           <svg

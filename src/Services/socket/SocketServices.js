@@ -1,5 +1,3 @@
-// src/services/socketService.js
-
 import { io } from "socket.io-client";
 import {
   receiveMessage,
@@ -14,8 +12,24 @@ console.log(
   document.cookie ? "Yes" : "No"
 );
 
+const getSocketUrl = () => {
+  // If in development
+  if (process.env.NODE_ENV === 'development') {
+    // For desktop browsers, localhost works fine
+    if (window.location.hostname === 'localhost') {
+      return 'http://localhost:8000';
+    }
+    // For mobile devices on the same network, use the IP address
+    // Replace with your computer's actual IP address on your network
+    return 'http://192.168.205.212:8000'; // ← REPLACE THIS with your actual IP address
+  }
+  
+  // For production (you would use your actual domain)
+  // return process.env.REACT_APP_API_URL || 'https://yourdomain.com';
+};
+
 // Create socket connection
-const socket = io("http://localhost:8000", {
+const socket = io(getSocketUrl(), {
   transports: ["websocket"], // Force WebSocket as the transport
   path: "/socket.io/", // Match the path specified in your server
   withCredentials: true, // This is critical for sending cookies with the request
@@ -44,11 +58,13 @@ socket.on("connect", () => {
 
     console.log("Online Users:", Online);
     console.log("Offline Users (Last Seen):", OfflineAndLastSeen);
+
+    store.dispatch(
+      updateUserStatus({ onlineUsers: Online, lastSeenUsers: OfflineAndLastSeen })
+    );
   });
 
-  store.dispatch(
-    updateUserStatus({ onlineUsers: Online, lastSeenUsers: OfflineAndLastSeen })
-  );
+
 
   //Getting Typing indicator that someone is typing to send message to me
 

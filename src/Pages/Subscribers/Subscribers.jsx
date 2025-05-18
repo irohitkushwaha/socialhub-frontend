@@ -31,34 +31,7 @@ const Subscribers = () => {
     }
   }, [isUserLoggedIn]);
   return (
-    // <div className="px-[8px] py-[20px] md:px-[10px] w-full">
-    //   <h1 className="text-2xl text-center md:text-3xl font-bold mb-8">My Subscribers</h1>
-
-    //   {loading ? (
-    //     <div className="flex justify-center items-center h-64">
-    //       <p className="text-xl">Loading subscribers...</p>
-    //     </div>
-    //   ) : subscribers.length === 0 ? (
-    //     <div className="flex justify-center items-center h-64">
-    //       <p className="text-xl">You don't have any subscribers yet.</p>
-    //     </div>
-    //   ) : (
-    //     <div className="w-full flex justify-center items-center px-[50px]">
-
-    //     <div className="flex flex-wrap gap-6 justify-start">
-    //       {subscribers.map((subscriber, index) => (
-    //         <SubscriberItem
-    //           key={index}
-    //           profileImage={subscriber.Avatar}
-    //           name={subscriber.FullName}
-    //           email={subscriber.Email}
-    //           subscriberCount={formatSubscriberCount(subscriber.SubscribersCount)}
-    //         />
-    //       ))}
-    //       </div>
-    //     </div>
-    //   )}
-    // </div>
+  
     <div className="px-[8px] py-[20px] md:px-[10px] w-full">
       {isUserLoggedIn && <h1 className="text-2xl text-center md:text-3xl font-bold mb-8">
         My Subscribers

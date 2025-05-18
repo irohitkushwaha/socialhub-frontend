@@ -27,6 +27,7 @@ function InstagramPost({
   InitialIsLiked = false,
   InitialIsSaved = false,
   postId,
+  userId,
 }) {
   const [isLiked, setIsLiked] = useState(InitialIsLiked);
   const [likeCount, setLikeCount] = useState(InitialLikeCount);
@@ -90,6 +91,7 @@ function InstagramPost({
             timeAgo={timeAgo}
             InitialIsFollow={InitialIsFollow}
             postId={postId}
+            userId={userId}
           />
         </div>
         <InstagramPostImage imageUrl={imageUrl} />
@@ -106,8 +108,8 @@ function InstagramPost({
         </div>
       </div>
       {isActivePost && (
-        <div className="absolute z-50 top-[150px] bg-opacity-50 p-[12px]">
-          <div className="w-full">
+        <div className="absolute z-50 top-[150px] bg-opacity-50 pl-[10px] pr-[10px] w-full md:h-[500px] h-[400px]">
+          <div className="w-full h-full">
             <CommentCompo
               isReel={true}
               CommentCount={CommentCount}

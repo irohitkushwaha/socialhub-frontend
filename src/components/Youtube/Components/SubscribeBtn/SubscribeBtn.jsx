@@ -4,6 +4,7 @@ import { isLoggedin } from "../../../../redux/slices/authentication.slice";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { useMediaQuery } from "../../../../hooks/useMediaQuery";
 
 function SubscribeBtn({
   isSubscribed,
@@ -11,6 +12,7 @@ function SubscribeBtn({
   videoid,
   handleSubscribing,
   handleUnsubscribing,
+  setParentShowPrompt,
 }) {
   // Bell ring animation style
   const bellRingStyle = `
@@ -40,7 +42,11 @@ function SubscribeBtn({
   const handleSubscribe = (e) => {
     if (!isUserLogged) {
       e.stopPropagation();
-      setShowPrompt(true); // (use a local state for prompt)
+      setShowPrompt(true);
+      if (setParentShowPrompt) {
+        setParentShowPrompt(true); // Set parent's prompt for mobile
+        setTimeout(() => setParentShowPrompt(false), 5000);
+      } // (use a local state for prompt)
       setTimeout(() => setShowPrompt(false), 5000);
       return;
     }
@@ -141,7 +147,7 @@ function SubscribeBtn({
         </div>
         {showPrompt && (
           <div
-            className="absolute top-full left-3 mt-4 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+            className="hidden md:block absolute top-full left-3 mt-4 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
             style={{ wordSpacing: "5px" }}
           >
             Please{" "}

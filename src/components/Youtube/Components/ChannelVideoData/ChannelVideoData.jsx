@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import shradha from "../../../../assets/shradha.jpg";
 import { Link } from "react-router-dom";
 import SubscribeBtn from "../SubscribeBtn";
+import { useMediaQuery } from "../../../../hooks/useMediaQuery";
 
 const ChannelVideoData = ({
   channelName = "Shradha Khapra",
@@ -10,6 +11,8 @@ const ChannelVideoData = ({
   isSubscribed,
   handleSubscribing,
   handleUnsubscribing,
+  channelUserid,
+  setParentShowPrompt,
 }) => {
   const [subscribersCount, setSubscribersCount] = useState(subscribers);
 
@@ -19,11 +22,11 @@ const ChannelVideoData = ({
 
   return (
     <>
-      <div className="flex items-center justify-between sm:justify-normal w-full lg:w-fit sm:gap-[25px] md:px-2">
+      <div className="flex relative items-center justify-between sm:justify-normal w-full lg:w-fit sm:gap-[25px] md:px-2">
         {/* Left side - Profile and Channel Info */}
         <div className="flex items-center gap-[7px] md:gap-[9px]">
           {/* Profile Image */}
-          <Link to={`/youtube/channel-detail`}>
+          <Link to={`/youtube/channel-detail/${channelUserid}`}>
             <div className="w-[48px] h-[48px] md:w-[55px] md:h-[55px] rounded-full overflow-hidden">
               <img
                 src={profileImage}
@@ -35,7 +38,7 @@ const ChannelVideoData = ({
 
           {/* Channel Info */}
           <div className="flex flex-col gap-[4px] md:gap-1.5">
-            <Link to={`/youtube/channel-detail`}>
+            <Link to={`/youtube/channel-detail/${channelUserid}`}>
               <h2 className="text-[#181717] text-[16px] md:text-[18px] font-bold font-inter">
                 {channelName}
               </h2>
@@ -49,6 +52,7 @@ const ChannelVideoData = ({
           isSubscribed={isSubscribed}
           handleSubscribing={handleSubscribing}
           handleUnsubscribing={handleUnsubscribing}
+          setParentShowPrompt={setParentShowPrompt}
         />
       </div>
     </>

@@ -128,8 +128,36 @@ const AddComment = ({ videoId, postId }) => {
       {/* Action Buttons - Only show when input is focused */}
       {isFocused && (
         <div className="flex justify-end gap-[25px] lg:gap-[40px]">
-          <ButtonVideo icon="close" text="Cancel" onClick={handleCancel} />
-          <ButtonVideo icon="send" text="Comment" onClick={handleSubmit} />
+          <ButtonVideo
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#00c950"
+              >
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+              </svg>
+            }
+            text="Cancel"
+            onClick={handleCancel}
+          />
+          <ButtonVideo
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#00c950"
+              >
+                <path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z" />
+              </svg>
+            }
+            text="Comment"
+            onClick={handleSubmit}
+          />
         </div>
       )}
       {showPrompt && (

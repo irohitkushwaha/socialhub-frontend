@@ -27,7 +27,6 @@ function PostUpload() {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState("");
 
-
   // Handle thumbnail file selection
   const handleThumbnailFileChange = (file) => {
     console.log("Selected thumbnail file:", file);
@@ -70,10 +69,22 @@ function PostUpload() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-[40px] items-center py-[25px] w-full px-[150px]"
+      className="flex flex-col gap-[20px] md:gap-[40px] items-center py-[25px] w-full px-[15px]"
     >
-      <FormTitle isWavy={true}>Share your Emotion with the World</FormTitle>
-      <div className="flex flex-col gap-[18px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] px-[50px] py-[20px] items-center w-full">
+      <div className="block md:hidden px-[50px] py-[10px] md:px-0 text-center">
+        <FormTitle fontSize="text-[24px] md:text-[32px]" isWavy={true}>
+          Share your Emotion
+        </FormTitle>
+        <FormTitle fontSize="text-[24px] md:text-[32px]" isWavy={true}>
+          with the World
+        </FormTitle>
+      </div>
+      <div className="hidden md:block">
+        <FormTitle fontSize="text-[24px] md:text-[32px]" isWavy={true}>
+          Share your Emotion with the World
+        </FormTitle>
+      </div>
+      <div className="flex flex-col gap-[18px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] px-[5px] md:px-[50px] py-[20px] items-center w-full">
         <div className="flex flex-col gap-[40px] w-full items-center">
           <div className="flex flex-col gap-[30px] w-full">
             <Input
@@ -111,14 +122,15 @@ function PostUpload() {
               Post Upload Succsessfully !{" "}
             </div>
           )}
-
-          <FlexibleButton
-            text={isUploading ? "Uploading..." : "Upload Post"}
-            disabled={isUploading}
-            bgColor={isUploading ? "bg-gray-400" : "bg-[#7F56D9]"}
-            textColor="text-white"
-            textSize="text-[18px]"
-          />
+          <div className="w-full px-[8px] md:px-0">
+            <FlexibleButton
+              text={isUploading ? "Uploading..." : "Upload Post"}
+              disabled={isUploading}
+              bgColor={isUploading ? "bg-gray-400" : "bg-[#7F56D9]"}
+              textColor="text-white"
+              textSize="text-[18px]"
+            />
+          </div>
         </div>
       </div>
     </form>

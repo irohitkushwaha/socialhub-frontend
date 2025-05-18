@@ -215,21 +215,7 @@ const navItems = [
     text: "WhatsApp",
     link: "/whatsapp",
     subItems: [], // No subitems
-  },
-  {
-    id: "twitter",
-    icon: faTwitter,
-    text: "Twitter",
-    link: "/twitter",
-    subItems: [
-      {
-        id: "bookmarks",
-        icon: faBookmark,
-        text: "Bookmarks",
-        link: "/twitter/bookmarks",
-      },
-    ],
-  },
+  }
 ];
 
 // Main SideNav Component

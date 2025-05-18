@@ -4,7 +4,7 @@
  * @returns {string} Formatted last seen message
  */
 export const formatLastSeen = (timestamp) => {
-  if (!timestamp) return "Unknown";
+  if (!timestamp) return null;
 
   const now = new Date();
   const lastSeenDate = new Date(timestamp);

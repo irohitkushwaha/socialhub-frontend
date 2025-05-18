@@ -9,23 +9,48 @@ import { useState, useEffect } from "react";
 import ThumbnailImg from "../../assets/thumbnail1.webp";
 import Avatar from "../../assets/shradha.jpg";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { userService } from "../../Services/api/User.Service";
+import { formatDuration } from "../../utils/formatDuration";
+import { formatTimeAgo } from "../../utils/formatTimeAgo";
+import { formatCompactNumber } from "../../utils/formatCompactNumber";
+import { subscriptionService } from "../../Services/api/Subscription.Service";
+import { isLoggedin } from "../../redux/slices/authentication.slice";
+import { useSelector } from "react-redux";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 import React from "react";
 
 function ChannelDetail() {
-  const [videos, setVideos] = useState([]);
+  const { userid } = useParams();
+
+  const [channelData, setChannelData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [subscribersCount, setSubscribersCount] = useState(
+    channelData.SubscribersCount
+  );
+
+  const isUserLoggedin = useSelector(isLoggedin);
+
+  const [showPrompt, setShowPrompt] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        // In a real implementation, this would be an actual API call
-        // const response = await axios.get('/api/v1/video/videos-list?page=1&limit=12');
-        // setVideos(response.data.data);
+    setSubscribersCount(channelData.SubscribersCount);
+  }, [channelData]);
 
-        // Using sample data for demonstration
-        setVideos(sampleVideos);
+  useEffect(() => {
+      setIsSubscribed(!!channelData.IsSubscribed);
+    }, [channelData.IsSubscribed]);
+
+  useEffect(() => {
+    const loadChannelData = async (userid) => {
+      try {
+        const response = await userService.getChannelDetail(userid);
+        setChannelData(response);
+
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch videos");
@@ -33,48 +58,98 @@ function ChannelDetail() {
       }
     };
 
-    fetchVideos();
+    loadChannelData(userid);
   }, []);
 
-  // Format views using Intl.NumberFormat with compact notation
-  const formatViews = (views) => {
-    return new Intl.NumberFormat("en-US", {
-      notation: "compact",
-      maximumFractionDigits: 1,
-    }).format(views);
+  const handleSubscribing = async () => {
+    if (!isUserLoggedin) return;
+    setIsSubscribed(true);
+    setSubscribersCount((prev) => prev + 1);
+    try {
+      const response = await subscriptionService.subscribeUser(userid);
+      console.log("response of subscribe is", response);
+      // UI is already updated, no further action needed
+    } catch (error) {
+      setIsSubscribed(false); // Rollback on error
+      // alert("Subscription failed.");
+      console.log("error of api for subscribe", error);
+    }
   };
 
-  if (loading) return <div className="p-6">Loading videos...</div>;
+  const handleUnsubscribing = async () => {
+    if (!isUserLoggedin) return;
+    setIsSubscribed(false); // Optimistic UI update
+    setSubscribersCount((prev) => prev - 1);
+    try {
+      const response = await subscriptionService.unsubscribeUser(userid);
+
+      console.log("response of unsubscribe api call is", response);
+      // Optionally refetch video details here if you want to sync state
+    } catch (error) {
+      setIsSubscribed(true); // Rollback on error
+      console.log("unsubscription failed due to error", error);
+    }
+  };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+      </div>
+    );
   if (error) return <div className="p-6 text-red-500">{error}</div>;
 
   return (
     <div className="w-full py-[30px] px-[10px] lg:px-[25px] gap-[40px] flex flex-col">
-      <CoverImage image={coverimage} />
+      {/* <CoverImage image={coverimage} /> */}
       <div className="w-full md:w-fit md:mx-auto flex flex-col md:flex-row items-center justify-center md:justify-normal px-[15px] md:px-[40px] py-[15px] md:py-[30px] gap-[50px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]">
-        <div className="flex items-center justify-center gap-[20px]">
+        <div className="relative flex items-center justify-center gap-[20px]">
           <ProfileImage
-            profileImage={Shradha}
+            profileImage={channelData.Avatar}
             isOnline={false}
             mainDivClassName="w-fit"
           />
-          <SubscriberDetail />
+          <SubscriberDetail
+            name={channelData.FullName}
+            id={channelData.UserName}
+            subscribers={subscribersCount}
+            videos={channelData.VideoCount}
+          />
         </div>
         <div className="w-full md:w-fit px-[20px]">
-          <SubscribeBtn isSubscribed width="w-full md:w-[270px]" />
+          <SubscribeBtn
+            isSubscribed={isSubscribed}
+            width="w-full md:w-[270px]"
+            handleSubscribing={handleSubscribing}
+            handleUnsubscribing={handleUnsubscribing}
+            setParentShowPrompt={setShowPrompt}
+          />
         </div>
+        {showPrompt && isMobile && (
+            <div
+              className="block absolute md:hidden top-[250px] left-5 z-50 px-[10px] py-[10px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit whitespace-nowrap rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]"
+              style={{ wordSpacing: "5px" }}
+            >
+              Please{" "}
+              <span Link className="text-blue-500">
+                <Link to="/login">login</Link>
+              </span>
+              ! to Subscribe
+            </div>
+          )}
       </div>
       <div className="flex flex-wrap gap-[20px] justify-center">
-        {videos.map((video) => (
-          <Link to="/youtube/playing">
+        {channelData?.Videos.map((video) => (
+          <Link to={`/youtube/playing/${video._id}`}>
             <ThumbnailCard
               key={video._id}
               thumbnailSrc={video.Thumbnail}
               title={video.Title}
-              channelIcon={video.Owner.Avatar}
-              channelName={video.Owner.FullName}
-              views={`${formatViews(video.views)}`}
-              uploadTime="3 days ago" // This would need to be calculated from the video data
-              duration={video.Duration}
+              channelIcon={video.Owner?.Avatar}
+              channelName={video.Owner?.FullName}
+              views={`${formatCompactNumber(video.views)}`}
+              uploadTime={formatTimeAgo(video.createdAt)} // This would need to be calculated from the video data
+              duration={formatDuration(video.Duration)}
             />
           </Link>
         ))}

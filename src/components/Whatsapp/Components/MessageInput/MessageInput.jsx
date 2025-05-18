@@ -3,9 +3,10 @@ import { sendTypingStatus } from "../../../../Services/socket/SocketServices";
 import { selectChatData } from "../../../../redux/slices/sidebarChatSlice";
 import { useSelector } from "react-redux";
 
-const MessageInput = ({ onMessageSend }) => {
+const MessageInput = ({ onMessageSend, handleComingSoon }) => {
   const [inputValue, setInputValue] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+
   const [previewUrl, setPreviewUrl] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [showFileOptions, setShowFileOptions] = useState(false);
@@ -40,6 +41,8 @@ const MessageInput = ({ onMessageSend }) => {
   //   // Clean up the timer when component unmounts or when dependencies change
   //   return () => clearTimeout(typingTimer);
   // }, [inputValue, isTyping, selectedChat]);
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -153,7 +156,7 @@ const MessageInput = ({ onMessageSend }) => {
   const isMobile = window.innerWidth <= 768;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="relative flex flex-col gap-2">
       {/* Preview Section */}
       {previewUrl && (
         <div className="relative flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
@@ -183,7 +186,7 @@ const MessageInput = ({ onMessageSend }) => {
       )}
 
       {/* Input Section */}
-      <div className="flex flex-row items-center px-[8px] py-[12px] gap-[13px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]">
+      <div className="flex flex-row items-center px-[5px] md:px-[8px] py-[8px] md:py-[12px] gap-[13px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5]">
         {/* Hidden file inputs */}
         <input
           type="file"
@@ -205,7 +208,7 @@ const MessageInput = ({ onMessageSend }) => {
           <button
             type="button"
             className="text-[#414651]"
-            onClick={() => setShowFileOptions(!showFileOptions)}
+            onClick={handleComingSoon}
           >
             <span className="material-symbols-rounded text-[24px]">
               {isMobile ? "attach_file" : "add"}
@@ -248,14 +251,14 @@ const MessageInput = ({ onMessageSend }) => {
             value={inputValue}
             onChange={handleInputChange}
             placeholder="Type a Message ..."
-            className="w-full px-[25px] py-[8px] text-[18px] font-medium text-[#414651] placeholder:text-[#414651] rounded-[8px] border border-[#D5D7DA] focus:outline-none"
+            className="w-full px-[25px] py-[7px] md:py-[8px] text-[16px] md:text-[18px] font-medium text-[#414651] placeholder:text-[#414651] rounded-[8px] border border-[#D5D7DA] focus:outline-none"
           />
           {(inputValue.trim() || selectedFile) && (
             <button
               type="submit"
               className="text-[#12B76A] hover:text-[#0E9D5B] transition-colors"
             >
-              <span className="material-symbols-rounded text-[24px]">send</span>
+              <span className="material-symbols-rounded md:text-[24px]">send</span>
             </button>
           )}
         </form>

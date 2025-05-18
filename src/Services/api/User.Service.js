@@ -39,6 +39,22 @@ export const userService = {
       throw error;
     }
   },
+
+
+  /**
+ * Get a channel's details by user ID
+ * @param {string} userId - ID of the user/channel to fetch details for
+ * @returns {Promise} - API response with channel details, subscriber count, videos and other data
+ */
+getChannelDetail: async (userId) => {
+  try {
+    const response = await api.get(`/user/channel/${userId}`);
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching channel details:', error);
+    throw error;
+  }
+},
   
   /**
    * Log in a user with username/email and password
@@ -78,6 +94,7 @@ export const userService = {
   logout: async () => {
     try {
       const response = await api.post('/user/logout');
+      console.log("logged out called", response)
       return response.data;
     } catch (error) {
       console.error('Error logging out:', error);
