@@ -1,32 +1,59 @@
-- name: Configure server and prepare directory
-  uses: appleboy/ssh-action@master
-  with:
-    host: ${{ secrets.DIGITALOCEAN_HOST }}
-    username: ${{ secrets.DIGITALOCEAN_USER }}
-    key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
-    script: |
-      # Create directory if it doesn't exist
-      mkdir -p /var/www/frontend
-      # Ensure proper permissions
-      sudo chown -R $USER:$USER /var/www/frontend
-      sudo chmod -R 755 /var/www/frontend
+name: Deploy SocialHub Frontend
 
-- name: Deploy to DigitalOcean
-  uses: appleboy/scp-action@master
-  with:
-    host: ${{ secrets.DIGITALOCEAN_HOST }}
-    username: ${{ secrets.DIGITALOCEAN_USER }}
-    key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
-    source: "build/"
-    target: "/var/www/frontend"
-    strip_components: 1
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
     
-- name: Restart Nginx
-  uses: appleboy/ssh-action@master
-  with:
-    host: ${{ secrets.DIGITALOCEAN_HOST }}
-    username: ${{ secrets.DIGITALOCEAN_USER }}
-    key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
-    script: |
-      # Restart Nginx to apply changes
-      sudo systemctl restart nginx
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build
+      run: npm run build
+      env:
+        CI: false
+      
+    - name: Configure server and prepare directory
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DIGITALOCEAN_HOST }}
+        username: ${{ secrets.DIGITALOCEAN_USER }}
+        key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
+        script: |
+          # Create directory if it doesn't exist
+          mkdir -p /var/www/frontend
+          # Ensure proper permissions
+          sudo chown -R $USER:$USER /var/www/frontend
+          sudo chmod -R 755 /var/www/frontend
+
+    - name: Deploy to DigitalOcean
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DIGITALOCEAN_HOST }}
+        username: ${{ secrets.DIGITALOCEAN_USER }}
+        key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
+        source: "build/"
+        target: "/var/www/frontend"
+        strip_components: 1
+        
+    - name: Restart Nginx
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DIGITALOCEAN_HOST }}
+        username: ${{ secrets.DIGITALOCEAN_USER }}
+        key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
+        script: |
+          # Restart Nginx to apply changes
+          sudo systemctl restart nginx
