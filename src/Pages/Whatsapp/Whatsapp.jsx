@@ -134,7 +134,7 @@ function Whatsapp() {
 
   return (
     <>
-      <div className="w-full justify-center items-end py-[5px] h-[calc(100vh-95px)] md:px-[15px] flex gap-[10px] overflow-hidden">
+      <div className="w-full justify-center items-end py-[5px] h-[calc(100vh-99px)] md:px-[15px] flex gap-[10px] overflow-hidden">
         {!isUserLoggedIn ? (
           <div className="w-full h-screen flex items-center justify-center">
             <div

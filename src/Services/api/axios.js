@@ -3,9 +3,7 @@ import axios from "axios";
 const isMobile = window.innerWidth <= 768;
 
 const api = axios.create({
-  baseURL: isMobile
-    ? "http://192.168.205.212:8000/api/v1"
-    : "http://localhost:8000/api/v1",
+  baseURL: "https://api.rohitkushwaha.com/api/v1",
   timeout: 60000,
   withCredentials: true, // This is what enables cookies to be sent!
 });
