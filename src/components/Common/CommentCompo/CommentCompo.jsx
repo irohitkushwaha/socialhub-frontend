@@ -1,7 +1,7 @@
 import CommentCountComp from "../../Common/CommentSystem/CommentCount.jsx";
 import Button from "../../ui/Button";
 import SummarizeComments from "../../Common/CommentSystem/SummarizeComments.jsx";
-import AddComment from "../../Common/CommentSystem/AddComment.jsx";
+import AddComment from "../CommentSystem/Addcomment.jsx";
 import CommentList from "../../Common/CommentSystem/CommentList.jsx";
 import { closeComment } from "../../../redux/slices/commentSlice";
 import { useDispatch } from "react-redux";
