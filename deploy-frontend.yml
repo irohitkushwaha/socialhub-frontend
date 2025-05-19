@@ -44,7 +44,7 @@ jobs:
         host: ${{ secrets.DIGITALOCEAN_HOST }}
         username: ${{ secrets.DIGITALOCEAN_USER }}
         key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
-        source: "build/"
+        source: "dist/"
         target: "/var/www/frontend"
         strip_components: 1
         
