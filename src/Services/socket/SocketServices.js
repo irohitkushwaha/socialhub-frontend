@@ -13,15 +13,9 @@ console.log(
 );
 
 const getSocketUrl = () => {
-  // If in development
-  if (process.env.NODE_ENV === 'development') {
-    // For desktop browsers, localhost works fine
-    if (window.location.hostname === 'localhost') {
-      return 'http://localhost:8000';
-    }
     // For mobile devices on the same network, use the IP address
     // Replace with your computer's actual IP address on your network
-    return 'http://192.168.205.212:8000'; // ← REPLACE THIS with your actual IP address
+    return 'https://api.rohitkushwaha.com'; // ← REPLACE THIS with your actual IP address
   }
   
   // For production (you would use your actual domain)
