@@ -13,14 +13,13 @@ console.log(
 );
 
 const getSocketUrl = () => {
-    // For mobile devices on the same network, use the IP address
-    // Replace with your computer's actual IP address on your network
-    return 'https://api.rohitkushwaha.com'; // ← REPLACE THIS with your actual IP address
-  }
-  
-  // For production (you would use your actual domain)
-  // return process.env.REACT_APP_API_URL || 'https://yourdomain.com';
+  // For mobile devices on the same network, use the IP address
+  // Replace with your computer's actual IP address on your network
+  return "https://api.rohitkushwaha.com"; // ← REPLACE THIS with your actual IP address
 };
+
+// For production (you would use your actual domain)
+// return process.env.REACT_APP_API_URL || 'https://yourdomain.com';
 
 // Create socket connection
 const socket = io(getSocketUrl(), {
@@ -54,11 +53,12 @@ socket.on("connect", () => {
     console.log("Offline Users (Last Seen):", OfflineAndLastSeen);
 
     store.dispatch(
-      updateUserStatus({ onlineUsers: Online, lastSeenUsers: OfflineAndLastSeen })
+      updateUserStatus({
+        onlineUsers: Online,
+        lastSeenUsers: OfflineAndLastSeen,
+      })
     );
   });
-
-
 
   //Getting Typing indicator that someone is typing to send message to me
 
