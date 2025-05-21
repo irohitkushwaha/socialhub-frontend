@@ -21,7 +21,7 @@ const InstagramPostImage = ({ imageUrl, altText = "Instagram post" }) => {
   //w-full aspect-[4/4] md:aspect-[4/5]
   return (
     <div
-      className="relative overflow-hidden w-[468px] h-[54px] "
+      className="relative overflow-hidden w-[468px] h-[585px] "
       style={{
         // width: isMobile ? "100%" : "300px",
         // height: isMobile ? "427px" : "572px",
