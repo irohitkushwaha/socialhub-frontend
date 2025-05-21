@@ -41,7 +41,7 @@ const ThumbnailCard = ({
         {/* Text Content */}
         <div className="flex flex-col gap-[8px]">
           {/* Title */}
-          <h3 className="text-[18px] font-bold text-[#181D27] line-clamp-2">
+          <h3 className="text-[18px] h-[54px] flex items-center font-bold text-[#181D27] line-clamp-2">
             {title}
           </h3>
 
