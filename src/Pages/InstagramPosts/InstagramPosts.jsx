@@ -70,7 +70,7 @@ function InstagramPosts() {
         const isTwoLastPost = index === posts.length - 2;
 
         return (
-          <div key={post._id} ref={isTwoLastPost ? observerRef : null}>
+          <div className="w-full" key={post._id} ref={isTwoLastPost ? observerRef : null}>
             <InstagramPost
               profileImage={post.Owner?.Avatar}
               username={
