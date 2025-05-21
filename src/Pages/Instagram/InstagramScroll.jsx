@@ -47,6 +47,8 @@ const InstagramScroll = () => {
   const isActivePost =
     isCommentOpen && activeItemId === currentVideo.id && itemType === "video";
 
+    const shownIds = videoOptions.map(video => video.id)
+
   // Function to fetch videos
   const fetchVideos = async (page) => {
     if (!hasMore && page > 1) {
@@ -54,7 +56,7 @@ const InstagramScroll = () => {
     }
     try {
       setIsLoading(true);
-      const response = await videoService.getShortsList(page, 2);
+      const response = await videoService.getShortsList(page, 7, shownIds );
 
       console.log("response for shorts list", response);
 

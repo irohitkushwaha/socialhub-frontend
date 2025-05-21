@@ -74,10 +74,10 @@ export const videoService = {
    * @param {number} limit - Number of videos per page
    * @returns {Promise} - API response with shorts list, pagination details
    */
-  getShortsList: async (page = 1, limit = 10) => {
+  getShortsList: async (page = 1, limit = 10, excludeIds) => {
     try {
       const response = await api.get('/video/shorts-list', {
-        params: { page, limit }
+        params: { page, limit, excludeIds }
       });
       
       return response.data.data;
