@@ -18,7 +18,8 @@ const InstagramPostImage = ({ imageUrl, altText = "Instagram post" }) => {
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
-  //w-full aspect-[4/4] md:aspect-[4/5]
+  //w-full aspect-[4/4] md:aspect-[4/5],
+
   return (
     <div
       className="relative overflow-hidden w-full md:w-[468px] aspect-[4/4] md:aspect-[4/5]"
