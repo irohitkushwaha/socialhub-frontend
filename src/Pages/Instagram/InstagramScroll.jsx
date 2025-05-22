@@ -394,25 +394,25 @@ const InstagramScroll = () => {
           {/* Player */}
           <div className="relative w-full h-screen  md:w-auto sm:max-w-[500px] overflow-hidden md:pb-[100px] ">
             <ReelPlayer
-              key={videoOptions[prevIndex]?.id}
+              key={`prev-${videoOptions[prevIndex]?.id}`}
               videoUrl={videoOptions[prevIndex]?.url}
               playing={false}
               muted={true}
               style={{ display: "none" }}
             />
             <ReelPlayer
-              key={currentVideo?.id}
+              key={`current-${currentVideo?.id}`}
               videoUrl={currentVideo?.url}
               onNextVideo={handleNextVideo}
               onPrevVideo={handlePrevVideo}
               videoId={currentVideo?.id}
               isTransitioning={isTransitioning}
-              disableSwipe={false} 
+              disableSwipe={false}
               playing={true}
-              muted={false}// Disable swipe in the component since we handle it here
+              muted={false} // Disable swipe in the component since we handle it here
             />
             <ReelPlayer
-              key={videoOptions[nextIndex]?.id}
+              key={`next-${videoOptions[nextIndex]?.id}`}
               videoUrl={videoOptions[nextIndex]?.url}
               playing={false}
               muted={true}
