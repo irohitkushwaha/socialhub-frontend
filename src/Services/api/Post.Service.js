@@ -1,5 +1,5 @@
 // src/Services/api/PostService.js
-import api from './axios';
+import api from "./axios";
 
 export const postService = {
   /**
@@ -12,22 +12,23 @@ export const postService = {
   uploadPost: async (postData) => {
     try {
       const formData = new FormData();
-      formData.append('PostImage', postData.PostImage);
-      formData.append('Caption', postData.Caption);
-      
-      const response = await api.post('/post/upload', formData, {
+      formData.append("PostImage", postData.PostImage);
+      formData.append("Caption", postData.Caption);
+
+      const response = await api.post("/post/upload", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
+        timeout: 300000, //5 minute
       });
-      
+
       return response.data;
     } catch (error) {
-      console.error('Error uploading post:', error);
+      console.error("Error uploading post:", error);
       throw error;
     }
   },
-  
+
   /**
    * Get paginated list of posts
    * @param {Object} params - Pagination parameters
@@ -37,17 +38,17 @@ export const postService = {
    */
   getPosts: async (params = { page: 1, limit: 10 }) => {
     try {
-      const response = await api.get('/post/get', {
+      const response = await api.get("/post/get", {
         params: {
           page: params.page,
-          limit: params.limit
-        }
+          limit: params.limit,
+        },
       });
-      
+
       return response.data.data;
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error("Error fetching posts:", error);
       throw error;
     }
-  }
+  },
 };

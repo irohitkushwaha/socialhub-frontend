@@ -12,6 +12,8 @@ const ReelPlayer = ({
   onPrevVideo,
   videoId,
   disableSwipe = false,
+  playing: controlledPlaying, 
+  muted: controlledMuted,
 }) => {
   const globalHasInteracted = useSelector(selectHasInteracted);
 
@@ -21,6 +23,11 @@ const ReelPlayer = ({
   // );
 
   const [playing, setPlaying] = useState(false); // Start paused
+
+  const isPlaying = controlledPlaying !== undefined ? controlledPlaying : playing;
+  const isMuted = controlledMuted !== undefined ? controlledMuted : false;
+
+
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -322,9 +329,9 @@ const ReelPlayer = ({
         url={videoUrl}
         width="100%"
         height="100%"
-        playing={playing}
+        playing={isPlaying}
         volume={0.8}
-        muted={false}
+        muted={isMuted}
         controls={false}
         loop={!isAutoScrollEnabled}
         onError={handleError}

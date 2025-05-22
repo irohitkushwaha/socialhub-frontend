@@ -47,7 +47,12 @@ const InstagramScroll = () => {
   const isActivePost =
     isCommentOpen && activeItemId === currentVideo.id && itemType === "video";
 
-    const shownIds = videoOptions.map(video => video.id)
+  const shownIds = videoOptions.map((video) => video.id);
+
+  const prevIndex =
+    (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length;
+
+  const nextIndex = (currentVideoIndex + 1) % videoOptions.length;
 
   // Function to fetch videos
   const fetchVideos = async (page) => {
@@ -56,7 +61,7 @@ const InstagramScroll = () => {
     }
     try {
       setIsLoading(true);
-      const response = await videoService.getShortsList(page, 7, shownIds );
+      const response = await videoService.getShortsList(page, 7, shownIds);
 
       console.log("response for shorts list", response);
 
@@ -389,12 +394,27 @@ const InstagramScroll = () => {
           {/* Player */}
           <div className="relative w-full h-screen  md:w-auto sm:max-w-[500px] overflow-hidden md:pb-[100px] ">
             <ReelPlayer
+              key={videoOptions[prevIndex]?.id}
+              videoUrl={videoOptions[prevIndex]?.url}
+              playing={false}
+              muted={true}
+              style={{ display: "none" }}
+            />
+            <ReelPlayer
+              key={currentVideo?.id}
               videoUrl={currentVideo?.url}
               onNextVideo={handleNextVideo}
               onPrevVideo={handlePrevVideo}
               videoId={currentVideo?.id}
               isTransitioning={isTransitioning}
               disableSwipe={false} // Disable swipe in the component since we handle it here
+            />
+            <ReelPlayer
+              key={videoOptions[nextIndex]?.id}
+              videoUrl={videoOptions[nextIndex]?.url}
+              playing={false}
+              muted={true}
+              style={{ display: "none" }}
             />
             {isMobile && (
               <div className="absolute z-30 bottom-[150px] right-[13px] pb-[20px]">
