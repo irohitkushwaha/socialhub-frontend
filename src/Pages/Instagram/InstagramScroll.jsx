@@ -407,7 +407,9 @@ const InstagramScroll = () => {
               onPrevVideo={handlePrevVideo}
               videoId={currentVideo?.id}
               isTransitioning={isTransitioning}
-              disableSwipe={false} // Disable swipe in the component since we handle it here
+              disableSwipe={false} 
+              playing={true}
+              muted={false}// Disable swipe in the component since we handle it here
             />
             <ReelPlayer
               key={videoOptions[nextIndex]?.id}
