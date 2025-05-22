@@ -398,8 +398,12 @@ const InstagramScroll = () => {
               videoUrl={videoOptions[prevIndex]?.url}
               playing={false}
               muted={true}
-              style={{ display: "none" }}
-            />
+              style={{
+                position: "absolute",
+                left: "-9999px",
+                zIndex: -10,
+                visibility: "hidden"
+              }}            />
             <ReelPlayer
               key={`current-${currentVideo?.id}`}
               videoUrl={currentVideo?.url}
@@ -416,8 +420,12 @@ const InstagramScroll = () => {
               videoUrl={videoOptions[nextIndex]?.url}
               playing={false}
               muted={true}
-              style={{ display: "none" }}
-            />
+              style={{
+                position: "absolute",
+                left: "-9999px",
+                zIndex: -10,
+                visibility: "hidden"
+              }}            />
             {isMobile && (
               <div className="absolute z-30 bottom-[150px] right-[13px] pb-[20px]">
                 <ReelActions
