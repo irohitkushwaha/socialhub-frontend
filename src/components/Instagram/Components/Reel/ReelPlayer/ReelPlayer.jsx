@@ -32,7 +32,7 @@ const ReelPlayer = ({
   // const isMuted = controlledMuted !== undefined ? controlledMuted : false;
 
   const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [startY, setStartY] = useState(0);
