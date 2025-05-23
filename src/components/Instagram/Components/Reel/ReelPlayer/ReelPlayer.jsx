@@ -24,8 +24,8 @@ const ReelPlayer = ({
 
   const [playing, setPlaying] = useState(false); // Start paused
 
-  const isPlaying = controlledPlaying !== undefined ? controlledPlaying : playing;
-  const isMuted = controlledMuted !== undefined ? controlledMuted : false;
+  // const isPlaying = controlledPlaying !== undefined ? controlledPlaying : playing;
+  // const isMuted = controlledMuted !== undefined ? controlledMuted : false;
 
 
   const [hasError, setHasError] = useState(false);
@@ -329,9 +329,9 @@ const ReelPlayer = ({
         url={videoUrl}
         width="100%"
         height="100%"
-        playing={isPlaying}
+        playing={playing}
         volume={0.8}
-        muted={isMuted}
+        muted={false}
         controls={false}
         loop={!isAutoScrollEnabled}
         onError={handleError}
