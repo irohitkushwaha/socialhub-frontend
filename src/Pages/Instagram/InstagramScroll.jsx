@@ -393,17 +393,22 @@ const InstagramScroll = () => {
         >
           {/* Player */}
           <div className="relative w-full h-screen  md:w-auto sm:max-w-[500px] overflow-hidden md:pb-[100px] ">
-            <ReelPlayer
-              key={`prev-${videoOptions[prevIndex]?.id}`}
-              videoUrl={videoOptions[prevIndex]?.url}
-              playing={false}
-              muted={true}
+            <div
               style={{
                 position: "absolute",
                 left: "-9999px",
                 zIndex: -10,
-                visibility: "hidden"
-              }}            />
+                visibility: "hidden",
+                display: "none",
+              }}
+            >
+              <ReelPlayer
+                key={`prev-${videoOptions[prevIndex]?.id}`}
+                videoUrl={videoOptions[prevIndex]?.url}
+                playing={false}
+                muted={true}
+              />
+            </div>
             <ReelPlayer
               key={`current-${currentVideo?.id}`}
               videoUrl={currentVideo?.url}
@@ -415,17 +420,23 @@ const InstagramScroll = () => {
               playing={true}
               muted={false} // Disable swipe in the component since we handle it here
             />
-            <ReelPlayer
-              key={`next-${videoOptions[nextIndex]?.id}`}
-              videoUrl={videoOptions[nextIndex]?.url}
-              playing={false}
-              muted={true}
+            <div
               style={{
                 position: "absolute",
                 left: "-9999px",
                 zIndex: -10,
-                visibility: "hidden"
-              }}            />
+                visibility: "hidden",
+                display: "none",
+              }}
+            >
+              <ReelPlayer
+                key={`next-${videoOptions[nextIndex]?.id}`}
+                videoUrl={videoOptions[nextIndex]?.url}
+                playing={false}
+                muted={true}
+              />
+            </div>
+
             {isMobile && (
               <div className="absolute z-30 bottom-[150px] right-[13px] pb-[20px]">
                 <ReelActions
