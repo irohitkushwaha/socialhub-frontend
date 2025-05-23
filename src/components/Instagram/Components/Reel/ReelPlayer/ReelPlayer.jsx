@@ -215,20 +215,19 @@ const ReelPlayer = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // const observer = new IntersectionObserver(
-    //   ([entry]) => {
-    //     // After user has interacted, control playback based on visibility
-    //     if (hasUserInteracted) {
-    //       // Play when in view, pause when out of view
-    //       setPlaying(entry.isIntersecting && entry.intersectionRatio > 0.5);
-    //     }
-    //   },
-    //   { threshold: [0.5] }
-    // );
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // After user has interacted, control playback based on visibility
+        if (hasUserInteracted) {
+          // Play when in view, pause when out of view
+          setPlaying(entry.isIntersecting && entry.intersectionRatio > 0.5);
+        }
+      },
+      { threshold: [0.5] }
+    );
 
-    // observer.observe(containerRef.current);
-    // return () => observer.disconnect();
-    setPlaying(true);
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
   }, [isSwiped]);
 
   // Add document-level event listener to track first user interaction
