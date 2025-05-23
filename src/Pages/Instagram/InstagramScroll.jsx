@@ -204,9 +204,9 @@ const InstagramScroll = () => {
         setTimeout(() => {
           setIsTransitioning(false);
           setSlideDirection(null);
-        }, 50);
+        }, 10);
       },
-      isMobile ? 500 : 10
+      isMobile ? 10 : 10 //change from 500 to 10 of mobile
     ); // Match this with the transition duration
   };
 

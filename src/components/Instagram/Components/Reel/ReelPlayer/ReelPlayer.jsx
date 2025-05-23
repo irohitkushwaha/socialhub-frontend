@@ -148,7 +148,7 @@ const ReelPlayer = ({
     // Set a timeout to allow scrolling again after 800ms
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
-    }, 300);
+    }, 100);
   };
 
   // Handle player errors - with auto retry
