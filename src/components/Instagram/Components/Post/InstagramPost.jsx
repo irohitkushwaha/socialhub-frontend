@@ -81,7 +81,7 @@ function InstagramPost({
   };
 
   return (
-    <div className="relative w-full md:w-[468px] md:mx-auto overflow-x-hidden px-[7px] py-[5px]">
+    <div className="relative w-full md:max-w-[500px] md:mx-auto overflow-x-hidden px-[7px] py-[5px]">
       <div className="w-full flex flex-col gap-[20px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] justify-start px-[3px] pt-[10px] pb-[16px] items-center">
         <div className="w-full px-[5px]">
           <InstagramPostProfile

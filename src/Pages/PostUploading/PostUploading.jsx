@@ -122,7 +122,7 @@ function PostUpload() {
               Post Upload Succsessfully !{" "}
             </div>
           )}
-          <div className="w-full px-[8px] md:px-0">
+          <div className="w-full px-[8px] md:px-0 flex justify-center">
             <FlexibleButton
               text={isUploading ? "Uploading..." : "Upload Post"}
               disabled={isUploading}
