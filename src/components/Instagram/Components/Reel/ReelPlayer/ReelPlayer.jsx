@@ -148,7 +148,7 @@ const ReelPlayer = ({
     // Set a timeout to allow scrolling again after 800ms
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
-    }, 100);
+    }, 10);
   };
 
   // Handle player errors - with auto retry
@@ -298,7 +298,7 @@ const ReelPlayer = ({
       // Set a timeout to allow scrolling again after 300ms
       scrollTimeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 300);
+      }, 100);
     };
 
     // Add event listener

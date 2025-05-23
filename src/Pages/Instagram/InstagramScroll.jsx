@@ -296,7 +296,7 @@ const InstagramScroll = () => {
       () => {
         setIsScrolling(false);
       },
-      isMobile ? 800 : 600
+      isMobile ? 100 : 100
     ); // Shorter timeout for desktop
   };
 
@@ -328,7 +328,7 @@ const InstagramScroll = () => {
         () => {
           setIsScrolling(false);
         },
-        isMobile ? 800 : 600
+        isMobile ? 100 : 100
       );
     };
 
