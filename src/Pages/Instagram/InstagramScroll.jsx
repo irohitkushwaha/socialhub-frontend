@@ -155,6 +155,7 @@ const InstagramScroll = () => {
 
   const handleNextVideo = () => {
     if (isTransitioning) return;
+
     triggerSlideTransition("up");
   };
 
@@ -173,7 +174,7 @@ const InstagramScroll = () => {
     // Apply the transition
     if (slideContainerRef.current) {
       slideContainerRef.current.style.transition = `transform ${
-        isMobile ? "0.5s" : "0.4s"
+        isMobile ? "3s" : "0.4s"
       } ease-out`;
 
       if (direction === "up") {
@@ -206,12 +207,13 @@ const InstagramScroll = () => {
           setSlideDirection(null);
         }, 10);
       },
-      isMobile ? 10 : 10 //change from 500 to 10 of mobile
+      isMobile ? 1 : 1 //change from 500 to 10 of mobile
     ); // Match this with the transition duration
   };
 
   // Handle touch events for mobile
   const handleTouchStart = (e) => {
+    
     if (isTransitioning) return;
     setStartY(e.touches[0].clientY);
     setTouchDelta(0);
@@ -296,7 +298,7 @@ const InstagramScroll = () => {
       () => {
         setIsScrolling(false);
       },
-      isMobile ? 100 : 100
+      isMobile ? 1 : 1
     ); // Shorter timeout for desktop
   };
 
@@ -328,7 +330,7 @@ const InstagramScroll = () => {
         () => {
           setIsScrolling(false);
         },
-        isMobile ? 100 : 100
+        isMobile ? 1 : 1
       );
     };
 
@@ -417,8 +419,6 @@ const InstagramScroll = () => {
               videoId={currentVideo?.id}
               isTransitioning={isTransitioning}
               disableSwipe={false}
-              playing={true}
-              muted={false} // Disable swipe in the component since we handle it here
             />
             <div
               style={{
