@@ -15,7 +15,7 @@ function SavedReels() {
       try {
         const response = await savedService.getSavedReels();
         console.log("response for saved reels is", response);
-        setReelThumbnails(response);
+        setReelThumbnails(response || []);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching saved reels:", error);
@@ -29,7 +29,7 @@ function SavedReels() {
     <div className="mx-auto w-full overflow-x-hidden">
       {!isUserLoggedIn ? (
         <div
-          className="px-[15px] py-[20px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit mx-auto mt-[100px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] min-h-[300px"
+          className="px-[15px] py-[20px] text-[#414651] text-[19px] md:text-[20px] font-bold font-inter w-fit mx-auto mt-[100px] rounded-[8px] border border-[#D5D7DA] bg-white shadow-[0px_1px_2px_rgba(10,13,18,0.05),_0px_0px_0px_3px_#F5F5F5] min-h-[300px]"
           style={{ wordSpacing: "5px" }}
         >
           Please{" "}
@@ -42,7 +42,7 @@ function SavedReels() {
         <div className="flex justify-center items-center h-40">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
         </div>
-      ) : reelThumbnails?.length === 0 ? (
+      ) : !reelThumbnails || reelThumbnails?.length === 0 ? (
         <div className="flex justify-center items-center h-[60vh]">
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-gray-700">
@@ -56,7 +56,7 @@ function SavedReels() {
       ) : (
         <div className="w-full flex flex-wrap gap-[5px] md:gap-[10px] justify-center md:justify-center">
           {reelThumbnails?.map((reel) => (
-            <Link to={`/instagram/reels/${reel.reelId}`}>
+            <Link key={reel.reelId} to={`/instagram/reels/${reel.reelId}`}>
               <ThumbnailReels key={reel._id} imageUrl={reel.thumbnail} />
             </Link>
           ))}
