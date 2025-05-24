@@ -218,10 +218,38 @@ const InstagramScroll = () => {
     setIsTransitioning(true);
     setSlideDirection(direction);
   
+    // Create the transition end handler within this function's scope
+    const handleTransitionEnd = () => {
+      // Change the video based on direction
+      if (direction === "up") {
+        setCurrentVideoIndex((currentVideoIndex + 1) % videoOptions.length);
+      } else {
+        setCurrentVideoIndex(
+          (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length
+        );
+      }
+    
+      // Reset the transform immediately (no transition)
+      if (slideContainerRef.current) {
+        slideContainerRef.current.removeEventListener('transitionend', handleTransitionEnd);
+        slideContainerRef.current.style.transition = "none";
+        slideContainerRef.current.style.transform = "translateY(0)";
+      }
+    
+      // Reset transition flags after a short delay
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setSlideDirection(null);
+      }, 10);
+    };
+  
     // Apply the transition
     if (slideContainerRef.current) {
-      // Remove any existing transitionend listener
-      slideContainerRef.current.removeEventListener('transitionend', handleTransitionEnd);
+      // Remove any existing transitionend listener if one exists
+      slideContainerRef.current.removeEventListener('transitionend', slideContainerRef.current._currentTransitionHandler);
+      
+      // Store the current handler on the DOM element for later removal
+      slideContainerRef.current._currentTransitionHandler = handleTransitionEnd;
       
       // Set up transition
       slideContainerRef.current.style.transition = `transform ${
@@ -237,31 +265,6 @@ const InstagramScroll = () => {
       // Add transitionend event listener
       slideContainerRef.current.addEventListener('transitionend', handleTransitionEnd);
     }
-  };
-  
-  // Handle the transition end event
-  const handleTransitionEnd = () => {
-    // Change the video based on the last slide direction
-    if (slideDirection === "up") {
-      setCurrentVideoIndex((currentVideoIndex + 1) % videoOptions.length);
-    } else {
-      setCurrentVideoIndex(
-        (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length
-      );
-    }
-  
-    // Reset the transform immediately (no transition)
-    if (slideContainerRef.current) {
-      slideContainerRef.current.removeEventListener('transitionend', handleTransitionEnd);
-      slideContainerRef.current.style.transition = "none";
-      slideContainerRef.current.style.transform = "translateY(0)";
-    }
-  
-    // Reset transition flags after a short delay
-    setTimeout(() => {
-      setIsTransitioning(false);
-      setSlideDirection(null);
-    }, 10);
   };
 
   // Handle touch events for mobile
