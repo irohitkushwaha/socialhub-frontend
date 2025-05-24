@@ -42,6 +42,17 @@ function SavedReels() {
         <div className="flex justify-center items-center h-40">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
         </div>
+      ) : reelThumbnails.length === 0 ? (
+        <div className="flex justify-center items-center h-[60vh]">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold text-gray-700">
+              No saved reels
+            </h2>
+            <p className="text-gray-500 mt-2">
+              You have not saved any reels yet. Start saving!
+            </p>
+          </div>
+        </div>
       ) : (
         <div className="w-full flex flex-wrap gap-[5px] md:gap-[10px] justify-center md:justify-center">
           {reelThumbnails.map((reel) => (
