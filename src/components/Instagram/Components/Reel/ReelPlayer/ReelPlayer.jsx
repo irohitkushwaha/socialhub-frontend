@@ -106,8 +106,8 @@ const ReelPlayer = ({
   // Handle video click to toggle play/pause
   const handlePlayPause = (e) => {
     e.stopPropagation();
+    setPlaying(!playing); 
     dispatch(markUserInteracted());
-    setPlaying(!playing);
   };
 
   // Swipe handlers for mobile
@@ -119,13 +119,13 @@ const ReelPlayer = ({
   const handleTouchEnd = (e) => {
     if (disableSwipe) return;
     dispatch(markUserInteracted());
-    if (isScrolling) return;
-    setIsScrolling(true);
+    // if (isScrolling) return;
+    // setIsScrolling(true);
 
-    // Clear any existing timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
+    // // Clear any existing timeout
+    // if (scrollTimeoutRef.current) {
+    //   clearTimeout(scrollTimeoutRef.current);
+    // }
 
     const endY = e.changedTouches[0].clientY;
     const diff = startY - endY;
@@ -141,9 +141,9 @@ const ReelPlayer = ({
       }
       setIsSwiped(true);
       // Set a timeout to allow scrolling again after 300ms
-      scrollTimeoutRef.current = setTimeout(() => {
-        setIsScrolling(false);
-      }, 1000);
+      // scrollTimeoutRef.current = setTimeout(() => {
+      //   setIsScrolling(false);
+      // }, 1000);
     }
   };
 
@@ -220,21 +220,7 @@ const ReelPlayer = ({
     setHasError(false);
   };
 
-  // // Reset states when video URL changes
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   setHasError(false);
-  //   setRetryCount(0);
 
-  //   // Keep initial load paused, but autoplay when scrolling between videos
-  //   if (hasUserInteracted) {
-  //     setPlaying(true); // Auto-play when scrolling between videos
-  //   } else {
-  //     setPlaying(false); // First load stays paused
-  //   }
-  // }, [isSwiped]);
-
-  // Use Intersection Observer to control play/pause based on visibility
   useEffect(() => {
     if (!containerRef.current) return;
 
