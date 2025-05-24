@@ -34,14 +34,9 @@ const InstagramScroll = () => {
 
   // Add new state for slide transitions
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [slideDirection, setSlideDirection] = useState(null);
-  const [startY, setStartY] = useState(0);
-  const [touchDelta, setTouchDelta] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
 
   // Refs
   const slideContainerRef = useRef(null);
-  const scrollTimeoutRef = useRef(null);
   const transitionTimeoutRef = useRef(null);
 
   const isActivePost =
@@ -49,8 +44,7 @@ const InstagramScroll = () => {
 
   const shownIds = videoOptions.map((video) => video.id);
 
-  const prevIndex =
-    (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length;
+  const prevIndex = (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length;
 
   const nextIndex = (currentVideoIndex + 1) % videoOptions.length;
 
@@ -99,10 +93,6 @@ const InstagramScroll = () => {
       fetchVideos(1);
     }
   }, []);
-
-  console.log("videoOptions", videoOptions);
-
-  console.log("currentVideo", currentVideo);
 
   // Load more videos when we're close to the end
   useEffect(() => {
@@ -165,241 +155,52 @@ const InstagramScroll = () => {
   };
 
   // Trigger the slide transition
-  // const triggerSlideTransition = (direction) => {
-  //   if (isTransitioning) return; // Prevent multiple transitions
-
-  //   setIsTransitioning(true);
-  //   setSlideDirection(direction);
-
-  //   // Apply the transition
-  //   if (slideContainerRef.current) {
-  //     slideContainerRef.current.style.transition = `transform ${
-  //       isMobile ? "0.5" : "0.4s"
-  //     } ease-out`;
-
-  //     if (direction === "up") {
-  //       slideContainerRef.current.style.transform = "translateY(-100%)";
-  //     } else {
-  //       slideContainerRef.current.style.transform = "translateY(100%)";
-  //     }
-  //   }
-
-  //   // After transition completes, change the video and reset
-  //   transitionTimeoutRef.current = setTimeout(
-  //     () => {
-  //       if (direction === "up") {
-  //         setCurrentVideoIndex((currentVideoIndex + 1) % videoOptions.length);
-  //       } else {
-  //         setCurrentVideoIndex(
-  //           (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length
-  //         );
-  //       }
-
-  //       // Reset the transform immediately (no transition)
-  //       if (slideContainerRef.current) {
-  //         slideContainerRef.current.style.transition = "none";
-  //         slideContainerRef.current.style.transform = "translateY(0)";
-  //       }
-
-  //       // Reset transition flags after a short delay
-  //       setTimeout(() => {
-  //         setIsTransitioning(false);
-  //         setSlideDirection(null);
-  //       }, 10);
-  //     },
-  //     isMobile ? 3000 : 1 //change from 500 to 10 of mobile
-  //   ); // Match this with the transition duration
-  // };'
-
-
   const triggerSlideTransition = (direction) => {
     if (isTransitioning) return; // Prevent multiple transitions
-  
+
     setIsTransitioning(true);
-    setSlideDirection(direction);
-  
-    // Create the transition end handler within this function's scope
-    const handleTransitionEnd = () => {
-      // Change the video based on direction
-      if (direction === "up") {
-        setCurrentVideoIndex((currentVideoIndex + 1) % videoOptions.length);
-      } else {
-        setCurrentVideoIndex(
-          (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length
-        );
-      }
-    
-      // Reset the transform immediately (no transition)
-      if (slideContainerRef.current) {
-        slideContainerRef.current.removeEventListener('transitionend', handleTransitionEnd);
-        slideContainerRef.current.style.transition = "none";
-        slideContainerRef.current.style.transform = "translateY(0)";
-      }
-    
-      // Reset transition flags after a short delay
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setSlideDirection(null);
-      }, 10);
-    };
-  
     // Apply the transition
     if (slideContainerRef.current) {
-      // Remove any existing transitionend listener if one exists
-      slideContainerRef.current.removeEventListener('transitionend', slideContainerRef.current._currentTransitionHandler);
-      
-      // Store the current handler on the DOM element for later removal
-      slideContainerRef.current._currentTransitionHandler = handleTransitionEnd;
-      
-      // Set up transition
       slideContainerRef.current.style.transition = `transform ${
-        isMobile ? "1s" : "1s"
+        isMobile ? "1s" : "0.4s"
       } ease-out`;
-  
+
       if (direction === "up") {
         slideContainerRef.current.style.transform = "translateY(-100%)";
       } else {
         slideContainerRef.current.style.transform = "translateY(100%)";
       }
-      
-      // Add transitionend event listener
-      slideContainerRef.current.addEventListener('transitionend', handleTransitionEnd);
-    }
-  };
-
-  // Handle touch events for mobile
-  const handleTouchStart = (e) => {
-    
-    if (isTransitioning) return;
-    setStartY(e.touches[0].clientY);
-    setTouchDelta(0);
-  };
-
-  const handleTouchMove = (e) => {
-    if (isTransitioning) return;
-    const currentY = e.touches[0].clientY;
-    const delta = startY - currentY;
-    setTouchDelta(delta);
-
-    // Move the reel container based on touch
-    if (slideContainerRef.current) {
-      const translateY = -delta * 0.5; // Dampen the movement
-      slideContainerRef.current.style.transform = `translateY(${translateY}px)`;
-    }
-  };
-
-  const handleTouchEnd = (e) => {
-    if (isTransitioning) return;
-
-    const endY = e.changedTouches[0].clientY;
-    const diff = startY - endY;
-
-    // Reset the touch move transform
-    if (slideContainerRef.current) {
-      slideContainerRef.current.style.transition = "transform 0.3s ease-out";
-      slideContainerRef.current.style.transform = "translateY(0)";
-
-      // Remove the transition after it completes
-      setTimeout(() => {
-        if (slideContainerRef.current) {
-          slideContainerRef.current.style.transition = "";
-        }
-      }, 300);
     }
 
-    // If swipe distance is greater than threshold, consider it a valid swipe
-    if (Math.abs(diff) > 80) {
-      // Increased threshold for better UX
-      if (diff > 0) {
-        // Swiped up - go to next video
-        triggerSlideTransition("up");
-      } else {
-        // Swiped down - go to previous video
-        triggerSlideTransition("down");
-      }
-    }
-  };
-
-  // Handle wheel events for desktop
-  const handleWheel = (e) => {
-    if (isTransitioning) return;
-
-    // Prevent multiple scroll events from firing too quickly
-    if (isScrolling) return;
-
-    setIsScrolling(true);
-
-    // Clear any existing timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-
-    // Increased sensitivity for desktop
-    const threshold = isMobile ? 50 : 30;
-
-    // If scrolling down (positive deltaY), go to next video
-    if (e.deltaY > threshold) {
-      triggerSlideTransition("up");
-    }
-    // If scrolling up (negative deltaY), go to previous video
-    else if (e.deltaY < -threshold) {
-      triggerSlideTransition("down");
-    } else {
-      setIsScrolling(false);
-      return;
-    }
-
-    // Set a timeout to allow scrolling again after delay
-    scrollTimeoutRef.current = setTimeout(
+    // After transition completes, change the video and reset
+    transitionTimeoutRef.current = setTimeout(
       () => {
-        setIsScrolling(false);
+        if (direction === "up") {
+          setCurrentVideoIndex((currentVideoIndex + 1) % videoOptions.length);
+        } else {
+          setCurrentVideoIndex(
+            (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length
+          );
+        }
+
+        // Reset the transform immediately (no transition)
+        if (slideContainerRef.current) {
+          slideContainerRef.current.style.transition = "none";
+          slideContainerRef.current.style.transform = "translateY(0)";
+        }
+
+        // Reset transition flags after a short delay
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 50);
       },
-      isMobile ? 1 : 1
-    ); // Shorter timeout for desktop
+      isMobile ? 500 : 200 //change from 500 to 10 of mobile
+    ); // Match this with the transition duration
   };
-
-  // Handle keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (isTransitioning) return;
-
-      // Prevent handling if already scrolling
-      if (isScrolling) return;
-
-      // Down arrow key - go to next video
-      if (e.key === "ArrowDown") {
-        triggerSlideTransition("up");
-      }
-      // Up arrow key - go to previous video
-      else if (e.key === "ArrowUp") {
-        triggerSlideTransition("down");
-      } else {
-        // If not up/down arrow, don't block scrolling
-        return;
-      }
-
-      // Set scrolling to true to prevent rapid keypresses
-      setIsScrolling(true);
-
-      // Set a timeout to allow scrolling again after delay
-      scrollTimeoutRef.current = setTimeout(
-        () => {
-          setIsScrolling(false);
-        },
-        isMobile ? 1 : 1
-      );
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isScrolling, isTransitioning, isMobile]);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
       if (transitionTimeoutRef.current) {
         clearTimeout(transitionTimeoutRef.current);
       }
@@ -425,7 +226,6 @@ const InstagramScroll = () => {
     <>
       <div
         className="flex justify-center items-end gap-[18px] w-full bg-white overflow-hidden pb-[100px]"
-        onWheel={handleWheel}
       >
         {/* Initial loading spinner - when no videos are loaded yet */}
         {isLoading && videoOptions.length === 0 && (
@@ -445,9 +245,6 @@ const InstagramScroll = () => {
         <div
           ref={slideContainerRef}
           className="w-full h-full relative flex justify-center items-end gap-[18px] "
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
         >
           {/* Player */}
           <div className="relative w-full h-screen  md:w-auto sm:max-w-[500px] overflow-hidden md:pb-[100px] ">
@@ -558,26 +355,6 @@ const InstagramScroll = () => {
             </div>
           </div>
         )}
-        {/* Visual indicator for swipe direction */}
-        {/* {touchDelta !== 0 && Math.abs(touchDelta) > 20 && (
-          <div
-            className={`absolute ${
-              touchDelta > 0 ? "top-8" : "bottom-8"
-            } left-1/2 transform -translate-x-1/2 bg-black bg-opacity-40 rounded-full p-2 z-50`}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="white"
-              style={{
-                transform: touchDelta > 0 ? "rotate(180deg)" : "rotate(0deg)",
-              }}
-            >
-              <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
-            </svg>
-          </div>
-        )} */}
       </div>
     </>
   );

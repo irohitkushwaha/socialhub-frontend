@@ -33,6 +33,7 @@ const ReelPlayer = ({
 
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [startY, setStartY] = useState(0);
@@ -49,8 +50,30 @@ const ReelPlayer = ({
 
   const videoSavedToHistoryRef = useRef(false);
   const watchHistoryTimerRef = useRef(null);
+  const loadingTimerRef = useRef(null);
+
 
   const isAutoScrollEnabled = useSelector(selectIsAutoScrollEnabled);
+
+  // Handle delayed loading indicator
+  useEffect(() => {
+    // Set isLoading to true immediately for internal state
+    setIsLoading(true);
+
+    // But delay showing the loading indicator
+    loadingTimerRef.current = setTimeout(() => {
+      // Only show loading indicator if still loading
+      if (isLoading) {
+        setShowLoadingIndicator(true);
+      }
+    }, 200);
+
+    return () => {
+      if (loadingTimerRef.current) {
+        clearTimeout(loadingTimerRef.current);
+      }
+    };
+  }, [videoUrl]); // Reset on video URL change
 
   const saveToWatchHistory = async (videoId) => {
     // Prevent duplicate API calls for the same video
@@ -95,24 +118,32 @@ const ReelPlayer = ({
   // Handle video click to toggle play/pause
   const handlePlayPause = (e) => {
     e.stopPropagation();
-    dispatch(markUserInteracted(true));
+    setHasUserInteracted(true);
     setPlaying(!playing);
   };
 
   // Swipe handlers for mobile
   const handleTouchStart = (e) => {
     setStartY(e.touches[0].clientY);
-    dispatch(markUserInteracted(true));
+    setHasUserInteracted(true);
   };
 
   const handleTouchEnd = (e) => {
     if (disableSwipe) return;
+    setHasUserInteracted(true);
+    if (isScrolling) return;
+    setIsScrolling(true);
+
+    // Clear any existing timeout
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
 
     const endY = e.changedTouches[0].clientY;
     const diff = startY - endY;
 
     // If swipe distance is greater than 50px, consider it a valid swipe
-    if (Math.abs(diff) > 10) {
+    if (Math.abs(diff) > 20) {
       if (diff > 0) {
         // Swiped up - go to next video
         if (onNextVideo) onNextVideo();
@@ -121,6 +152,10 @@ const ReelPlayer = ({
         if (onPrevVideo) onPrevVideo();
       }
       setIsSwiped(true);
+      // Set a timeout to allow scrolling again after 300ms
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 300);
     }
   };
 
@@ -151,7 +186,7 @@ const ReelPlayer = ({
     // Set a timeout to allow scrolling again after 800ms
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
-    }, 1);
+    }, 800);
   };
 
   // Handle player errors - with auto retry
@@ -230,16 +265,6 @@ const ReelPlayer = ({
     return () => observer.disconnect();
   }, [isSwiped]);
 
-  // Add document-level event listener to track first user interaction
-  // useEffect(() => {
-  //   if (globalHasInteracted) {
-  //     console.log("globalHasInteracted in the useEffect", globalHasInteracted);
-  //     // setHasUserInteracted(true);
-  //     setPlaying(true);
-  //     console.log("hasUserInteracted after globalhasinteracted", hasUserInteracted);
-  //   }
-  // }, [globalHasInteracted]);
-
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
@@ -301,7 +326,7 @@ const ReelPlayer = ({
       // Set a timeout to allow scrolling again after 300ms
       scrollTimeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 1);
+      }, 300);
     };
 
     // Add event listener
@@ -368,7 +393,7 @@ const ReelPlayer = ({
       {/* Overlay for better touch control */}
       <div className="absolute inset-0 z-10 pointer-events-none">
         {/* Loading indicator */}
-        {isLoading && (
+        {showLoadingIndicator && isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 pointer-events-auto">
             <div className="w-12 h-12 border-4 border-gray-300 border-t-white rounded-full animate-spin"></div>
           </div>
