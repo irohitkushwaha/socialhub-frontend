@@ -17,19 +17,11 @@ const ReelPlayer = ({
   videoId,
   disableSwipe = false,
 }) => {
-  const globalHasInteracted = useSelector(selectHasInteracted);
+  const hasUserInteracted = useSelector(selectHasInteracted);
 
   const dispatch = useDispatch();
 
-  // console.log(
-  //   "Global Has ineracted value as component mount IN REEL PLAYER",
-  //   globalHasInteracted
-  // );
-
   const [playing, setPlaying] = useState(false); // Start paused
-
-  // const isPlaying = controlledPlaying !== undefined ? controlledPlaying : playing;
-  // const isMuted = controlledMuted !== undefined ? controlledMuted : false;
 
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,13 +29,6 @@ const ReelPlayer = ({
   const [isScrolling, setIsScrolling] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [startY, setStartY] = useState(0);
-  const [hasUserInteracted, setHasUserInteracted] = useState(
-    globalHasInteracted || false
-  );
-
-  useEffect(() => {
-    setHasUserInteracted(globalHasInteracted);
-  }, [globalHasInteracted]);
 
   console.log("user interacted value as it loads", hasUserInteracted);
   const [isSwiped, setIsSwiped] = useState(false);
@@ -119,7 +104,7 @@ const ReelPlayer = ({
   }, [videoId, playing]);
 
   // Handle video click to toggle play/pause
-  const handlePlayPause = () => {
+  const handlePlayPause = (e) => {
     e.stopPropagation();
     dispatch(markUserInteracted());
     setPlaying(!playing);
@@ -158,7 +143,7 @@ const ReelPlayer = ({
       // Set a timeout to allow scrolling again after 300ms
       scrollTimeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 300);
+      }, 1000);
     }
   };
 
@@ -189,7 +174,7 @@ const ReelPlayer = ({
     // Set a timeout to allow scrolling again after 800ms
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
-    }, 800);
+    }, 1000);
   };
 
   // Handle player errors - with auto retry
@@ -329,7 +314,7 @@ const ReelPlayer = ({
       // Set a timeout to allow scrolling again after 300ms
       scrollTimeoutRef.current = setTimeout(() => {
         setIsScrolling(false);
-      }, 300);
+      }, 800);
     };
 
     // Add event listener
