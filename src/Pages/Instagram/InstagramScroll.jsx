@@ -165,50 +165,103 @@ const InstagramScroll = () => {
   };
 
   // Trigger the slide transition
+  // const triggerSlideTransition = (direction) => {
+  //   if (isTransitioning) return; // Prevent multiple transitions
+
+  //   setIsTransitioning(true);
+  //   setSlideDirection(direction);
+
+  //   // Apply the transition
+  //   if (slideContainerRef.current) {
+  //     slideContainerRef.current.style.transition = `transform ${
+  //       isMobile ? "0.5" : "0.4s"
+  //     } ease-out`;
+
+  //     if (direction === "up") {
+  //       slideContainerRef.current.style.transform = "translateY(-100%)";
+  //     } else {
+  //       slideContainerRef.current.style.transform = "translateY(100%)";
+  //     }
+  //   }
+
+  //   // After transition completes, change the video and reset
+  //   transitionTimeoutRef.current = setTimeout(
+  //     () => {
+  //       if (direction === "up") {
+  //         setCurrentVideoIndex((currentVideoIndex + 1) % videoOptions.length);
+  //       } else {
+  //         setCurrentVideoIndex(
+  //           (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length
+  //         );
+  //       }
+
+  //       // Reset the transform immediately (no transition)
+  //       if (slideContainerRef.current) {
+  //         slideContainerRef.current.style.transition = "none";
+  //         slideContainerRef.current.style.transform = "translateY(0)";
+  //       }
+
+  //       // Reset transition flags after a short delay
+  //       setTimeout(() => {
+  //         setIsTransitioning(false);
+  //         setSlideDirection(null);
+  //       }, 10);
+  //     },
+  //     isMobile ? 3000 : 1 //change from 500 to 10 of mobile
+  //   ); // Match this with the transition duration
+  // };'
+
+
   const triggerSlideTransition = (direction) => {
     if (isTransitioning) return; // Prevent multiple transitions
-
+  
     setIsTransitioning(true);
     setSlideDirection(direction);
-
+  
     // Apply the transition
     if (slideContainerRef.current) {
+      // Remove any existing transitionend listener
+      slideContainerRef.current.removeEventListener('transitionend', handleTransitionEnd);
+      
+      // Set up transition
       slideContainerRef.current.style.transition = `transform ${
-        isMobile ? "0.5" : "0.4s"
+        isMobile ? "1s" : "1s"
       } ease-out`;
-
+  
       if (direction === "up") {
         slideContainerRef.current.style.transform = "translateY(-100%)";
       } else {
         slideContainerRef.current.style.transform = "translateY(100%)";
       }
+      
+      // Add transitionend event listener
+      slideContainerRef.current.addEventListener('transitionend', handleTransitionEnd);
     }
-
-    // After transition completes, change the video and reset
-    transitionTimeoutRef.current = setTimeout(
-      () => {
-        if (direction === "up") {
-          setCurrentVideoIndex((currentVideoIndex + 1) % videoOptions.length);
-        } else {
-          setCurrentVideoIndex(
-            (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length
-          );
-        }
-
-        // Reset the transform immediately (no transition)
-        if (slideContainerRef.current) {
-          slideContainerRef.current.style.transition = "none";
-          slideContainerRef.current.style.transform = "translateY(0)";
-        }
-
-        // Reset transition flags after a short delay
-        setTimeout(() => {
-          setIsTransitioning(false);
-          setSlideDirection(null);
-        }, 10);
-      },
-      isMobile ? 500 : 400 //change from 500 to 10 of mobile
-    ); // Match this with the transition duration
+  };
+  
+  // Handle the transition end event
+  const handleTransitionEnd = () => {
+    // Change the video based on the last slide direction
+    if (slideDirection === "up") {
+      setCurrentVideoIndex((currentVideoIndex + 1) % videoOptions.length);
+    } else {
+      setCurrentVideoIndex(
+        (currentVideoIndex - 1 + videoOptions.length) % videoOptions.length
+      );
+    }
+  
+    // Reset the transform immediately (no transition)
+    if (slideContainerRef.current) {
+      slideContainerRef.current.removeEventListener('transitionend', handleTransitionEnd);
+      slideContainerRef.current.style.transition = "none";
+      slideContainerRef.current.style.transform = "translateY(0)";
+    }
+  
+    // Reset transition flags after a short delay
+    setTimeout(() => {
+      setIsTransitioning(false);
+      setSlideDirection(null);
+    }, 10);
   };
 
   // Handle touch events for mobile
