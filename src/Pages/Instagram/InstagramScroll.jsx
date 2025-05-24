@@ -174,7 +174,7 @@ const InstagramScroll = () => {
     // Apply the transition
     if (slideContainerRef.current) {
       slideContainerRef.current.style.transition = `transform ${
-        isMobile ? "3s" : "0.4s"
+        isMobile ? "0.5" : "0.4s"
       } ease-out`;
 
       if (direction === "up") {
@@ -207,7 +207,7 @@ const InstagramScroll = () => {
           setSlideDirection(null);
         }, 10);
       },
-      isMobile ? 3000 : 1 //change from 500 to 10 of mobile
+      isMobile ? 500 : 400 //change from 500 to 10 of mobile
     ); // Match this with the transition duration
   };
 
