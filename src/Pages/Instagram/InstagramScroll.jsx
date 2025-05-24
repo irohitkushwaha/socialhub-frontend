@@ -207,7 +207,7 @@ const InstagramScroll = () => {
           setSlideDirection(null);
         }, 10);
       },
-      isMobile ? 1 : 1 //change from 500 to 10 of mobile
+      isMobile ? 3000 : 1 //change from 500 to 10 of mobile
     ); // Match this with the transition duration
   };
 
