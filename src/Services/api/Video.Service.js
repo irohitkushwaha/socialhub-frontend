@@ -55,7 +55,7 @@ export const videoService = {
    * @param {number} limit - Number of videos per page
    * @returns {Promise} - API response with video list, pagination details
    */
-  getVideosList: async (page = 1, limit = 15) => {
+  getVideosList: async (page = 1, limit = 20) => {
     try {
       const response = await api.get('/video/videos-list', {
         params: { page, limit }
