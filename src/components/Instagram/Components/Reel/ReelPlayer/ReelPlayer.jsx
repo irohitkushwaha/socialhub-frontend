@@ -116,8 +116,8 @@ const ReelPlayer = ({
   }, [videoId, playing]);
 
   // Handle video click to toggle play/pause
-  const handlePlayPause = (e) => {
-    e.stopPropagation();
+  const handlePlayPause = () => {
+    // e.stopPropagation();
     setHasUserInteracted(true);
     setPlaying(!playing);
   };
