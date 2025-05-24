@@ -55,7 +55,7 @@ function SavedReels() {
         </div>
       ) : (
         <div className="w-full flex flex-wrap gap-[5px] md:gap-[10px] justify-center md:justify-center">
-          {reelThumbnails.map((reel) => (
+          {reelThumbnails?.map((reel) => (
             <Link to={`/instagram/reels/${reel.reelId}`}>
               <ThumbnailReels key={reel._id} imageUrl={reel.thumbnail} />
             </Link>
