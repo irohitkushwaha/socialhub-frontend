@@ -291,7 +291,7 @@ const InstagramScroll = () => {
             </div>
 
             {isMobile && (
-              <div className="absolute z-30 bottom-[150px] right-[13px] pb-[30px]">
+              <div className="absolute z-30 bottom-[150px] right-[13px] pb-[45px]">
                 <ReelActions
                   initialLikeCount={currentVideo?.likes}
                   commentCount={currentVideo?.comments}
