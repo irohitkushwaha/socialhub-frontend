@@ -41,6 +41,10 @@ const ReelPlayer = ({
     globalHasInteracted || false
   );
 
+  useEffect(() => {
+    setHasUserInteracted(globalHasInteracted);
+  }, [globalHasInteracted]);
+
   console.log("user interacted value as it loads", hasUserInteracted);
   const [isSwiped, setIsSwiped] = useState(false);
 
@@ -51,7 +55,6 @@ const ReelPlayer = ({
   const videoSavedToHistoryRef = useRef(false);
   const watchHistoryTimerRef = useRef(null);
   const loadingTimerRef = useRef(null);
-
 
   const isAutoScrollEnabled = useSelector(selectIsAutoScrollEnabled);
 
@@ -117,20 +120,20 @@ const ReelPlayer = ({
 
   // Handle video click to toggle play/pause
   const handlePlayPause = () => {
-    // e.stopPropagation();
-    setHasUserInteracted(true);
+    e.stopPropagation();
+    dispatch(markUserInteracted());
     setPlaying(!playing);
   };
 
   // Swipe handlers for mobile
   const handleTouchStart = (e) => {
     setStartY(e.touches[0].clientY);
-    setHasUserInteracted(true);
+    dispatch(markUserInteracted());
   };
 
   const handleTouchEnd = (e) => {
     if (disableSwipe) return;
-    setHasUserInteracted(true);
+    dispatch(markUserInteracted());
     if (isScrolling) return;
     setIsScrolling(true);
 
@@ -161,7 +164,7 @@ const ReelPlayer = ({
 
   // Handle wheel scroll for desktop
   const handleWheel = (e) => {
-    setHasUserInteracted(true);
+    dispatch(markUserInteracted());
     if (disableSwipe) return;
 
     // Prevent multiple scroll events from firing too quickly
@@ -296,7 +299,7 @@ const ReelPlayer = ({
   // Add this useEffect after your other useEffects
   useEffect(() => {
     const handleKeyDown = (e) => {
-      setHasUserInteracted(true);
+      dispatch(markUserInteracted());
 
       if (disableSwipe) return;
 
@@ -341,6 +344,7 @@ const ReelPlayer = ({
   const handleNextVideo = () => {
     if (disableSwipe) return;
     if (onNextVideo) onNextVideo();
+    dispatch(markUserInteracted());
   };
 
   return (
