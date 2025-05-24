@@ -119,13 +119,6 @@ const ReelPlayer = ({
   const handleTouchEnd = (e) => {
     if (disableSwipe) return;
     dispatch(markUserInteracted());
-    // if (isScrolling) return;
-    // setIsScrolling(true);
-
-    // // Clear any existing timeout
-    // if (scrollTimeoutRef.current) {
-    //   clearTimeout(scrollTimeoutRef.current);
-    // }
 
     const endY = e.changedTouches[0].clientY;
     const diff = startY - endY;
@@ -140,10 +133,6 @@ const ReelPlayer = ({
         if (onPrevVideo) onPrevVideo();
       }
       setIsSwiped(true);
-      // Set a timeout to allow scrolling again after 300ms
-      // scrollTimeoutRef.current = setTimeout(() => {
-      //   setIsScrolling(false);
-      // }, 1000);
     }
   };
 

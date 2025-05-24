@@ -291,7 +291,7 @@ const InstagramScroll = () => {
             </div>
 
             {isMobile && (
-              <div className="absolute z-30 bottom-[150px] right-[13px] pb-[20px]">
+              <div className="absolute z-30 bottom-[150px] right-[13px] pb-[30px]">
                 <ReelActions
                   initialLikeCount={currentVideo?.likes}
                   commentCount={currentVideo?.comments}
@@ -303,7 +303,7 @@ const InstagramScroll = () => {
               </div>
             )}
             {console.log("profile of owner is", currentVideo?.owner?.Avatar)}
-            <div className="absolute z-30 bottom-[85px] md:bottom-[40px] flex justify-start w-fit pl-[15px] md:pb-[100px] pb-[90px]">
+            <div className="absolute z-30 bottom-[85px] md:bottom-[40px] flex justify-start w-fit pl-[15px] md:pb-[100px] pb-[60px]">
               <ReelOwnerFollow
                 profileImg={currentVideo?.owner?.Avatar}
                 username={currentVideo?.owner?.UserName}
