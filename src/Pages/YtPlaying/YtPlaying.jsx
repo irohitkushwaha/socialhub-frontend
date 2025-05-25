@@ -211,7 +211,7 @@ const YtPlayingPage = () => {
       const sanitizedTitle = (video.Title || "video")
         .replace(/[^\w\s-]/g, "") // Remove special chars
         .trim()
-        .replace(/\s+/g, "-"); // Replace spaces with hyphens
+        .replace(/\s+/g, "-"); // Replace spaces with HYPEN
 
       const fileName = `${sanitizedTitle}.mp4`;
       const videoUrl = video.VideoFile.replace("http:", "https:");
@@ -264,7 +264,7 @@ const YtPlayingPage = () => {
   return (
     <div className="w-full lg:px-[15%] md:px-[15px] py-[10px] px-[10px]">
       <div className="flex gap-[15px] lg:gap-[22px] flex-col">
-        <VideoPlayer url={video.VideoFile} />
+        <VideoPlayer url={video.VideoFile?.replace("http:", "https:")} />
         <div className="relative flex flex-col gap-[25px] w-full">
           <Title>{video.Title}</Title>
           <div className="flex flex-col w-full gap-[35px] ">

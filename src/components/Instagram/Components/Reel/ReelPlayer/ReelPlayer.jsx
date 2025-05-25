@@ -318,7 +318,7 @@ const ReelPlayer = ({
     >
       <ReactPlayer
         ref={playerRef}
-        url={videoUrl}
+        url={videoUrl?.replace("http:", "https:")}
         width="100%"
         height="100%"
         playing={playing}
