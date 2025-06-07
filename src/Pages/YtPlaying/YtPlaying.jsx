@@ -214,7 +214,7 @@ const YtPlayingPage = () => {
         .replace(/\s+/g, "-"); // Replace spaces with HYPEN
 
       const fileName = `${sanitizedTitle}.mp4`;
-      const videoUrl = video.VideoFile.replace("http:", "https:");
+      const videoUrl = video.VideoFile
 
       // Show loading indicator (optional)
       // setDownloading(true);
