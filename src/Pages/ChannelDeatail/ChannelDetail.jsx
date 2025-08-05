@@ -71,7 +71,7 @@ function ChannelDetail() {
       // UI is already updated, no further action needed
     } catch (error) {
       setIsSubscribed(false); // Rollback on error
-      // alert("Subscription failed.");
+      // alert("Subscription failed")
       console.log("error of api for subscribe", error);
     }
   };

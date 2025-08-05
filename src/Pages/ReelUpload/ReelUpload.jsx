@@ -10,7 +10,7 @@ import { videoService } from "../../Services/api/Video.Service";
 function ReelUpload() {
   const navigate = useNavigate();
 
-  // React Hook Form setup
+  // React Hook Form setuping/
   const {
     register,
     handleSubmit,
@@ -41,7 +41,7 @@ function ReelUpload() {
     setThumbnailFile(file);
   };
 
-  // Form submission handler
+  // Form submission handlerr
   const onSubmit = async (data) => {
     if (!videoFile) {
       setUploadError("Video file is required");
