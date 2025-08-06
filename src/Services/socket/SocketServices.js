@@ -13,13 +13,10 @@ console.log(
 );
 
 const getSocketUrl = () => {
-  // For mobile devices on the same network, use the IP address
-  // Replace with your computer's actual IP address on your network
-  return "https://api.rohitkushwaha.com"; // ← REPLACE THIS with your actual IP address
+
+  return "https://api-socialhub.rohitkushwaha.com/"; 
 };
 
-// For production (you would use your actual domain)
-// return process.env.REACT_APP_API_URL || 'https://yourdomain.com';
 
 // Create socket connection
 const socket = io(getSocketUrl(), {

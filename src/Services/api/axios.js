@@ -3,7 +3,7 @@ import axios from "axios";
 const isMobile = window.innerWidth <= 768;
 
 const api = axios.create({
-  baseURL: "https://api.rohitkushwaha.com/api/v1",
+  baseURL: "https://api-socialhub.rohitkushwaha.com/api/v1",
   timeout: 60000,
   withCredentials: true, // This is what enables cookies to be sent!
 });

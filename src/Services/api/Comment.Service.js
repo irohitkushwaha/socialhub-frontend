@@ -1,5 +1,5 @@
 // src/Services/api/CommentService.js
-import api from "./axios";
+import api from "./axios.js";
 
 export const commentService = {
   /**
